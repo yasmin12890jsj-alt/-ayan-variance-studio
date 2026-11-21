@@ -315,6 +315,7 @@
               <option value="CHF">🇨🇭 CHF</option>
               <option value="JPY">🇯🇵 JPY (¥)</option>
             </select>
+            <button type="button" class="btn btn-butter" id="calcBtn" onclick="runCalculation()">🧮 حساب</button>
             <button class="btn btn-mint" id="sampleBtn" onclick="loadSample()">⚡ مثال</button>
             <button class="btn btn-p" id="saveBtn" onclick="saveEntry()">💾 حفظ</button>
           </div>
@@ -626,6 +627,16 @@
       const val = (Number(dzd) || 0) * (RATES[cur] || 1);
       const s = val > 0 ? '+' : val < 0 ? '-' : '';
       return `${s}${Math.abs(val).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${cur}`;
+    }
+
+    function runCalculation() {
+      calcAll();
+      if (document.getElementById('panel-charts').classList.contains('active')) {
+        initOrUpdateCharts();
+      }
+      if (document.getElementById('panel-ai').classList.contains('active')) {
+        askAI('auto');
+      }
     }
 
     function calcAll() {
