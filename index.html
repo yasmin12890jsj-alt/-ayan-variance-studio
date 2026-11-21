@@ -4,973 +4,845 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#7655E8" />
-  <title>إيان | AYAN — استوديو تحليل الفروقات الشامل</title>
+  <title>إيان | AYAN — Variance Analysis Enterprise Studio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
     :root {
       --primary: #7655E8;
-      --primary-dark: #5b3ad0;
+      --primary-2: #5A38D2;
       --mint: #B9F0DA;
       --lavender: #D8CBFF;
       --peach: #FFE1C7;
       --butter: #FFE995;
-      --bg: #F6F4FF;
+      --bg: #F4F1FF;
+      --bg-grad: linear-gradient(180deg, #EAE3FF 0%, #F5F2FF 45%, #FCFaff 100%);
       --card: #FFFFFF;
-      --text: #1E1B2E;
-      --muted: #67627D;
-      --fav: #138A5B;
-      --fav-bg: #E3F9F0;
-      --unfav: #C92A42;
+      --card-2: #F9F7FF;
+      --text: #1B172C;
+      --muted: #635D7B;
+      --border: #E3DCF9;
+      --fav: #0F8A5F;
+      --fav-bg: #E0F8EE;
+      --unfav: #C62841;
       --unfav-bg: #FFE6EB;
-      --border: #E8E3FA;
-      --shadow: 0 10px 28px rgba(118, 85, 232, 0.08);
+      --null-c: #5B647A;
+      --null-bg: #ECEFF6;
+      --shadow: 0 10px 26px rgba(118, 85, 232, 0.08);
       --radius: 20px;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
+    body.dark {
+      --bg: #0F0D1A;
+      --bg-grad: linear-gradient(180deg, #161229 0%, #0F0D1A 55%, #0A0812 100%);
+      --card: #19152B;
+      --card-2: #221D3A;
+      --text: #F5F2FF;
+      --muted: #A69FC4;
+      --border: #2F284E;
+      --fav: #3DD598;
+      --fav-bg: rgba(61, 213, 152, 0.15);
+      --unfav: #FF6B81;
+      --unfav-bg: rgba(255, 107, 129, 0.16);
+      --null-c: #A69FC4;
+      --null-bg: rgba(166, 159, 196, 0.14);
+      --shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
     }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
     body {
       font-family: 'Cairo', sans-serif;
-      background: linear-gradient(180deg, #EFEAFF 0%, var(--bg) 45%, #FBF9FF 100%);
+      background: var(--bg-grad);
       color: var(--text);
       min-height: 100vh;
-      padding-bottom: 92px;
-      line-height: 1.55;
+      padding-bottom: 86px;
+      transition: background 0.25s ease, color 0.25s ease;
     }
 
-    .container {
-      max-width: 920px;
-      margin: 0 auto;
-      padding: 16px 16px 28px;
+    /* Splash Screen */
+    #splash {
+      position: fixed; inset: 0; z-index: 9999;
+      background: linear-gradient(135deg, #5230C8 0%, #7655E8 55%, #9B7BFF 100%);
+      color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 24px; transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+    #splash.hide { opacity: 0; visibility: hidden; pointer-events: none; }
+    .splash-logo {
+      width: 104px; height: 104px; border-radius: 30px;
+      background: rgba(255,255,255,0.16); border: 2px solid rgba(255,255,255,0.35);
+      display: grid; place-items: center; font-size: 2.8rem; margin-bottom: 16px;
+      box-shadow: 0 16px 36px rgba(0,0,0,0.22);
     }
 
-    /* Header */
-    .top-header {
-      background: linear-gradient(135deg, #7655E8 0%, #9274F6 65%, #A68BFF 100%);
-      color: #fff;
-      border-radius: 26px;
-      padding: 20px;
-      box-shadow: 0 14px 30px rgba(118, 85, 232, 0.22);
-      position: relative;
-      overflow: hidden;
-      margin-bottom: 18px;
+    /* Biometric Lock Screen */
+    #lockScreen {
+      position: fixed; inset: 0; z-index: 9000;
+      background: var(--bg-grad); display: none;
+      align-items: center; justify-content: center; padding: 18px;
+    }
+    #lockScreen.active { display: flex; }
+    .lock-box {
+      width: 100%; max-width: 430px; background: var(--card);
+      border: 1.5px solid var(--border); border-radius: 26px; padding: 24px 20px;
+      text-align: center; box-shadow: var(--shadow);
+    }
+    .fp-btn {
+      width: 88px; height: 88px; border-radius: 50%;
+      border: 2.5px solid var(--primary); background: var(--card-2);
+      color: var(--primary); font-size: 2.4rem; display: grid; place-items: center;
+      margin: 16px auto; cursor: pointer; box-shadow: 0 10px 22px rgba(118,85,232,0.2);
+    }
+    .fp-btn:active { transform: scale(0.95); }
+
+    /* Layout */
+    #mainApp { display: none; }
+    #mainApp.show { display: block; }
+
+    .topbar {
+      position: sticky; top: 0; z-index: 400;
+      background: linear-gradient(135deg, #6442DC 0%, #7D5DF0 65%, #9679FF 100%);
+      color: #fff; padding: 12px 16px; box-shadow: 0 8px 24px rgba(118,85,232,0.22);
+    }
+    .topbar-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand-mark {
+      width: 38px; height: 38px; border-radius: 12px;
+      background: rgba(255,255,255,0.2); display: grid; place-items: center; font-size: 1.2rem;
+    }
+    .top-actions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .t-btn {
+      border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.16);
+      color: #fff; border-radius: 10px; padding: 5px 9px; font-family: inherit;
+      font-size: 0.76rem; font-weight: 800; cursor: pointer;
+    }
+    .t-btn.active { background: var(--butter); color: #1B172C; border-color: var(--butter); }
+
+    .shell {
+      max-width: 1280px; margin: 0 auto; padding: 14px;
+      display: grid; grid-template-columns: 1fr; gap: 14px;
+    }
+    @media (min-width: 960px) {
+      .shell { grid-template-columns: 245px 1fr; align-items: start; }
     }
 
-    .top-header::after {
-      content: "";
-      position: absolute;
-      width: 170px;
-      height: 170px;
-      background: rgba(255, 233, 149, 0.22);
-      border-radius: 50%;
-      top: -55px;
-      left: -40px;
-      pointer-events: none;
+    /* Sidebar */
+    .sidebar {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 12px; box-shadow: var(--shadow);
     }
-
-    .header-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      position: relative;
-      z-index: 1;
-    }
-
-    .brand-title {
-      font-size: 1.55rem;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .brand-badge {
-      background: var(--butter);
-      color: var(--text);
-      font-size: 0.78rem;
-      font-weight: 800;
-      padding: 4px 10px;
-      border-radius: 999px;
-    }
-
-    .header-sub {
-      font-size: 0.9rem;
-      opacity: 0.94;
-      margin-top: 4px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .currency-box {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(255, 255, 255, 0.18);
-      backdrop-filter: blur(8px);
-      padding: 6px 12px;
-      border-radius: 14px;
-      font-size: 0.85rem;
-    }
-
-    .currency-box select {
-      background: #fff;
-      color: var(--text);
-      border: none;
-      border-radius: 10px;
-      padding: 4px 10px;
-      font-family: inherit;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    /* KPI Grid */
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    @media (min-width: 720px) {
-      .kpi-grid {
-        grid-template-columns: repeat(4, 1fr);
+    @media (max-width: 959px) {
+      .sidebar { display: none; }
+      .sidebar.drawer-open {
+        display: block; position: fixed; top: 64px; bottom: 74px;
+        inset-inline-start: 10px; width: 255px; z-index: 600; overflow-y: auto;
       }
     }
-
-    .kpi-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 15px;
-      box-shadow: var(--shadow);
+    .nav-item {
+      width: 100%; border: none; background: transparent; color: var(--text);
+      padding: 9px 12px; border-radius: 12px; font-family: inherit; font-size: 0.84rem;
+      font-weight: 800; display: flex; align-items: center; gap: 8px; cursor: pointer;
+      text-align: start; margin-bottom: 3px;
     }
+    .nav-item:hover { background: var(--card-2); }
+    .nav-item.active { background: var(--primary); color: #fff; }
 
-    .kpi-card.mint { background: linear-gradient(160deg, #FFFFFF 55%, var(--mint) 180%); }
-    .kpi-card.lavender { background: linear-gradient(160deg, #FFFFFF 55%, var(--lavender) 180%); }
-    .kpi-card.peach { background: linear-gradient(160deg, #FFFFFF 55%, var(--peach) 180%); }
-    .kpi-card.butter { background: linear-gradient(160deg, #FFFFFF 55%, var(--butter) 180%); }
-
-    .kpi-label {
-      font-size: 0.82rem;
-      color: var(--muted);
-      font-weight: 700;
-    }
-
-    .kpi-value {
-      font-size: 1.25rem;
-      font-weight: 800;
-      margin-top: 6px;
-      direction: ltr;
-      text-align: right;
-    }
-
-    .kpi-tag {
-      display: inline-block;
-      margin-top: 6px;
-      font-size: 0.76rem;
-      font-weight: 700;
-      padding: 3px 9px;
-      border-radius: 999px;
-    }
-
-    .tag-fav { background: var(--fav-bg); color: var(--fav); }
-    .tag-unfav { background: var(--unfav-bg); color: var(--unfav); }
-    .tag-neutral { background: #EFEAFF; color: var(--primary); }
-
-    /* Views */
-    .view { display: none; }
-    .view.active { display: block; animation: fadeIn 0.25s ease; }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    .section { display: none; }
+    .section.active { display: block; animation: fadeUp 0.2s ease; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
     .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px;
-      box-shadow: var(--shadow);
-      margin-bottom: 16px;
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 16px; box-shadow: var(--shadow); margin-bottom: 14px;
+    }
+    .card-hd {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 8px; margin-bottom: 12px; font-weight: 900; font-size: 1rem;
     }
 
-    .card-title {
-      font-size: 1.08rem;
-      font-weight: 800;
-      margin-bottom: 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 8px;
+    .kpis {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px;
     }
-
-    .mode-pills {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 14px;
+    @media (min-width: 640px) { .kpis { grid-template-columns: repeat(4, 1fr); } }
+    .kpi {
+      background: var(--card); border: 1px solid var(--border); border-radius: 18px;
+      padding: 13px; box-shadow: var(--shadow);
     }
+    .kpi-top { display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: 800; color: var(--muted); }
+    .kpi-num { font-size: 1.15rem; font-weight: 900; margin-top: 6px; direction: ltr; text-align: right; }
 
-    .pill-btn {
-      border: 1.5px solid var(--border);
-      background: #FAF9FF;
-      color: var(--text);
-      padding: 8px 14px;
-      border-radius: 999px;
-      font-family: inherit;
-      font-size: 0.86rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.2s;
+    .grid-form { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    @media (min-width: 640px) { .grid-form { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px) { .grid-form.cols-3 { grid-template-columns: repeat(3, 1fr); } }
+
+    .f-group { display: flex; flex-direction: column; gap: 4px; }
+    .f-group label { font-size: 0.78rem; font-weight: 800; color: var(--muted); }
+    .f-group input, .f-group select, .f-group textarea {
+      border: 1.5px solid var(--border); background: var(--card-2); color: var(--text);
+      border-radius: 12px; padding: 9px 11px; font-family: inherit; font-size: 0.88rem; font-weight: 700;
     }
+    .f-group textarea { min-height: 64px; resize: vertical; }
 
-    .pill-btn.active {
-      background: var(--primary);
-      color: #fff;
-      border-color: var(--primary);
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
-
-    @media (min-width: 640px) {
-      .form-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .field label {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .field input, .field select {
-      border: 1.5px solid #DDD6FA;
-      border-radius: 14px;
-      padding: 11px 13px;
-      font-family: inherit;
-      font-size: 0.95rem;
-      color: var(--text);
-      background: #FCFBFF;
-      transition: 0.2s;
-    }
-
-    .field input:focus, .field select:focus {
-      outline: none;
-      border-color: var(--primary);
-      background: #fff;
-      box-shadow: 0 0 0 3px rgba(118, 85, 232, 0.14);
-    }
-
-    .btn-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 16px;
-    }
-
+    .btn-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
     .btn {
-      border: none;
-      border-radius: 14px;
-      padding: 11px 18px;
-      font-family: inherit;
-      font-size: 0.92rem;
-      font-weight: 800;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: 0.2s;
+      border: none; border-radius: 12px; padding: 9px 14px; font-family: inherit;
+      font-size: 0.82rem; font-weight: 800; cursor: pointer; display: inline-flex;
+      align-items: center; gap: 6px;
+    }
+    .btn-p { background: var(--primary); color: #fff; }
+    .btn-mint { background: var(--mint); color: #1B172C; }
+    .btn-peach { background: var(--peach); color: #1B172C; }
+    .btn-butter { background: var(--butter); color: #1B172C; }
+    .btn-sec { background: var(--card-2); color: var(--text); border: 1.5px solid var(--border); }
+    .btn-del { background: var(--unfav-bg); color: var(--unfav); }
+
+    .pill {
+      display: inline-block; padding: 3px 9px; border-radius: 999px;
+      font-size: 0.72rem; font-weight: 800;
+    }
+    .p-fav { background: var(--fav-bg); color: var(--fav); }
+    .p-unfav { background: var(--unfav-bg); color: var(--unfav); }
+    .p-null { background: var(--null-bg); color: var(--null-c); }
+    .p-info { background: rgba(118,85,232,0.14); color: var(--primary); }
+
+    .tbl-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 14px; }
+    table { width: 100%; border-collapse: collapse; min-width: 780px; font-size: 0.82rem; }
+    th, td { padding: 9px 10px; border-bottom: 1px solid var(--border); text-align: start; }
+    th { background: var(--card-2); font-weight: 900; }
+
+    .charts-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    @media (min-width: 820px) { .charts-grid { grid-template-columns: repeat(2, 1fr); } }
+    .chart-box { background: var(--card-2); border: 1px solid var(--border); border-radius: 16px; padding: 12px; }
+
+    .law-box {
+      background: var(--card-2); border: 1px solid var(--border); border-radius: 14px;
+      padding: 12px; margin-bottom: 8px;
+    }
+    .formula-code {
+      direction: ltr; text-align: left; font-family: monospace; font-weight: 800;
+      background: var(--card); border: 1px solid var(--border); padding: 7px 10px;
+      border-radius: 10px; margin-top: 6px; font-size: 0.82rem; color: var(--primary);
     }
 
-    .btn-primary {
-      background: var(--primary);
-      color: #fff;
-      flex: 1;
-      min-width: 160px;
+    .ai-panel {
+      background: var(--card-2); border: 1.5px solid var(--border); border-radius: 16px;
+      padding: 14px; margin-top: 10px;
     }
 
-    .btn-primary:hover { background: var(--primary-dark); }
-
-    .btn-mint {
-      background: var(--mint);
-      color: var(--text);
+    .bottom-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 450;
+      background: var(--card); border-top: 1px solid var(--border);
+      display: flex; justify-content: space-around; padding: 6px 4px 8px;
     }
-
-    .btn-peach {
-      background: var(--peach);
-      color: var(--text);
+    @media (min-width: 960px) { .bottom-bar { display: none; } }
+    .b-nav {
+      border: none; background: transparent; color: var(--muted); font-family: inherit;
+      font-size: 0.72rem; font-weight: 800; display: flex; flex-direction: column;
+      align-items: center; gap: 2px; padding: 5px 6px; border-radius: 12px; cursor: pointer;
     }
+    .b-nav.active { background: rgba(118,85,232,0.14); color: var(--primary); }
 
-    .btn-outline {
-      background: #fff;
-      color: var(--text);
-      border: 1.5px solid var(--border);
+    .toast {
+      position: fixed; bottom: 84px; inset-inline-end: 16px; z-index: 9500;
+      background: #1B172C; color: #fff; padding: 10px 16px; border-radius: 14px;
+      font-size: 0.82rem; font-weight: 800; display: none; box-shadow: 0 10px 24px rgba(0,0,0,0.25);
     }
-
-    .btn-danger {
-      background: var(--unfav-bg);
-      color: var(--unfav);
-    }
-
-    /* Breakdown Boxes */
-    .breakdown-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-top: 12px;
-    }
-
-    @media (min-width: 680px) {
-      .breakdown-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    .box-item {
-      border-radius: 16px;
-      padding: 14px;
-      border: 1px solid var(--border);
-      background: #FAF8FF;
-    }
-
-    .box-item h4 {
-      font-size: 0.9rem;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-
-    .box-val {
-      font-size: 1.15rem;
-      font-weight: 800;
-      direction: ltr;
-      text-align: right;
-    }
-
-    .box-formula {
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-top: 6px;
-    }
-
-    .insight-banner {
-      margin-top: 14px;
-      padding: 14px 16px;
-      border-radius: 16px;
-      font-size: 0.92rem;
-      font-weight: 700;
-      border-right: 5px solid var(--primary);
-      background: #F3EFFF;
-    }
-
-    /* Table */
-    .table-wrap {
-      overflow-x: auto;
-      border-radius: 16px;
-      border: 1px solid var(--border);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 640px;
-      background: #fff;
-      font-size: 0.88rem;
-    }
-
-    th, td {
-      padding: 11px 12px;
-      text-align: right;
-      border-bottom: 1px solid #EFEBFD;
-    }
-
-    th {
-      background: #F4F0FF;
-      font-weight: 800;
-      color: var(--text);
-    }
-
-    .status-pill {
-      padding: 3px 10px;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      font-weight: 800;
-      display: inline-block;
-    }
-
-    .status-fav { background: var(--fav-bg); color: var(--fav); }
-    .status-unfav { background: var(--unfav-bg); color: var(--unfav); }
-
-    /* History list */
-    .history-item {
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 14px;
-      margin-bottom: 10px;
-      background: #FCFBFF;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .history-meta {
-      font-size: 0.82rem;
-      color: var(--muted);
-    }
-
-    /* Bottom Navigation */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(12px);
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-around;
-      padding: 8px 8px 10px;
-      z-index: 100;
-      box-shadow: 0 -8px 24px rgba(30, 27, 46, 0.06);
-    }
-
-    .nav-btn {
-      flex: 1;
-      max-width: 160px;
-      border: none;
-      background: transparent;
-      color: var(--muted);
-      font-family: inherit;
-      font-size: 0.8rem;
-      font-weight: 700;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      padding: 6px 4px;
-      border-radius: 14px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .nav-btn span.icon {
-      font-size: 1.15rem;
-    }
-
-    .nav-btn.active {
-      background: #EFEAFF;
-      color: var(--primary);
-      font-weight: 800;
-    }
+    .toast.show { display: block; }
 
     @media print {
-      .bottom-nav, .btn-row, .mode-pills, .currency-box {
-        display: none !important;
-      }
-      body {
-        background: #fff;
-        padding-bottom: 0;
-      }
-      .view { display: block !important; }
+      #splash, #lockScreen, .topbar, .sidebar, .bottom-bar, .btn-bar, .toast { display: none !important; }
+      #mainApp, .section { display: block !important; }
+      .shell { grid-template-columns: 1fr !important; padding: 0 !important; }
+      body { background: #fff !important; color: #000 !important; padding-bottom: 0 !important; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Top Header -->
-    <header class="top-header">
-      <div class="header-row">
-        <div>
-          <div class="brand-title">
-            <span>إيان | AYAN</span>
-            <span class="brand-badge">تحليل الفروقات الشامل</span>
+
+  <!-- Splash -->
+  <div id="splash">
+    <div class="splash-logo">📐</div>
+    <div style="font-size:2.1rem; font-weight:900;">إيان | AYAN</div>
+    <div id="splashTag" style="font-size:0.95rem; opacity:0.92; margin-top:6px;">استوديو تحليل الفروقات المؤسسي الشامل</div>
+  </div>
+
+  <!-- Biometric Lock -->
+  <div id="lockScreen">
+    <div class="lock-box">
+      <div style="font-size:1.8rem;">🔐</div>
+      <h2 id="lockHeading" style="font-size:1.25rem; font-weight:900; margin-top:6px;">قفل البصمة — إيان</h2>
+      <p id="lockSub" style="font-size:0.82rem; color:var(--muted); margin-top:4px;">لا يُفتح التطبيق إلا بعد التحقق بالبصمة الصحيحة أو الرمز المعتمد</p>
+
+      <button class="fp-btn" onclick="unlockBiometric()" title="Biometric">👆</button>
+      <div id="fpBtnText" style="font-weight:800; font-size:0.88rem;">اضغطي للتحقق بالبصمة</div>
+      <div id="lockMsg" style="min-height:22px; font-size:0.8rem; font-weight:800; margin-top:8px; color:var(--unfav);"></div>
+
+      <div style="margin-top:12px; padding-top:12px; border-top:1px dashed var(--border); display:flex; gap:8px;">
+        <input type="password" id="pinInput" placeholder="رمز الدخول (افتراضي: AYAN2026)" style="flex:1; border:1.5px solid var(--border); background:var(--card-2); color:var(--text); border-radius:11px; padding:8px 10px; font-family:inherit; text-align:center;" />
+        <button class="btn btn-p" onclick="unlockPin()">دخول</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main App -->
+  <div id="mainApp">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand">
+          <button class="t-btn" onclick="toggleDrawer()" style="font-size:1rem;">☰</button>
+          <div class="brand-mark">📊</div>
+          <div>
+            <div style="font-weight:900; font-size:1.05rem;">إيان | AYAN</div>
+            <div id="activeUserBanner" style="font-size:0.72rem; opacity:0.9;">—</div>
           </div>
-          <p class="header-sub">منصة تحليل الفروقات المالية، التكاليف، الإنتاج، الميزانية، والمؤشرات الأدائيّة</p>
         </div>
-        <div class="currency-box">
-          <label for="currencySelect">العملة:</label>
-          <select id="currencySelect" onchange="updateCurrency()">
-            <option value="DZD" selected>د.ج (DZD)</option>
-            <option value="USD">دولار ($)</option>
-            <option value="EUR">يورو (€)</option>
-          </select>
+        <div class="top-actions">
+          <button class="t-btn active" id="l-ar" onclick="setLang('ar')">AR</button>
+          <button class="t-btn" id="l-fr" onclick="setLang('fr')">FR</button>
+          <button class="t-btn" id="l-en" onclick="setLang('en')">EN</button>
+          <button class="t-btn" id="darkToggle" onclick="toggleDark()">🌙</button>
+          <button class="t-btn" onclick="lockNow()">🔒</button>
         </div>
       </div>
     </header>
 
-    <!-- Live KPI Summary -->
-    <section class="kpi-grid">
-      <div class="kpi-card lavender">
-        <div class="kpi-label">إجمالي الفارق الكلي</div>
-        <div class="kpi-value" id="kpiTotalVar">0.00</div>
-        <span class="kpi-tag tag-neutral" id="kpiTotalStatus">بانتظار الحساب</span>
-      </div>
-      <div class="kpi-card mint">
-        <div class="kpi-label">فارق الكمية / الحجم</div>
-        <div class="kpi-value" id="kpiQtyVar">0.00</div>
-        <span class="kpi-tag tag-neutral" id="kpiQtyStatus">—</span>
-      </div>
-      <div class="kpi-card peach">
-        <div class="kpi-label">فارق السعر / المعدل</div>
-        <div class="kpi-value" id="kpiPriceVar">0.00</div>
-        <span class="kpi-tag tag-neutral" id="kpiPriceStatus">—</span>
-      </div>
-      <div class="kpi-card butter">
-        <div class="kpi-label">نسبة الانحراف (%)</div>
-        <div class="kpi-value" id="kpiPctVar">0.0%</div>
-        <span class="kpi-tag tag-neutral" id="kpiEfficiency">مؤشر الأداء</span>
-      </div>
-    </section>
+    <div class="shell">
+      <aside class="sidebar" id="sidebar">
+        <button class="nav-item active" data-sec="dashboard" onclick="goSec('dashboard')">🏠 <span data-i18n="nav_dash">الرئيسية</span></button>
+        <button class="nav-item" data-sec="data" onclick="goSec('data')">📝 <span data-i18n="nav_data">إدارة البيانات</span></button>
+        <button class="nav-item" data-sec="analysis" onclick="goSec('analysis')">🔬 <span data-i18n="nav_analysis">تحليل الفروقات</span></button>
+        <button class="nav-item" data-sec="causes" onclick="goSec('causes')">🧩 <span data-i18n="nav_causes">الأسباب 5M & التصحيح</span></button>
+        <button class="nav-item" data-sec="charts" onclick="goSec('charts')">📈 <span data-i18n="nav_charts">الرسوم البيانية</span></button>
+        <button class="nav-item" data-sec="ai" onclick="goSec('ai')">🤖 <span data-i18n="nav_ai">المساعد الذكي AI</span></button>
+        <button class="nav-item" data-sec="reports" onclick="goSec('reports')">📄 <span data-i18n="nav_reports">التقارير والتصدير</span></button>
+        <button class="nav-item" data-sec="laws" onclick="goSec('laws')">⚖️ <span data-i18n="nav_laws">القوانين والميزانية</span></button>
+        <button class="nav-item" data-sec="users" onclick="goSec('users')">👥 <span data-i18n="nav_users">الصلاحيات والإشعارات</span></button>
+        <button class="nav-item" data-sec="audit" onclick="goSec('audit')">🗂️ <span data-i18n="nav_audit">سجل العمليات</span></button>
+        <button class="nav-item" data-sec="settings" onclick="goSec('settings')">⚙️ <span data-i18n="nav_settings">الإعدادات وقاعدة البيانات</span></button>
+      </aside>
 
-    <!-- VIEW 1: Analyzer & Simulator -->
-    <section id="view-analyzer" class="view active">
-      <div class="card">
-        <div class="card-title">
-          <span>حاسبة ومحاكاة الفروقات التفصيلية</span>
-          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;" onclick="loadSampleData()">تحميل مثال جاهز</button>
-        </div>
+      <main>
+        <!-- 1. DASHBOARD -->
+        <section id="sec-dashboard" class="section active">
+          <div class="kpis">
+            <div class="kpi"><div class="kpi-top"><span data-i18n="k_count">إجمالي التحليلات</span><span>📌</span></div><div class="kpi-num" id="kCount">0</div></div>
+            <div class="kpi"><div class="kpi-top"><span data-i18n="k_fav">فروقات إيجابية (F)</span><span>✅</span></div><div class="kpi-num" id="kFav" style="color:var(--fav);">0</div></div>
+            <div class="kpi"><div class="kpi-top"><span data-i18n="k_unfav">فروقات سلبية (U)</span><span>⚠️</span></div><div class="kpi-num" id="kUnfav" style="color:var(--unfav);">0</div></div>
+            <div class="kpi"><div class="kpi-top"><span data-i18n="k_open">غير محلولة</span><span>⏳</span></div><div class="kpi-num" id="kOpen">0</div></div>
+            <div class="kpi"><div class="kpi-top"><span data-i18n="k_ach">نسبة تحقيق الأهداف</span><span>🎯</span></div><div class="kpi-num" id="kAch">0.0%</div></div>
+            <div class="kpi"><div class="kpi-top"><span data-i18n="k_fin">إجمالي الفروقات المالية</span><span>💰</span></div><div class="kpi-num" id="kFin">0.00</div></div>
+            <div class="kpi"><div class="kpi-top"><span data-i18n="k_bud">فرق الميزانية</span><span>💼</span></div><div class="kpi-num" id="kBud">0.00</div></div>
+            <div class="kpi"><div class="kpi-top"><span data-i18n="k_qty">فرق الكميات</span><span>📦</span></div><div class="kpi-num" id="kQty">0.00</div></div>
+          </div>
 
-        <div class="mode-pills">
-          <button class="pill-btn active" id="mode-cost" onclick="setAnalysisMode('cost')">فروق التكاليف (مواد/أجور)</button>
-          <button class="pill-btn" id="mode-sales" onclick="setAnalysisMode('sales')">فروق المبيعات والإيرادات</button>
-          <button class="pill-btn" id="mode-budget" onclick="setAnalysisMode('budget')">موازنة تقديرية vs فعلية</button>
-        </div>
+          <div class="card">
+            <div class="card-hd">
+              <span data-i18n="dash_recent">🕒 آخر العمليات والتحليلات</span>
+              <div class="btn-bar" style="margin-top:0;">
+                <button class="btn btn-mint" onclick="loadDemoData()">⚡ <span data-i18n="load_demo">بيانات اختبار (DEMO)</span></button>
+                <button class="btn btn-del" onclick="clearDemoData()">🧹 <span data-i18n="clear_demo">حذف بيانات الاختبار</span></button>
+              </div>
+            </div>
+            <div class="tbl-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th data-i18n="th_org">المؤسسة / القسم</th>
+                    <th data-i18n="th_per">الفترة</th>
+                    <th data-i18n="th_ind">المؤشر</th>
+                    <th data-i18n="th_prev">التقديري</th>
+                    <th data-i18n="th_real">الفعلي</th>
+                    <th data-i18n="th_abs">الفرق المطلق</th>
+                    <th data-i18n="th_rel">الفرق %</th>
+                    <th data-i18n="th_st">الحالة</th>
+                  </tr>
+                </thead>
+                <tbody id="dashRecentBody"></tbody>
+              </table>
+            </div>
+          </div>
 
-        <div class="form-grid">
-          <div class="field">
-            <label for="itemName">اسم البند / المركز / المنتج</label>
-            <input type="text" id="itemName" value="مادة أولية أ - خط الإنتاج 1" oninput="calculateVariance()" />
+          <div class="charts-grid">
+            <div class="chart-box">
+              <div style="font-weight:800; font-size:0.86rem; margin-bottom:8px;" data-i18n="ch_cmp">📊 مقارنة الفعلي بالتقديري</div>
+              <canvas id="dashBarChart" height="170"></canvas>
+            </div>
+            <div class="chart-box">
+              <div style="font-weight:800; font-size:0.86rem; margin-bottom:8px;" data-i18n="ch_dist">🥧 توزيع الفروقات حسب الحالة</div>
+              <canvas id="dashPieChart" height="170"></canvas>
+            </div>
           </div>
-          <div class="field">
-            <label for="periodLabel">الفترة المحاسبية</label>
-            <input type="text" id="periodLabel" value="نوفمبر 2026" oninput="calculateVariance()" />
-          </div>
-          <div class="field">
-            <label for="stdQty" id="lblStdQty">الكمية / الوحدات المعيارية (المخططة)</label>
-            <input type="number" id="stdQty" value="1000" step="any" oninput="calculateVariance()" />
-          </div>
-          <div class="field">
-            <label for="actQty" id="lblActQty">الكمية / الوحدات الفعلية</label>
-            <input type="number" id="actQty" value="1120" step="any" oninput="calculateVariance()" />
-          </div>
-          <div class="field">
-            <label for="stdPrice" id="lblStdPrice">السعر / التكلفة المعيارية للوحدة</label>
-            <input type="number" id="stdPrice" value="250" step="any" oninput="calculateVariance()" />
-          </div>
-          <div class="field">
-            <label for="actPrice" id="lblActPrice">السعر / التكلفة الفعلية للوحدة</label>
-            <input type="number" id="actPrice" value="235" step="any" oninput="calculateVariance()" />
-          </div>
-        </div>
+        </section>
 
-        <div class="btn-row">
-          <button class="btn btn-primary" onclick="saveCurrentAnalysis()">💾 حفظ في السجل</button>
-          <button class="btn btn-mint" onclick="exportCSV()">📥 تصدير CSV</button>
-          <button class="btn btn-peach" onclick="window.print()">🖨️ طباعة / PDF</button>
-          <button class="btn btn-outline" onclick="resetForm()">↺ تفريغ</button>
-        </div>
-      </div>
+        <!-- 2. DATA MANAGEMENT -->
+        <section id="sec-data" class="section">
+          <div class="card">
+            <div class="card-hd">
+              <span id="formHeading" data-i18n="data_form">📝 إدخال / تعديل بيانات التحليل</span>
+              <span class="pill p-info" id="editModeBadge">NEW</span>
+            </div>
 
-      <div class="card">
-        <div class="card-title">
-          <span>تفصيل الفروقات والنتائج المحاسبية</span>
-          <span class="status-pill" id="overallBadge">—</span>
-        </div>
+            <div class="grid-form cols-3">
+              <div class="f-group"><label data-i18n="f_org">اسم المؤسسة *</label><input id="fOrg" type="text" placeholder="مثال: مؤسسة إيان للصناعة" /></div>
+              <div class="f-group"><label data-i18n="f_dept">القسم / المصلحة *</label><input id="fDept" type="text" placeholder="الإنتاج / المالية / المبيعات" /></div>
+              <div class="f-group"><label data-i18n="f_period">الفترة الزمنية *</label><input id="fPeriod" type="text" placeholder="2026-11 أو Q4-2026" /></div>
 
-        <div class="breakdown-grid">
-          <div class="box-item">
-            <h4>الفارق الكمي / الحجمي (QV)</h4>
-            <div class="box-val" id="resQtyVar">0.00</div>
-            <div class="box-formula" id="formulaQty">(الفعلي − المعياري) × السعر المعياري</div>
-            <span class="kpi-tag" id="badgeQty">—</span>
+              <div class="f-group">
+                <label data-i18n="f_ind">نوع المؤشر *</label>
+                <input id="fIndicator" type="text" placeholder="الإيرادات / تكلفة المواد / الإنتاج" />
+              </div>
+              <div class="f-group">
+                <label data-i18n="f_pol">طبيعة المؤشر (لتحديد الإيجابي/السلبي) *</label>
+                <select id="fPolarity">
+                  <option value="revenue" data-i18n="pol_rev">إيرادات / مبيعات / إنتاج (الأعلى أفضل)</option>
+                  <option value="cost" data-i18n="pol_cost">تكاليف / مصاريف / إنفاق (الأقل أفضل)</option>
+                </select>
+              </div>
+              <div class="f-group"><label data-i18n="f_owner">المسؤول عن البيانات *</label><input id="fOwner" type="text" placeholder="اسم المسؤول" /></div>
+
+              <div class="f-group"><label data-i18n="f_prev">القيمة التقديرية (Prévisionnel) *</label><input id="fPrev" type="number" step="any" /></div>
+              <div class="f-group"><label data-i18n="f_real">القيمة الفعلية (Réel) *</label><input id="fReal" type="number" step="any" /></div>
+              <div class="f-group"><label data-i18n="f_obj">الهدف المحدد (Objectif)</label><input id="fObj" type="number" step="any" /></div>
+
+              <div class="f-group"><label data-i18n="f_bprev">الميزانية التقديرية</label><input id="fBPrev" type="number" step="any" /></div>
+              <div class="f-group"><label data-i18n="f_breal">الميزانية الفعلية</label><input id="fBReal" type="number" step="any" /></div>
+              <div class="f-group"><label data-i18n="f_qprev">الكمية التقديرية</label><input id="fQPrev" type="number" step="any" /></div>
+
+              <div class="f-group"><label data-i18n="f_qreal">الكمية الفعلية</label><input id="fQReal" type="number" step="any" /></div>
+              <div class="f-group" style="grid-column: 1 / -1;"><label data-i18n="f_notes">ملاحظات إضافية</label><textarea id="fNotes"></textarea></div>
+            </div>
+
+            <div class="btn-bar">
+              <button class="btn btn-p" onclick="saveRecord()">💾 <span data-i18n="save_rec">حفظ وحساب تلقائي</span></button>
+              <button class="btn btn-sec" onclick="resetRecordForm()">↺ <span data-i18n="reset_form">تفريغ النموذج</span></button>
+              <label class="btn btn-mint" style="cursor:pointer;">
+                📥 <span data-i18n="imp_csv">استيراد CSV</span>
+                <input type="file" accept=".csv,.txt" onchange="importCSV(event)" style="display:none;" />
+              </label>
+              <button class="btn btn-peach" onclick="exportRecordsCSV()">📤 <span data-i18n="exp_csv">تصدير CSV/Excel</span></button>
+            </div>
           </div>
-          <div class="box-item">
-            <h4>الفارق السعري / المعدل (PV)</h4>
-            <div class="box-val" id="resPriceVar">0.00</div>
-            <div class="box-formula" id="formulaPrice">(السعر الفعلي − المعياري) × الكمية الفعلية</div>
-            <span class="kpi-tag" id="badgePrice">—</span>
+
+          <div class="card">
+            <div class="card-hd"><span data-i18n="records_tbl">📋 سجل البيانات المحسوبة</span></div>
+            <div class="tbl-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th data-i18n="th_org">المؤسسة / القسم</th>
+                    <th data-i18n="th_ind">المؤشر</th>
+                    <th data-i18n="th_abs">الفرق المطلق</th>
+                    <th data-i18n="th_rel">الفرق %</th>
+                    <th data-i18n="th_bud">فرق الميزانية</th>
+                    <th data-i18n="th_qty">فرق الكمية</th>
+                    <th data-i18n="th_st">الحالة</th>
+                    <th data-i18n="th_act">إجراءات</th>
+                  </tr>
+                </thead>
+                <tbody id="recordsBody"></tbody>
+              </table>
+            </div>
           </div>
-          <div class="box-item">
-            <h4>صافي الفارق الإجمالي (TV)</h4>
-            <div class="box-val" id="resTotalVar">0.00</div>
-            <div class="box-formula">التكلفة/الإيراد الفعلي − المعياري المخطط</div>
-            <span class="kpi-tag" id="badgeTotal">—</span>
+        </section>
+
+        <!-- 3. ANALYSIS -->
+        <section id="sec-analysis" class="section">
+          <div class="card">
+            <div class="card-hd"><span data-i18n="ana_filters">🔬 تصفية وترتيب الفروقات المتقدم</span></div>
+            <div class="grid-form cols-3">
+              <div class="f-group"><label data-i18n="fl_dept">تصفية حسب القسم</label><select id="flDept" onchange="renderAnalysis()"><option value="ALL">ALL</option></select></div>
+              <div class="f-group"><label data-i18n="fl_per">تصفية حسب الفترة</label><select id="flPeriod" onchange="renderAnalysis()"><option value="ALL">ALL</option></select></div>
+              <div class="f-group"><label data-i18n="fl_sort">الترتيب</label>
+                <select id="flSort" onchange="renderAnalysis()">
+                  <option value="abs_desc" data-i18n="s_abs">الأكبر فرقاً مطلقاً</option>
+                  <option value="rel_desc" data-i18n="s_rel">الأكبر نسبة انحراف %</option>
+                  <option value="exceed_only" data-i18n="s_ex">المتجاوزة للحد المسموح فقط</option>
+                </select>
+              </div>
+            </div>
           </div>
-        </div>
 
-        <div class="insight-banner" id="insightText">
-          جاري احتساب التحليل التفسيري للفروق...
-        </div>
-      </div>
-    </section>
+          <div class="card">
+            <div class="card-hd"><span data-i18n="ana_res">📌 نتائج التحليل والفروقات المهمة</span></div>
+            <div class="tbl-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th data-i18n="th_org">المؤسسة / القسم</th>
+                    <th data-i18n="th_ind">المؤشر</th>
+                    <th data-i18n="th_per">الفترة</th>
+                    <th data-i18n="th_abs">الفرق المطلق</th>
+                    <th data-i18n="th_rel">الفرق %</th>
+                    <th data-i18n="th_perf">فرق الأداء</th>
+                    <th data-i18n="th_st">الحالة</th>
+                    <th data-i18n="th_alert">تجاوز الحد</th>
+                  </tr>
+                </thead>
+                <tbody id="analysisBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
 
-    <!-- VIEW 2: Report Table -->
-    <section id="view-report" class="view">
-      <div class="card">
-        <div class="card-title">
-          <span>جدول التقرير المقارن المفصل</span>
-          <button class="btn btn-mint" style="padding: 7px 14px; font-size: 0.82rem;" onclick="exportCSV()">تصدير الجدول CSV</button>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>البيان</th>
-                <th>المعياري / المخطط</th>
-                <th>الفعلي</th>
-                <th>فارق الكمية</th>
-                <th>فارق السعر</th>
-                <th>الفارق الكلي</th>
-                <th>الحالة</th>
-              </tr>
-            </thead>
-            <tbody id="reportTableBody"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
+        <!-- 4. CAUSES (5M / ISHIKAWA) & CORRECTIVE ACTIONS -->
+        <section id="sec-causes" class="section">
+          <div class="card">
+            <div class="card-hd"><span data-i18n="cause_hd">🧩 تحليل الأسباب (5M & Ishikawa) والإجراءات التصحيحية</span></div>
+            <div class="grid-form cols-3">
+              <div class="f-group"><label data-i18n="sel_var">اختيار الفرق المسجل *</label><select id="cVarSelect"></select></div>
+              <div class="f-group"><label data-i18n="c_main">السبب الرئيسي *</label><input id="cMain" type="text" /></div>
+              <div class="f-group"><label data-i18n="c_5m">محور 5M الرئيسي</label>
+                <select id="c5M">
+                  <option value="Main-d'œuvre">Main-d'œuvre (اليد العاملة)</option>
+                  <option value="Méthodes">Méthodes (الطرق والأساليب)</option>
+                  <option value="Matériel">Matériel (المعدات)</option>
+                  <option value="Matière">Matière (المواد الأولية)</option>
+                  <option value="Milieu">Milieu (المحيط والظروف)</option>
+                </select>
+              </div>
+              <div class="f-group"><label data-i18n="c_sec">الأسباب الثانوية (Ishikawa)</label><input id="cSec" type="text" /></div>
+              <div class="f-group"><label data-i18n="c_sev">مستوى الخطورة</label>
+                <select id="cSev">
+                  <option value="Low">Low / منخفض</option>
+                  <option value="Medium">Medium / متوسط</option>
+                  <option value="High">High / مرتفع</option>
+                  <option value="Critical">Critical / حرج</option>
+                </select>
+              </div>
+              <div class="f-group"><label data-i18n="c_resp">المسؤول عن التنفيذ *</label><input id="cResp" type="text" /></div>
+              <div class="f-group" style="grid-column: 1 / -1;"><label data-i18n="c_act">الإجراء التصحيحي المقترح *</label><input id="cAction" type="text" /></div>
+              <div class="f-group"><label data-i18n="c_st">حالة الإجراء</label>
+                <select id="cStatus">
+                  <option value="En attente">En attente</option>
+                  <option value="En cours">En cours</option>
+                  <option value="Terminé">Terminé</option>
+                  <option value="Annulé">Annulé</option>
+                </select>
+              </div>
+              <div class="f-group"><label data-i18n="c_prog">نسبة التقدم (%)</label><input id="cProg" type="number" min="0" max="100" value="0" /></div>
+              <div class="f-group"><label data-i18n="c_eff">تقييم الفعالية / ملاحظات</label><input id="cEff" type="text" /></div>
+            </div>
+            <div class="btn-bar">
+              <button class="btn btn-p" onclick="saveCauseAction()">💾 <span data-i18n="save_ca">حفظ السبب والإجراء</span></button>
+            </div>
+          </div>
 
-    <!-- VIEW 3: Saved History -->
-    <section id="view-history" class="view">
-      <div class="card">
-        <div class="card-title">
-          <span>سجل العمليات والمحاكيات المحفوظة</span>
-          <button class="btn btn-danger" style="padding: 6px 12px; font-size: 0.8rem;" onclick="clearHistory()">حذف الكل</button>
-        </div>
-        <div id="historyList"></div>
-      </div>
-    </section>
+          <div class="card">
+            <div class="card-hd"><span data-i18n="ca_list">📌 سجل الأسباب والإجراءات التصحيحية</span></div>
+            <div id="causesList"></div>
+          </div>
+        </section>
+
+        <!-- 5. CHARTS -->
+        <section id="sec-charts" class="section">
+          <div class="charts-grid">
+            <div class="chart-box"><div style="font-weight:800; margin-bottom:8px;">📊 Bar Chart — Réel vs Prévisionnel</div><canvas id="chBar" height="180"></canvas></div>
+            <div class="chart-box"><div style="font-weight:800; margin-bottom:8px;">📈 Line Chart — تطور الفروقات</div><canvas id="chLine" height="180"></canvas></div>
+            <div class="chart-box"><div style="font-weight:800; margin-bottom:8px;">🥧 Pie Chart — توزيع الحالات</div><canvas id="chPie" height="180"></canvas></div>
+            <div class="chart-box"><div style="font-weight:800; margin-bottom:8px;">📶 Histogram — توزيع نسب الانحراف %</div><canvas id="chHist" height="180"></canvas></div>
+          </div>
+        </section>
+
+        <!-- 6. AI ASSISTANT -->
+        <section id="sec-ai" class="section">
+          <div class="card">
+            <div class="card-hd">
+              <span data-i18n="ai_hd">🤖 المساعد الذكي لتحليل الفروقات (AI)</span>
+              <button class="btn btn-p" onclick="runAIAssistant()">✨ <span data-i18n="ai_run">توليد التشخيص والملخص</span></button>
+            </div>
+            <p style="font-size:0.82rem; color:var(--muted);" data-i18n="ai_note">يعتمد التحليل على البيانات المسجلة فعلياً فقط، ويفصل بوضوح بين النتائج المحسوبة والفرضيات المقترحة.</p>
+            <div id="aiOutput" class="ai-panel"></div>
+          </div>
+        </section>
+
+        <!-- 7. REPORTS -->
+        <section id="sec-reports" class="section">
+          <div class="card">
+            <div class="card-hd">
+              <span data-i18n="rep_hd">📄 مركز التقارير والتصدير</span>
+              <div class="btn-bar" style="margin-top:0;">
+                <button class="btn btn-mint" onclick="exportRecordsCSV()">📥 CSV / Excel</button>
+                <button class="btn btn-peach" onclick="window.print()">🖨️ PDF / Print</button>
+              </div>
+            </div>
+            <div class="grid-form cols-3">
+              <div class="f-group">
+                <label data-i18n="rep_type">نوع التقرير</label>
+                <select id="repType" onchange="buildReport()">
+                  <option value="exec">تقرير شامل للإدارة / Executive</option>
+                  <option value="monthly">تقرير شهري / دوري</option>
+                  <option value="dept">تقرير حسب القسم</option>
+                  <option value="fin">تقرير مالي وميزانية</option>
+                </select>
+              </div>
+              <div class="f-group"><label data-i18n="rep_conc">الاستنتاجات</label><input id="repConc" type="text" placeholder="استنتاجات الإدارة..." oninput="buildReport()" /></div>
+              <div class="f-group"><label data-i18n="rep_rec">التوصيات</label><input id="repRec" type="text" placeholder="التوصيات المعتمدة..." oninput="buildReport()" /></div>
+            </div>
+            <div id="reportPreview" class="ai-panel" style="margin-top:12px;"></div>
+          </div>
+        </section>
+
+        <!-- 8. LAWS & PROJECT BUDGET -->
+        <section id="sec-laws" class="section">
+          <div class="card">
+            <div class="card-hd"><span data-i18n="laws_hd">⚖️ قوانين حساب الفروقات المعتمدة</span></div>
+            <div class="law-box"><strong>1. الفرق المطلق (Écart absolu):</strong><div class="formula-code">Ecart_Absolu = Reel - Previsionnel</div></div>
+            <div class="law-box"><strong>2. الفرق النسبي (Écart relatif %):</strong><div class="formula-code">Ecart_Relatif_% = Previsionnel != 0 ? ((Reel - Previsionnel) / |Previsionnel|) * 100 : 0</div></div>
+            <div class="law-box"><strong>3. فرق الميزانية (Écart budgétaire):</strong><div class="formula-code">Ecart_Budget = Budget_Reel - Budget_Previsionnel</div></div>
+            <div class="law-box"><strong>4. فرق الكميات (Écart quantité):</strong><div class="formula-code">Ecart_Quantite = Quantite_Reel - Quantite_Previsionnel</div></div>
+            <div class="law-box"><strong>5. فرق الأداء (Écart performance):</strong><div class="formula-code">Ecart_Performance = Performance_Reel - Objectif</div></div>
+          </div>
+
+          <div class="card">
+            <div class="card-hd"><span data-i18n="proj_bud_hd">💼 ميزانية مشروع إنشاء التطبيق (مُتابعة حية)</span></div>
+            <div class="tbl-wrap">
+              <table>
+                <thead>
+                  <tr><th>المرحلة</th><th>المخصص التقديري</th><th>الفعلي المسجل</th><th>الفرق</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>UI/UX & DB</td><td>45,000 DZD</td><td>45,000 DZD</td><td>0.00 DZD</td></tr>
+                  <tr><td>Calculations & Charts</td><td>65,000 DZD</td><td>65,000 DZD</td><td>0.00 DZD</td></tr>
+                  <tr><td>Roles, Reports & AI</td><td>75,000 DZD</td><td>75,000 DZD</td><td>0.00 DZD</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 9. USERS & NOTIFICATIONS -->
+        <section id="sec-users" class="section">
+          <div class="card">
+            <div class="card-hd"><span data-i18n="role_hd">👥 الدور والصلاحيات النشطة</span></div>
+            <div class="grid-form">
+              <div class="f-group">
+                <label data-i18n="sel_role">تبديل الدور التجريبي</label>
+                <select id="roleSelect" onchange="changeRole()">
+                  <option value="Administrateur">Administrateur (صلاحيات كاملة)</option>
+                  <option value="Directeur">Directeur (اطلاع شامل وتقارير)</option>
+                  <option value="Analyste">Analyste (إدخال وتحليل البيانات)</option>
+                  <option value="Responsable">Responsable (متابعة القسم والإجراءات)</option>
+                  <option value="Lecteur">Lecteur (قراءة فقط)</option>
+                </select>
+              </div>
+              <div class="f-group">
+                <label data-i18n="cur_user">المستخدم الحالي</label>
+                <input id="userNameInput" type="text" value="ياسمين — محاسبة تحليلية" onchange="updateUserName()" />
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-hd">
+              <span data-i18n="notif_hd">🔔 الإشعارات والتنبيهات</span>
+              <button class="btn btn-sec" onclick="clearNotifs()">✓</button>
+            </div>
+            <div id="notifList"></div>
+          </div>
+        </section>
+
+        <!-- 10. AUDIT LOG -->
+        <section id="sec-audit" class="section">
+          <div class="card">
+            <div class="card-hd"><span data-i18n="audit_hd">🗂️ سجل العمليات والتدقيق (Audit Logs)</span></div>
+            <div class="tbl-wrap">
+              <table>
+                <thead><tr><th>الوقت</th><th>المستخدم</th><th>الدور</th><th>العملية</th><th>التفاصيل</th></tr></thead>
+                <tbody id="auditBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 11. SETTINGS & DATABASE -->
+        <section id="sec-settings" class="section">
+          <div class="card">
+            <div class="card-hd"><span data-i18n="set_hd">⚙️ إعدادات المؤسسة وقاعدة البيانات</span></div>
+            <div class="grid-form cols-3">
+              <div class="f-group"><label data-i18n="set_org">اسم المؤسسة الافتراضي</label><input id="setOrg" type="text" onchange="saveSettings()" /></div>
+              <div class="f-group"><label data-i18n="set_cur">العملة</label>
+                <select id="setCur" onchange="saveSettings()">
+                  <option value="DZD">DZD (د.ج)</option>
+                  <option value="USD">USD ($)</option>
+                  <option value="EUR">EUR (€)</option>
+                </select>
+              </div>
+              <div class="f-group"><label data-i18n="set_thr">حد الانحراف المسموح (%)</label><input id="setThr" type="number" step="0.5" min="0" onchange="saveSettings()" /></div>
+            </div>
+            <div class="btn-bar">
+              <button class="btn btn-mint" onclick="backupDB()">💾 <span data-i18n="db_bak">نسخة احتياطية JSON</span></button>
+              <button class="btn btn-del" onclick="wipeAllDB()">⚠️ <span data-i18n="db_wipe">تهيئة قاعدة البيانات</span></button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <nav class="bottom-bar">
+      <button class="b-nav active" data-sec="dashboard" onclick="goSec('dashboard')"><span>🏠</span><span data-i18n="nav_dash">الرئيسية</span></button>
+      <button class="b-nav" data-sec="data" onclick="goSec('data')"><span>📝</span><span data-i18n="nav_data">البيانات</span></button>
+      <button class="b-nav" data-sec="analysis" onclick="goSec('analysis')"><span>🔬</span><span data-i18n="nav_analysis">التحليل</span></button>
+      <button class="b-nav" data-sec="charts" onclick="goSec('charts')"><span>📈</span><span data-i18n="nav_charts">الرسوم</span></button>
+      <button class="b-nav" data-sec="ai" onclick="goSec('ai')"><span>🤖</span><span data-i18n="nav_ai">الذكي</span></button>
+    </nav>
   </div>
 
-  <!-- Bottom Navigation -->
-  <nav class="bottom-nav">
-    <button class="nav-btn active" id="nav-analyzer" onclick="switchView('analyzer')">
-      <span class="icon">📊</span>
-      <span>التحليل</span>
-    </button>
-    <button class="nav-btn" id="nav-report" onclick="switchView('report')">
-      <span class="icon">📋</span>
-      <span>التقرير</span>
-    </button>
-    <button class="nav-btn" id="nav-history" onclick="switchView('history')">
-      <span class="icon">🗂️</span>
-      <span>السجل</span>
-    </button>
-  </nav>
+  <div class="toast" id="toast"></div>
 
   <script>
-    const STORAGE_KEY = 'ayan_variance_history_v1';
-    let currentMode = 'cost'; // 'cost' | 'sales' | 'budget'
-    let latestCalc = null;
+    const DB_KEY = 'AYAN_ENTERPRISE_DB_V1';
+    const BIO_KEY = 'AYAN_BIO_CRED_V1';
+    let lang = 'ar';
+    let editingId = null;
+    let charts = {};
 
-    function getCurrencyLabel() {
-      const val = document.getElementById('currencySelect').value;
-      if (val === 'DZD') return 'د.ج';
-      if (val === 'USD') return '$';
-      return '€';
-    }
-
-    function formatMoney(num) {
-      const sign = num > 0 ? '+' : num < 0 ? '-' : '';
-      const absVal = Math.abs(Number(num) || 0).toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-      });
-      return `${sign}${absVal} ${getCurrencyLabel()}`;
-    }
-
-    function updateCurrency() {
-      calculateVariance();
-      renderHistory();
-    }
-
-    function setAnalysisMode(mode) {
-      currentMode = mode;
-      document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById(`mode-${mode}`).classList.add('active');
-
-      const lblStdQty = document.getElementById('lblStdQty');
-      const lblActQty = document.getElementById('lblActQty');
-      const lblStdPrice = document.getElementById('lblStdPrice');
-      const lblActPrice = document.getElementById('lblActPrice');
-
-      if (mode === 'cost') {
-        lblStdQty.textContent = 'الكمية / الساعات المعيارية المخططة';
-        lblActQty.textContent = 'الكمية / الساعات الفعلية';
-        lblStdPrice.textContent = 'التكلفة المعيارية للوحدة / الساعة';
-        lblActPrice.textContent = 'التكلفة الفعلية للوحدة / الساعة';
-      } else if (mode === 'sales') {
-        lblStdQty.textContent = 'حجم المبيعات المعياري (وحدات)';
-        lblActQty.textContent = 'حجم المبيعات الفعلي (وحدات)';
-        lblStdPrice.textContent = 'سعر البيع المعياري للوحدة';
-        lblActPrice.textContent = 'سعر البيع الفعلي للوحدة';
-      } else {
-        lblStdQty.textContent = 'النشاط / الوحدات المخططة في الموازنة';
-        lblActQty.textContent = 'النشاط / الوحدات الفعلية المحققة';
-        lblStdPrice.textContent = 'المخصص المخطط لكل وحدة';
-        lblActPrice.textContent = 'الإنفاق الفعلي لكل وحدة';
+    const T = {
+      ar: {
+        dir: 'rtl',
+        nav_dash: 'الرئيسية', nav_data: 'إدارة البيانات', nav_analysis: 'تحليل الفروقات',
+        nav_causes: 'الأسباب 5M & التصحيح', nav_charts: 'الرسوم البيانية', nav_ai: 'المساعد الذكي AI',
+        nav_reports: 'التقارير والتصدير', nav_laws: 'القوانين والميزانية', nav_users: 'الصلاحيات والإشعارات',
+        nav_audit: 'سجل العمليات', nav_settings: 'الإعدادات وقاعدة البيانات',
+        k_count: 'إجمالي التحليلات', k_fav: 'فروقات إيجابية (F)', k_unfav: 'فروقات سلبية (U)',
+        k_open: 'غير محلولة', k_ach: 'نسبة تحقيق الأهداف', k_fin: 'إجمالي الفروقات المالية',
+        k_bud: 'فرق الميزانية', k_qty: 'فرق الكميات',
+        dash_recent: '🕒 آخر العمليات والتحليلات', load_demo: 'بيانات اختبار (DEMO)', clear_demo: 'حذف بيانات الاختبار',
+        th_org: 'المؤسسة / القسم', th_per: 'الفترة', th_ind: 'المؤشر', th_prev: 'التقديري',
+        th_real: 'الفعلي', th_abs: 'الفرق المطلق', th_rel: 'الفرق %', th_st: 'الحالة',
+        th_bud: 'فرق الميزانية', th_qty: 'فرق الكمية', th_act: 'إجراءات', th_perf: 'فرق الأداء', th_alert: 'تجاوز الحد',
+        fav: 'ملائم (F)', unfav: 'غير ملائم (U)', nul: 'لا يوجد فرق (N)'
+      },
+      fr: {
+        dir: 'ltr',
+        nav_dash: 'Tableau de bord', nav_data: 'Gestion des données', nav_analysis: 'Analyse des écarts',
+        nav_causes: 'Causes 5M & Actions', nav_charts: 'Graphiques', nav_ai: 'Assistant IA',
+        nav_reports: 'Rapports & Export', nav_laws: 'Formules & Budget', nav_users: 'Rôles & Alertes',
+        nav_audit: 'Historique (Audit)', nav_settings: 'Paramètres & BDD',
+        k_count: 'Total analyses', k_fav: 'Écarts favorables (F)', k_unfav: 'Écarts défavorables (U)',
+        k_open: 'Non résolus', k_ach: 'Taux réalisation', k_fin: 'Écart financier total',
+        k_bud: 'Écart budgétaire', k_qty: 'Écart quantité',
+        dash_recent: '🕒 Dernières opérations', load_demo: 'Données test (DEMO)', clear_demo: 'Supprimer test',
+        th_org: 'Org. / Département', th_per: 'Période', th_ind: 'Indicateur', th_prev: 'Prévisionnel',
+        th_real: 'Réel', th_abs: 'Écart absolu', th_rel: 'Écart %', th_st: 'Statut',
+        th_bud: 'Écart budget', th_qty: 'Écart qté', th_act: 'Actions', th_perf: 'Écart perf.', th_alert: 'Seuil',
+        fav: 'Favorable (F)', unfav: 'Défavorable (U)', nul: 'Nul (N)'
+      },
+      en: {
+        dir: 'ltr',
+        nav_dash: 'Dashboard', nav_data: 'Data Management', nav_analysis: 'Variance Analysis',
+        nav_causes: '5M Causes & Actions', nav_charts: 'Charts', nav_ai: 'AI Assistant',
+        nav_reports: 'Reports & Export', nav_laws: 'Formulas & Budget', nav_users: 'Roles & Alerts',
+        nav_audit: 'Audit Logs', nav_settings: 'Settings & DB',
+        k_count: 'Total Analyses', k_fav: 'Favorable (F)', k_unfav: 'Unfavorable (U)',
+        k_open: 'Unresolved', k_ach: 'Target Achievement', k_fin: 'Total Financial Var.',
+        k_bud: 'Budget Variance', k_qty: 'Qty Variance',
+        dash_recent: '🕒 Recent Analyses', load_demo: 'Load Demo Data', clear_demo: 'Clear Demo Data',
+        th_org: 'Org. / Dept.', th_per: 'Period', th_ind: 'Indicator', th_prev: 'Forecast',
+        th_real: 'Actual', th_abs: 'Abs. Variance', th_rel: 'Var. %', th_st: 'Status',
+        th_bud: 'Budget Var.', th_qty: 'Qty Var.', th_act: 'Actions', th_perf: 'Perf. Var.', th_alert: 'Threshold',
+        fav: 'Favorable (F)', unfav: 'Unfavorable (U)', nul: 'Null (N)'
       }
-      calculateVariance();
-    }
+    };
 
-    // For costs/budgets: lower actual than standard is Favorable (F)
-    // For sales/revenue: higher actual than standard is Favorable (F)
-    function isFavorable(rawDelta) {
-      if (Math.abs(rawDelta) < 1e-9) return true;
-      return currentMode === 'sales' ? rawDelta > 0 : rawDelta < 0;
-    }
-
-    function calculateVariance() {
-      const itemName = document.getElementById('itemName').value.trim() || 'بند غير مسمى';
-      const periodLabel = document.getElementById('periodLabel').value.trim() || 'الفترة الحالية';
-      const stdQty = parseFloat(document.getElementById('stdQty').value) || 0;
-      const actQty = parseFloat(document.getElementById('actQty').value) || 0;
-      const stdPrice = parseFloat(document.getElementById('stdPrice').value) || 0;
-      const actPrice = parseFloat(document.getElementById('actPrice').value) || 0;
-
-      const stdTotal = stdQty * stdPrice;
-      const actTotal = actQty * actPrice;
-
-      // Raw impact on cost/budget or revenue
-      const rawQtyVar = (actQty - stdQty) * stdPrice;
-      const rawPriceVar = (actPrice - stdPrice) * actQty;
-      const rawTotalVar = actTotal - stdTotal;
-
-      const qtyFav = isFavorable(rawQtyVar);
-      const priceFav = isFavorable(rawPriceVar);
-      const totalFav = isFavorable(rawTotalVar);
-
-      const pctVar = stdTotal !== 0 ? ((actTotal - stdTotal) / Math.abs(stdTotal)) * 100 : 0;
-
-      latestCalc = {
-        id: Date.now(),
-        itemName,
-        periodLabel,
-        mode: currentMode,
-        stdQty,
-        actQty,
-        stdPrice,
-        actPrice,
-        stdTotal,
-        actTotal,
-        rawQtyVar,
-        rawPriceVar,
-        rawTotalVar,
-        qtyFav,
-        priceFav,
-        totalFav,
-        pctVar,
-        savedAt: new Date().toLocaleString('ar-DZ')
+    function defaultDB() {
+      return {
+        settings: { org: 'AYAN Enterprise', currency: 'DZD', thresholdPct: 10 },
+        session: { user: 'ياسمين — محاسبة تحليلية', role: 'Administrateur' },
+        records: [],
+        causes: [],
+        notifications: [],
+        audits: []
       };
-
-      // Update KPIs
-      document.getElementById('kpiTotalVar').textContent = formatMoney(rawTotalVar);
-      const kpiTotalStatus = document.getElementById('kpiTotalStatus');
-      kpiTotalStatus.textContent = totalFav ? 'ملائم (Favorable)' : 'غير ملائم (Unfavorable)';
-      kpiTotalStatus.className = `kpi-tag ${totalFav ? 'tag-fav' : 'tag-unfav'}`;
-
-      document.getElementById('kpiQtyVar').textContent = formatMoney(rawQtyVar);
-      const kpiQtyStatus = document.getElementById('kpiQtyStatus');
-      kpiQtyStatus.textContent = qtyFav ? 'ملائم (F)' : 'غير ملائم (U)';
-      kpiQtyStatus.className = `kpi-tag ${qtyFav ? 'tag-fav' : 'tag-unfav'}`;
-
-      document.getElementById('kpiPriceVar').textContent = formatMoney(rawPriceVar);
-      const kpiPriceStatus = document.getElementById('kpiPriceStatus');
-      kpiPriceStatus.textContent = priceFav ? 'ملائم (F)' : 'غير ملائم (U)';
-      kpiPriceStatus.className = `kpi-tag ${priceFav ? 'tag-fav' : 'tag-unfav'}`;
-
-      const pctSign = pctVar > 0 ? '+' : '';
-      document.getElementById('kpiPctVar').textContent = `${pctSign}${pctVar.toFixed(1)}%`;
-      const kpiEff = document.getElementById('kpiEfficiency');
-      kpiEff.textContent = totalFav ? 'أداء إيجابي' : 'يحتاج متابعة';
-      kpiEff.className = `kpi-tag ${totalFav ? 'tag-fav' : 'tag-unfav'}`;
-
-      // Update Breakdown Boxes
-      document.getElementById('resQtyVar').textContent = formatMoney(rawQtyVar);
-      document.getElementById('resPriceVar').textContent = formatMoney(rawPriceVar);
-      document.getElementById('resTotalVar').textContent = formatMoney(rawTotalVar);
-
-      setBadge('badgeQty', qtyFav);
-      setBadge('badgePrice', priceFav);
-      setBadge('badgeTotal', totalFav);
-
-      const overallBadge = document.getElementById('overallBadge');
-      overallBadge.textContent = totalFav ? 'النتيجة العامة: ملائم (Favorable)' : 'النتيجة العامة: غير ملائم (Unfavorable)';
-      overallBadge.className = `status-pill ${totalFav ? 'status-fav' : 'status-unfav'}`;
-
-      // Insight text
-      const qtyText = qtyFav ? 'ملائم' : 'غير ملائم';
-      const priceText = priceFav ? 'ملائم' : 'غير ملائم';
-      const totalText = totalFav ? 'ملائم' : 'غير ملائم';
-      document.getElementById('insightText').textContent =
-        `بالنسبة لبند "${itemName}" (${periodLabel}): الفارق الكلي ${totalText} بقيمة ${formatMoney(rawTotalVar)} (${pctSign}${pctVar.toFixed(1)}%). يتكوّن من فارق كمي ${qtyText} (${formatMoney(rawQtyVar)}) وفارق سعري ${priceText} (${formatMoney(rawPriceVar)}).`;
-
-      renderReportTable();
     }
 
-    function setBadge(id, fav) {
-      const el = document.getElementById(id);
-      el.textContent = fav ? 'ملائم (F)' : 'غير ملائم (U)';
-      el.className = `kpi-tag ${fav ? 'tag-fav' : 'tag-unfav'}`;
-    }
+    let db = loadDB();
 
-    function renderReportTable() {
-      if (!latestCalc) return;
-      const c = latestCalc;
-      const tbody = document.getElementById('reportTableBody');
-      tbody.innerHTML = `
-        <tr>
-          <td><strong>${escapeHtml(c.itemName)}</strong><br><small style="color:var(--muted)">${escapeHtml(c.periodLabel)}</small></td>
-          <td>${formatMoney(c.stdTotal)}</td>
-          <td>${formatMoney(c.actTotal)}</td>
-          <td>${formatMoney(c.rawQtyVar)} <small>(${c.qtyFav ? 'F' : 'U'})</small></td>
-          <td>${formatMoney(c.rawPriceVar)} <small>(${c.priceFav ? 'F' : 'U'})</small></td>
-          <td><strong>${formatMoney(c.rawTotalVar)}</strong></td>
-          <td><span class="status-pill ${c.totalFav ? 'status-fav' : 'status-unfav'}">${c.totalFav ? 'ملائم' : 'غير ملائم'}</span></td>
-        </tr>
-      `;
-    }
-
-    function saveCurrentAnalysis() {
-      if (!latestCalc) return;
-      const list = getHistory();
-      list.unshift({ ...latestCalc, id: Date.now() });
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(list.slice(0, 50)));
-      renderHistory();
-      alert('تم حفظ التحليل بنجاح في سجل إيان!');
-    }
-
-    function getHistory() {
+    function loadDB() {
       try {
-        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        const raw = localStorage.getItem(DB_KEY);
+        return raw ? { ...defaultDB(), ...JSON.parse(raw) } : defaultDB();
       } catch {
-        return [];
+        return defaultDB();
       }
     }
 
-    function renderHistory() {
-      const container = document.getElementById('historyList');
-      const list = getHistory();
-      if (!list.length) {
-        container.innerHTML = '<p style="color:var(--muted); text-align:center; padding:18px;">لا توجد عمليات محفوظة بعد. احفظ أي محاكاة لتظهر هنا.</p>';
+    function saveDB() {
+      localStorage.setItem(DB_KEY, JSON.stringify(db));
+    }
+
+    function toast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 2400);
+    }
+
+    function addAudit(action, details) {
+      db.audits.unshift({
+        time: new Date().toLocaleString(),
+        user: db.session.user,
+        role: db.session.role,
+        action,
+        details
+      });
+      db.audits = db.audits.slice(0, 120);
+      saveDB();
+    }
+
+    function pushNotif(msg) {
+      db.notifications.unshift({ id: Date.now(), time: new Date().toLocaleTimeString(), msg });
+      db.notifications = db.notifications.slice(0, 40);
+      saveDB();
+    }
+
+    // Splash & Lock
+    window.addEventListener('DOMContentLoaded', () => {
+      syncSettingsUI();
+      setLang('ar');
+      refreshAll();
+      setTimeout(() => {
+        document.getElementById('splash').classList.add('hide');
+        document.getElementById('lockScreen').classList.add('active');
+      }, 1200);
+    });
+
+    function openApp() {
+      document.getElementById('lockScreen').classList.remove('active');
+      document.getElementById('mainApp').classList.add('show');
+      addAudit('UNLOCK', 'Authenticated access to AYAN');
+      refreshAll();
+    }
+
+    function lockNow() {
+      document.getElementById('mainApp').classList.remove('show');
+      document.getElementById('pinInput').value = '';
+      document.getElementById('lockMsg').textContent = '';
+      document.getElementById('lockScreen').classList.add('active');
+    }
+
+    function unlockPin() {
+      const v = document.getElementById('pinInput').value.trim();
+      if (v === 'AYAN2026' || v === '2026') openApp();
+      else document.getElementById('lockMsg').textContent = 'رمز غير صحيح (AYAN2026)';
+    }
+
+    async function unlockBiometric() {
+      const msg = document.getElementById('lockMsg');
+      if (!window.PublicKeyCredential) {
+        msg.textContent = 'البصمة غير مدعومة هنا؛ استخدمي الرمز AYAN2026';
         return;
       }
-
-      container.innerHTML = list.map(item => `
-        <div class="history-item">
-          <div>
-            <strong>${escapeHtml(item.itemName)}</strong>
-            <div class="history-meta">${escapeHtml(item.periodLabel)} • ${escapeHtml(item.savedAt)}</div>
-            <div class="history-meta">الإجمالي: <strong>${formatMoney(item.rawTotalVar)}</strong></div>
-          </div>
-          <div style="display:flex; gap:8px; align-items:center;">
-            <span class="status-pill ${item.totalFav ? 'status-fav' : 'status-unfav'}">${item.totalFav ? 'ملائم (F)' : 'غير ملائم (U)'}</span>
-            <button class="btn btn-outline" style="padding:6px 10px; font-size:0.8rem;" onclick="loadFromHistory(${item.id})">فتح</button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function loadFromHistory(id) {
-      const item = getHistory().find(x => x.id === id);
-      if (!item) return;
-      setAnalysisMode(item.mode || 'cost');
-      document.getElementById('itemName').value = item.itemName;
-      document.getElementById('periodLabel').value = item.periodLabel;
-      document.getElementById('stdQty').value = item.stdQty;
-      document.getElementById('actQty').value = item.actQty;
-      document.getElementById('stdPrice').value = item.stdPrice;
-      document.getElementById('actPrice').value = item.actPrice;
-      calculateVariance();
-      switchView('analyzer');
-    }
-
-    function clearHistory() {
-      if (!confirm('هل تريدين حذف جميع العمليات المحفوظة؟')) return;
-      localStorage.removeItem(STORAGE_KEY);
-      renderHistory();
-    }
-
-    function loadSampleData() {
-      setAnalysisMode('cost');
-      document.getElementById('itemName').value = 'مواد أولية - خط الإنتاج الرئيسي';
-      document.getElementById('periodLabel').value = 'نوفمبر 2026';
-      document.getElementById('stdQty').value = 500;
-      document.getElementById('actQty').value = 480;
-      document.getElementById('stdPrice').value = 1200;
-      document.getElementById('actPrice').value = 1250;
-      calculateVariance();
-    }
-
-    function resetForm() {
-      document.getElementById('itemName').value = '';
-      document.getElementById('stdQty').value = 0;
-      document.getElementById('actQty').value = 0;
-      document.getElementById('stdPrice').value = 0;
-      document.getElementById('actPrice').value = 0;
-      calculateVariance();
-    }
-
-    function exportCSV() {
-      if (!latestCalc) return;
-      const c = latestCalc;
-      const rows = [
-        ['البند', 'الفترة', 'المعياري', 'الفعلي', 'فارق الكمية', 'فارق السعر', 'الفارق الكلي', 'الحالة'],
-        [c.itemName, c.periodLabel, c.stdTotal, c.actTotal, c.rawQtyVar, c.rawPriceVar, c.rawTotalVar, c.totalFav ? 'Favorable' : 'Unfavorable']
-      ];
-      const csvContent = '\uFEFF' + rows.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n');
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `ayan-variance-${Date.now()}.csv`;
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-
-    function switchView(viewName) {
-      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-      document.getElementById(`view-${viewName}`).classList.add('active');
-
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById(`nav-${viewName}`).classList.add('active');
-    }
-
-    function escapeHtml(str) {
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
-    }
-
-    // Init
-    calculateVariance();
-    renderHistory();
-  </script>
-</body>
-</html>
+      try {
+        const ch = new Uint8Array(16);
+        window.crypto.getRandomValues(ch);
+        const savedId = localStorage.getItem(BIO_KEY);
+        if (!savedId) {
+          const uid = new Uint8Array(16);
+          window.crypto.getRandomValues(uid);
+          const cred = await navigator.credentials.create({
+            
