@@ -322,7 +322,7 @@
         </div>
 
         <div class="grid-2 grid-3">
-          <div class="field"><label id="lName">البند / المؤشر</label><input id="inName" class="inp" value="الإيرادات والمبيعات" onchange="calcAll()" /></div>
+          <div class="field"><label id="lName">البند / المؤشر</label><input id="inName" class="inp" value="" placeholder="مثال: الإيرادات والمبيعات" onchange="calcAll()" /></div>
           <div class="field">
             <label id="lNature">طبيعة المؤشر</label>
             <select id="inNature" class="inp" onchange="calcAll()">
@@ -330,13 +330,13 @@
               <option value="cost" id="optCost">تكاليف / مصاريف (الأقل أفضل)</option>
             </select>
           </div>
-          <div class="field"><label id="lPrev">القيمة التقديرية (Prévisionnel)</label><input id="inPrev" type="number" step="any" class="inp" value="250000" onchange="calcAll()" /></div>
-          <div class="field"><label id="lReal">القيمة الفعلية (Réel)</label><input id="inReal" type="number" step="any" class="inp" value="285000" onchange="calcAll()" /></div>
-          <div class="field"><label id="lBPrev">الميزانية التقديرية</label><input id="inBPrev" type="number" step="any" class="inp" value="120000" onchange="calcAll()" /></div>
-          <div class="field"><label id="lBReal">الميزانية الفعلية</label><input id="inBReal" type="number" step="any" class="inp" value="112000" onchange="calcAll()" /></div>
-          <div class="field"><label id="lQPrev">الكمية التقديرية</label><input id="inQPrev" type="number" step="any" class="inp" value="500" onchange="calcAll()" /></div>
-          <div class="field"><label id="lQReal">الكمية الفعلية</label><input id="inQReal" type="number" step="any" class="inp" value="540" onchange="calcAll()" /></div>
-          <div class="field"><label id="lObj">الهدف المحدد (Objectif)</label><input id="inObj" type="number" step="any" class="inp" value="270000" onchange="calcAll()" /></div>
+          <div class="field"><label id="lPrev">القيمة التقديرية (Prévisionnel)</label><input id="inPrev" type="number" step="any" class="inp" value="" placeholder="0" onchange="calcAll()" /></div>
+          <div class="field"><label id="lReal">القيمة الفعلية (Réel)</label><input id="inReal" type="number" step="any" class="inp" value="" placeholder="0" onchange="calcAll()" /></div>
+          <div class="field"><label id="lBPrev">الميزانية التقديرية</label><input id="inBPrev" type="number" step="any" class="inp" value="" placeholder="0" onchange="calcAll()" /></div>
+          <div class="field"><label id="lBReal">الميزانية الفعلية</label><input id="inBReal" type="number" step="any" class="inp" value="" placeholder="0" onchange="calcAll()" /></div>
+          <div class="field"><label id="lQPrev">الكمية التقديرية</label><input id="inQPrev" type="number" step="any" class="inp" value="" placeholder="0" onchange="calcAll()" /></div>
+          <div class="field"><label id="lQReal">الكمية الفعلية</label><input id="inQReal" type="number" step="any" class="inp" value="" placeholder="0" onchange="calcAll()" /></div>
+          <div class="field"><label id="lObj">الهدف المحدد (Objectif)</label><input id="inObj" type="number" step="any" class="inp" value="" placeholder="0" onchange="calcAll()" /></div>
         </div>
       </div>
 
@@ -536,10 +536,7 @@
     let latest = null;
     let cChart = null;
     let bChart = null;
-    let items = [
-      { name: 'الإيرادات والمبيعات', nature: 'rev', prev: 250000, real: 285000, bPrev: 120000, bReal: 112000, qPrev: 500, qReal: 540, obj: 270000 },
-      { name: 'تكلفة المواد الأولية', nature: 'cost', prev: 180000, real: 196000, bPrev: 180000, bReal: 196000, qPrev: 300, qReal: 320, obj: 175000 }
-    ];
+    let items = [];
 
     function setLang(l) {
       lang = l;
@@ -647,7 +644,8 @@
       const bReal = parseFloat(document.getElementById('inBReal').value) || 0;
       const qPrev = parseFloat(document.getElementById('inQPrev').value) || 0;
       const qReal = parseFloat(document.getElementById('inQReal').value) || 0;
-      const obj = parseFloat(document.getElementById('inObj').value) || prev;
+      const objRaw = document.getElementById('inObj').value;
+      const obj = objRaw !== '' ? (parseFloat(objRaw) || 0) : prev;
       const nature = document.getElementById('inNature').value;
       const name = document.getElementById('inName').value.trim() || 'Item';
 
