@@ -4,15 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#7655E8" />
-  <title>إيان | AYAN — Variance Analysis Studio</title>
+  <title>إيان | AYAN — Variance Studio</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
     :root {
       --primary: #7655E8;
-      --primary-dark: #5835CE;
       --mint: #B9F0DA;
-      --lavender: #D8CBFF;
       --peach: #FFE1C7;
       --butter: #FFE995;
       --bg: #F4F1FF;
@@ -25,8 +23,6 @@
       --fav-bg: #E0F8EE;
       --unfav: #C62841;
       --unfav-bg: #FFE6EB;
-      --shadow: 0 10px 24px rgba(118, 85, 232, 0.08);
-      --radius: 20px;
     }
 
     body.dark {
@@ -36,7 +32,6 @@
       --text: #F5F2FF;
       --muted: #A69FC4;
       --border: #2F284E;
-      --shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -46,86 +41,77 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      padding-bottom: 96px;
-      transition: background 0.25s ease, color 0.25s ease;
+      padding-bottom: 94px;
     }
 
     .screen { display: none; min-height: 100vh; }
     .screen.active { display: flex; }
 
-    /* 1. Splash */
     #splashScreen {
       background: linear-gradient(135deg, #5230C8, #7655E8, #9B7BFF);
       color: #fff; flex-direction: column; align-items: center; justify-content: center;
       text-align: center; padding: 24px;
     }
     .splash-logo {
-      width: 98px; height: 98px; border-radius: 28px;
+      width: 92px; height: 92px; border-radius: 26px;
       background: rgba(255,255,255,0.18); display: grid; place-items: center;
-      font-size: 2.6rem; margin-bottom: 14px;
+      font-size: 2.5rem; margin-bottom: 12px;
     }
 
-    /* 2. Lock */
     #lockScreen { align-items: center; justify-content: center; padding: 18px; }
     .lock-card {
-      width: 100%; max-width: 410px; background: var(--card);
-      border: 1.5px solid var(--border); border-radius: 24px; padding: 24px;
-      text-align: center; box-shadow: var(--shadow);
+      width: 100%; max-width: 400px; background: var(--card);
+      border: 1.5px solid var(--border); border-radius: 24px; padding: 22px; text-align: center;
     }
     .fp-btn {
-      width: 84px; height: 84px; border-radius: 50%;
+      width: 80px; height: 80px; border-radius: 50%;
       border: 2.5px solid var(--primary); background: var(--card-2);
-      color: var(--primary); font-size: 2.3rem; display: grid; place-items: center;
-      margin: 16px auto; cursor: pointer;
+      color: var(--primary); font-size: 2.2rem; display: grid; place-items: center;
+      margin: 14px auto; cursor: pointer;
     }
 
-    /* 3. Main App */
     #appScreen.active { display: block; }
     .topbar {
       background: linear-gradient(135deg, #6442DC, #8665F5);
-      color: #fff; padding: 12px 16px; position: sticky; top: 0; z-index: 300;
-      box-shadow: 0 8px 20px rgba(118,85,232,0.2);
+      color: #fff; padding: 11px 14px; position: sticky; top: 0; z-index: 300;
     }
     .topbar-inner {
-      max-width: 1120px; margin: 0 auto; display: flex;
+      max-width: 1100px; margin: 0 auto; display: flex;
       justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
     }
-    .top-btns { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+    .top-btns { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
 
-    .container { max-width: 1120px; margin: 0 auto; padding: 14px; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 12px; }
     .card {
       background: var(--card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 16px; margin-bottom: 14px; box-shadow: var(--shadow);
+      border-radius: 18px; padding: 14px; margin-bottom: 12px;
     }
     .card-title {
-      font-size: 1rem; font-weight: 900; margin-bottom: 12px;
+      font-size: 0.98rem; font-weight: 900; margin-bottom: 10px;
       display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
     }
 
-    .kpis { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px; }
-    @media (min-width: 640px) { .kpis { grid-template-columns: repeat(5, 1fr); } }
-    .kpi {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 16px; padding: 12px; box-shadow: var(--shadow);
-    }
-    .kpi-lbl { font-size: 0.76rem; color: var(--muted); font-weight: 800; }
-    .kpi-val { font-size: 1.05rem; font-weight: 900; margin-top: 4px; direction: ltr; text-align: right; }
+    .kpis { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 12px; }
+    @media (min-width: 680px) { .kpis { grid-template-columns: repeat(5, 1fr); } }
+    .kpi { background: var(--card); border: 1px solid var(--border); border-radius: 15px; padding: 11px; }
+    .kpi-lbl { font-size: 0.74rem; color: var(--muted); font-weight: 800; }
+    .kpi-val { font-size: 1rem; font-weight: 900; margin-top: 4px; direction: ltr; text-align: right; }
 
-    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 9px; }
     @media (min-width: 640px) { .grid-2 { grid-template-columns: repeat(2, 1fr); } }
     @media (min-width: 960px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
 
-    .field { display: flex; flex-direction: column; gap: 4px; }
-    .field label { font-size: 0.78rem; font-weight: 800; color: var(--muted); }
+    .field { display: flex; flex-direction: column; gap: 3px; }
+    .field label { font-size: 0.76rem; font-weight: 800; color: var(--muted); }
     .inp {
       width: 100%; border: 1.5px solid var(--border); background: var(--card-2);
-      color: var(--text); border-radius: 12px; padding: 9px 11px;
-      font-family: inherit; font-weight: 700; font-size: 0.88rem;
+      color: var(--text); border-radius: 11px; padding: 8px 10px;
+      font-family: inherit; font-weight: 700; font-size: 0.86rem;
     }
 
     .btn {
-      border: none; border-radius: 12px; padding: 9px 14px; font-family: inherit;
-      font-weight: 800; cursor: pointer; font-size: 0.82rem; display: inline-flex;
+      border: none; border-radius: 11px; padding: 8px 13px; font-family: inherit;
+      font-weight: 800; cursor: pointer; font-size: 0.8rem; display: inline-flex;
       align-items: center; justify-content: center; gap: 5px;
     }
     .btn-p { background: var(--primary); color: #fff; }
@@ -134,46 +120,42 @@
     .btn-peach { background: var(--peach); color: #1B172C; }
     .btn-butter { background: var(--butter); color: #1B172C; }
 
-    .badge { display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 0.72rem; font-weight: 800; }
+    .badge { display: inline-block; padding: 3px 8px; border-radius: 999px; font-size: 0.72rem; font-weight: 800; }
     .b-fav { background: var(--fav-bg); color: var(--fav); }
     .b-unfav { background: var(--unfav-bg); color: var(--unfav); }
     .b-info { background: rgba(118,85,232,0.14); color: var(--primary); }
 
     .panel { display: none; }
-    .panel.active { display: block; animation: fadeIn 0.2s ease; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .panel.active { display: block; }
 
-    .tbl-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 14px; margin-top: 8px; }
-    table { width: 100%; border-collapse: collapse; min-width: 680px; font-size: 0.82rem; }
-    th, td { padding: 9px 10px; border-bottom: 1px solid var(--border); text-align: start; }
+    .tbl-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 13px; margin-top: 6px; }
+    table { width: 100%; border-collapse: collapse; min-width: 660px; font-size: 0.8rem; }
+    th, td { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: start; }
     th { background: var(--card-2); font-weight: 900; }
 
     .charts-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
     @media (min-width: 820px) { .charts-grid { grid-template-columns: repeat(2, 1fr); } }
-    .chart-box { background: var(--card-2); border: 1px solid var(--border); border-radius: 16px; padding: 12px; }
+    .chart-box { background: var(--card-2); border: 1px solid var(--border); border-radius: 15px; padding: 10px; }
 
     .ai-box {
       background: var(--card-2); border: 1.5px solid var(--border);
-      border-radius: 16px; padding: 14px; line-height: 1.7; font-size: 0.88rem;
+      border-radius: 14px; padding: 12px; line-height: 1.65; font-size: 0.85rem; margin-top: 8px;
     }
 
-    /* 10 Bottom Icons Dock */
     .dock-10 {
       position: fixed; bottom: 0; left: 0; right: 0; z-index: 400;
       background: var(--card); border-top: 1px solid var(--border);
-      display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px;
-      padding: 5px 4px 7px; box-shadow: 0 -6px 20px rgba(0,0,0,0.08);
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px;
+      padding: 5px 4px 7px;
     }
-    @media (min-width: 820px) {
-      .dock-10 { grid-template-columns: repeat(10, 1fr); }
-    }
+    @media (min-width: 820px) { .dock-10 { grid-template-columns: repeat(10, 1fr); } }
     .dock-btn {
       border: none; background: transparent; color: var(--muted);
-      font-family: inherit; font-size: 0.64rem; font-weight: 800;
+      font-family: inherit; font-size: 0.63rem; font-weight: 800;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 2px; padding: 4px 2px; border-radius: 10px; cursor: pointer;
+      gap: 2px; padding: 4px 2px; border-radius: 9px; cursor: pointer;
     }
-    .dock-btn .ic { font-size: 1.05rem; line-height: 1; }
+    .dock-btn .ic { font-size: 1rem; line-height: 1; }
     .dock-btn.active { background: rgba(118,85,232,0.16); color: var(--primary); }
 
     @media print {
@@ -188,24 +170,24 @@
   <!-- 1. Splash -->
   <div id="splashScreen" class="screen active">
     <div class="splash-logo">📐</div>
-    <h1 style="font-size:2rem; font-weight:900;">إيان | AYAN</h1>
-    <p style="margin-top:6px; opacity:0.92;">استوديو تحليل الفروقات والموازنات والمنحنيات</p>
-    <div style="margin-top:18px;">
-      <button class="btn btn-sec" onclick="goLock()">متابعة إلى البصمة</button>
+    <h1 style="font-size:1.95rem; font-weight:900;">إيان | AYAN</h1>
+    <p id="spDesc" style="margin-top:6px; opacity:0.92;">استوديو تحليل الفروقات والموازنات والمنحنيات</p>
+    <div style="margin-top:16px;">
+      <button class="btn btn-sec" id="spBtn" onclick="goLock()">متابعة إلى البصمة</button>
     </div>
   </div>
 
   <!-- 2. Lock -->
   <div id="lockScreen" class="screen">
     <div class="lock-card">
-      <div style="font-size:1.7rem;">🔐</div>
-      <h2 style="font-size:1.2rem; font-weight:900; margin-top:4px;">قفل البصمة — إيان</h2>
-      <p style="font-size:0.82rem; color:var(--muted); margin-top:4px;">التحقق بالبصمة أو بالرمز للدخول</p>
+      <div style="font-size:1.6rem;">🔐</div>
+      <h2 id="lkTitle" style="font-size:1.15rem; font-weight:900; margin-top:4px;">قفل البصمة — إيان</h2>
+      <p id="lkDesc" style="font-size:0.8rem; color:var(--muted); margin-top:4px;">التحقق بالبصمة أو بالرمز للدخول</p>
       <button class="fp-btn" onclick="tryFingerprint()">👆</button>
-      <div id="lkStatus" style="font-size:0.8rem; font-weight:800; color:var(--unfav); min-height:20px;"></div>
+      <div id="lkStatus" style="font-size:0.78rem; font-weight:800; color:var(--unfav); min-height:20px;"></div>
       <input id="pinInput" type="password" class="inp" placeholder="رمز الدخول: AYAN2026" />
       <div style="margin-top:10px;">
-        <button class="btn btn-p" onclick="tryPin()">دخول بالرمز</button>
+        <button class="btn btn-p" id="pinBtn" onclick="tryPin()">دخول بالرمز</button>
       </div>
     </div>
   </div>
@@ -215,95 +197,107 @@
     <header class="topbar">
       <div class="topbar-inner">
         <div>
-          <strong style="font-size:1.05rem;">📊 إيان | AYAN</strong>
-          <div id="curSubtitle" style="font-size:0.74rem; opacity:0.92;">العملة الأساسية: الدينار الجزائري (DZD)</div>
+          <strong style="font-size:1.02rem;">📊 إيان | AYAN</strong>
+          <div id="curSubtitle" style="font-size:0.72rem; opacity:0.92;">العملة الأساسية: الدينار الجزائري (DZD)</div>
         </div>
         <div class="top-btns">
-          <button class="btn btn-sec" style="padding:5px 9px; font-size:0.74rem;" onclick="setLang('ar')">AR</button>
-          <button class="btn btn-sec" style="padding:5px 9px; font-size:0.74rem;" onclick="setLang('fr')">FR</button>
-          <button class="btn btn-sec" style="padding:5px 9px; font-size:0.74rem;" onclick="setLang('en')">EN</button>
-          <button class="btn btn-sec" style="padding:5px 9px; font-size:0.74rem;" onclick="document.body.classList.toggle('dark')">🌙</button>
-          <button class="btn btn-sec" style="padding:5px 9px; font-size:0.74rem;" onclick="goLock()">🔒</button>
+          <button class="btn btn-sec" style="padding:4px 8px; font-size:0.72rem;" id="btn-ar" onclick="setLang('ar')">AR</button>
+          <button class="btn btn-sec" style="padding:4px 8px; font-size:0.72rem;" id="btn-fr" onclick="setLang('fr')">FR</button>
+          <button class="btn btn-sec" style="padding:4px 8px; font-size:0.72rem;" id="btn-en" onclick="setLang('en')">EN</button>
+          <button class="btn btn-sec" style="padding:4px 8px; font-size:0.72rem;" onclick="document.body.classList.toggle('dark')">🌙</button>
+          <button class="btn btn-sec" style="padding:4px 8px; font-size:0.72rem;" onclick="goLock()">🔒</button>
         </div>
       </div>
     </header>
 
     <div class="container">
-      <!-- Summary KPIs -->
+      <!-- KPIs -->
       <div class="kpis">
-        <div class="kpi"><div class="kpi-lbl">الفرق المطلق</div><div class="kpi-val" id="kAbs">0.00</div></div>
-        <div class="kpi"><div class="kpi-lbl">الفرق النسبي %</div><div class="kpi-val" id="kRel">0.0%</div></div>
-        <div class="kpi"><div class="kpi-lbl">فرق الميزانية</div><div class="kpi-val" id="kBud">0.00</div></div>
-        <div class="kpi"><div class="kpi-lbl">فرق الكميات / الأداء</div><div class="kpi-val" id="kQty">0.00</div></div>
-        <div class="kpi"><div class="kpi-lbl">التصنيف</div><div style="margin-top:6px;"><span id="kBadge" class="badge b-fav">—</span></div></div>
+        <div class="kpi"><div class="kpi-lbl" id="kLblAbs">الفرق المطلق</div><div class="kpi-val" id="kAbs">0.00</div></div>
+        <div class="kpi"><div class="kpi-lbl" id="kLblRel">الفرق النسبي %</div><div class="kpi-val" id="kRel">0.0%</div></div>
+        <div class="kpi"><div class="kpi-lbl" id="kLblBud">فرق الميزانية</div><div class="kpi-val" id="kBud">0.00</div></div>
+        <div class="kpi"><div class="kpi-lbl" id="kLblQty">فرق الكميات</div><div class="kpi-val" id="kQty">0.00</div></div>
+        <div class="kpi"><div class="kpi-lbl" id="kLblSt">التصنيف</div><div style="margin-top:6px;"><span id="kBadge" class="badge b-fav">—</span></div></div>
       </div>
 
-      <!-- Shared Inputs Card -->
+      <!-- Shared Inputs -->
       <div class="card">
         <div class="card-title">
-          <span>⚙️ بيانات المؤشر والموازنة (حساب فوري)</span>
+          <span id="inCardTitle">⚙️ بيانات المؤشر والموازنة</span>
           <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
-            <select id="currencySelect" class="inp" style="width:auto; margin-top:0; padding:6px 10px;" onchange="updateCurrency()">
-              <option value="DZD" selected>🇩🇿 الدينار الجزائري (DZD - أساسي)</option>
-              <option value="USD">🇺🇸 الدولار الأمريكي (USD)</option>
-              <option value="EUR">🇪🇺 اليورو (EUR)</option>
-              <option value="GBP">🇬🇧 الجنيه الإسترليني (GBP)</option>
-              <option value="SAR">🇸🇦 الريال السعودي (SAR)</option>
-              <option value="AED">🇦🇪 الدرهم الإماراتي (AED)</option>
-              <option value="CHF">🇨🇭 الفرنك السويسري (CHF)</option>
-              <option value="JPY">🇯🇵 الين الياباني (JPY)</option>
+            <select id="currencySelect" class="inp" style="width:auto; padding:5px 9px;" onchange="updateCurrency()">
+              <option value="DZD" selected>🇩🇿 DZD (أساسي)</option>
+              <option value="USD">🇺🇸 USD ($)</option>
+              <option value="EUR">🇪🇺 EUR (€)</option>
+              <option value="GBP">🇬🇧 GBP (£)</option>
+              <option value="SAR">🇸🇦 SAR</option>
+              <option value="AED">🇦🇪 AED</option>
+              <option value="CHF">🇨🇭 CHF</option>
+              <option value="JPY">🇯🇵 JPY (¥)</option>
             </select>
-            <button class="btn btn-mint" onclick="loadSample()">⚡ مثال</button>
-            <button class="btn btn-p" onclick="saveEntry()">💾 حفظ</button>
+            <button class="btn btn-mint" id="sampleBtn" onclick="loadSample()">⚡ مثال</button>
+            <button class="btn btn-p" id="saveBtn" onclick="saveEntry()">💾 حفظ</button>
           </div>
         </div>
 
         <div class="grid-2 grid-3">
-          <div class="field"><label>البند / المؤشر</label><input id="inName" class="inp" value="الإيرادات والمبيعات" oninput="calcAll()" /></div>
+          <div class="field"><label id="lName">البند / المؤشر</label><input id="inName" class="inp" value="الإيرادات والمبيعات" onchange="calcAll()" /></div>
           <div class="field">
-            <label>طبيعة المؤشر</label>
+            <label id="lNature">طبيعة المؤشر</label>
             <select id="inNature" class="inp" onchange="calcAll()">
-              <option value="rev">إيرادات / مبيعات (الأعلى أفضل)</option>
-              <option value="cost">تكاليف / مصاريف (الأقل أفضل)</option>
+              <option value="rev" id="optRev">إيرادات / مبيعات (الأعلى أفضل)</option>
+              <option value="cost" id="optCost">تكاليف / مصاريف (الأقل أفضل)</option>
             </select>
           </div>
-          <div class="field"><label>القيمة التقديرية (Prévisionnel)</label><input id="inPrev" type="number" step="any" class="inp" value="250000" oninput="calcAll()" /></div>
-          <div class="field"><label>القيمة الفعلية (Réel)</label><input id="inReal" type="number" step="any" class="inp" value="285000" oninput="calcAll()" /></div>
-          <div class="field"><label>الميزانية التقديرية</label><input id="inBPrev" type="number" step="any" class="inp" value="120000" oninput="calcAll()" /></div>
-          <div class="field"><label>الميزانية الفعلية</label><input id="inBReal" type="number" step="any" class="inp" value="112000" oninput="calcAll()" /></div>
-          <div class="field"><label>الكمية التقديرية</label><input id="inQPrev" type="number" step="any" class="inp" value="500" oninput="calcAll()" /></div>
-          <div class="field"><label>الكمية الفعلية</label><input id="inQReal" type="number" step="any" class="inp" value="540" oninput="calcAll()" /></div>
-          <div class="field"><label>الهدف المحدد (Objectif)</label><input id="inObj" type="number" step="any" class="inp" value="270000" oninput="calcAll()" /></div>
+          <div class="field"><label id="lPrev">القيمة التقديرية (Prévisionnel)</label><input id="inPrev" type="number" step="any" class="inp" value="250000" onchange="calcAll()" /></div>
+          <div class="field"><label id="lReal">القيمة الفعلية (Réel)</label><input id="inReal" type="number" step="any" class="inp" value="285000" onchange="calcAll()" /></div>
+          <div class="field"><label id="lBPrev">الميزانية التقديرية</label><input id="inBPrev" type="number" step="any" class="inp" value="120000" onchange="calcAll()" /></div>
+          <div class="field"><label id="lBReal">الميزانية الفعلية</label><input id="inBReal" type="number" step="any" class="inp" value="112000" onchange="calcAll()" /></div>
+          <div class="field"><label id="lQPrev">الكمية التقديرية</label><input id="inQPrev" type="number" step="any" class="inp" value="500" onchange="calcAll()" /></div>
+          <div class="field"><label id="lQReal">الكمية الفعلية</label><input id="inQReal" type="number" step="any" class="inp" value="540" onchange="calcAll()" /></div>
+          <div class="field"><label id="lObj">الهدف المحدد (Objectif)</label><input id="inObj" type="number" step="any" class="inp" value="270000" onchange="calcAll()" /></div>
         </div>
       </div>
 
       <!-- PANEL 1: AI Assistant -->
       <div id="panel-ai" class="panel active card">
         <div class="card-title">
-          <span>🤖 المساعد الذكي لتحليل الفروقات</span>
-          <button class="btn btn-p" onclick="renderAI()">✨ تحديث التحليل الذكي</button>
+          <span id="aiTitle">🤖 المساعد الذكي لتحليل الفروقات</span>
+          <button class="btn btn-p" id="aiRunBtn" onclick="askAI('auto')">✨ تحليل فوري</button>
         </div>
+
+        <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px;">
+          <button class="btn btn-sec" id="qWhy" onclick="askAI('why')">❓ ما سبب الفارق؟</button>
+          <button class="btn btn-sec" id="qBud" onclick="askAI('budget')">💼 تحليل الميزانية</button>
+          <button class="btn btn-sec" id="qExec" onclick="askAI('exec')">📌 ملخص تنفيذي</button>
+        </div>
+
+        <div style="display:flex; gap:8px;">
+          <input id="aiQuestion" class="inp" placeholder="اكتبي سؤالك للمساعد الذكي هنا..." />
+          <button class="btn btn-butter" id="aiSendBtn" onclick="askAI('custom')">إرسال</button>
+        </div>
+
         <div id="aiContent" class="ai-box"></div>
       </div>
 
       <!-- PANEL 2: Variance Focus -->
       <div id="panel-varfocus" class="panel card">
-        <div class="card-title"><span id="focusTitle">📐 تفاصيل الفارق المختار</span></div>
+        <div class="card-title"><span id="focusTitle">📐 تفاصيل الفارق</span></div>
         <div id="focusDetail" class="ai-box"></div>
       </div>
 
       <!-- PANEL 3: Budget Table -->
       <div id="panel-budget" class="panel card">
-        <div class="card-title"><span>💼 جدول الميزانية التقديرية والفعلية</span></div>
+        <div class="card-title"><span id="budTblTitle">💼 جدول الميزانية التقديرية والفعلية</span></div>
         <div class="tbl-wrap">
           <table>
             <thead>
               <tr>
-                <th>البند</th>
-                <th>الميزانية التقديرية</th>
-                <th>الميزانية الفعلية</th>
-                <th>فرق الميزانية</th>
-                <th>نسبة استهلاك الميزانية</th>
+                <th id="bh1">البند</th>
+                <th id="bh2">الميزانية التقديرية</th>
+                <th id="bh3">الميزانية الفعلية</th>
+                <th id="bh4">فرق الميزانية</th>
+                <th id="bh5">نسبة الاستهلاك</th>
               </tr>
             </thead>
             <tbody id="budgetTableBody"></tbody>
@@ -313,23 +307,26 @@
 
       <!-- PANEL 4: Curves & Charts -->
       <div id="panel-charts" class="panel card">
-        <div class="card-title"><span>📈 المنحنيات والرسوم البيانية</span></div>
+        <div class="card-title">
+          <span id="chTitle">📈 المنحنيات والرسوم البيانية</span>
+          <button class="btn btn-sec" id="chRefreshBtn" onclick="renderCharts()">🔄 تحديث الرسوم</button>
+        </div>
         <div class="charts-grid">
           <div class="chart-box">
-            <div style="font-weight:800; margin-bottom:6px;">📉 منحنى تطور الفروقات والفعلي vs التقديري</div>
-            <canvas id="curveChart" height="175"></canvas>
+            <div style="font-weight:800; margin-bottom:6px;" id="ch1Lbl">📉 منحنى الفعلي vs التقديري والفروقات</div>
+            <canvas id="curveChart" height="165"></canvas>
           </div>
           <div class="chart-box">
-            <div style="font-weight:800; margin-bottom:6px;">📊 مقارنة الفروقات حسب البند</div>
-            <canvas id="barChart" height="175"></canvas>
+            <div style="font-weight:800; margin-bottom:6px;" id="ch2Lbl">📊 مقارنة الفروقات والميزانية</div>
+            <canvas id="barChart" height="165"></canvas>
           </div>
         </div>
       </div>
 
-      <!-- PANEL 5: Full Variances Table -->
+      <!-- PANEL 5: Full Tables -->
       <div id="panel-tables" class="panel card">
         <div class="card-title">
-          <span>📋 جداول الفروقات الكاملة</span>
+          <span id="fullTblTitle">📋 جداول الفروقات الكاملة</span>
           <div style="display:flex; gap:6px;">
             <button class="btn btn-mint" onclick="exportCSV()">📥 CSV</button>
             <button class="btn btn-peach" onclick="window.print()">🖨️ PDF</button>
@@ -339,13 +336,13 @@
           <table>
             <thead>
               <tr>
-                <th>البند</th>
-                <th>الفرق المطلق</th>
-                <th>الفرق النسبي %</th>
-                <th>فرق الميزانية</th>
-                <th>فرق الكمية</th>
-                <th>فرق الأداء</th>
-                <th>الحالة</th>
+                <th id="fh1">البند</th>
+                <th id="fh2">الفرق المطلق</th>
+                <th id="fh3">الفرق النسبي %</th>
+                <th id="fh4">فرق الميزانية</th>
+                <th id="fh5">فرق الكمية</th>
+                <th id="fh6">فرق الأداء</th>
+                <th id="fh7">الحالة</th>
               </tr>
             </thead>
             <tbody id="fullTableBody"></tbody>
@@ -353,13 +350,18 @@
         </div>
       </div>
 
-      <!-- PANEL 6: Currencies & Settings -->
+      <!-- PANEL 6: Currencies -->
       <div id="panel-currencies" class="panel card">
-        <div class="card-title"><span>💱 العملات المعتمدة (الدينار الجزائري أساسي + 7 عملات)</span></div>
+        <div class="card-title"><span id="curTblTitle">💱 العملات (الدينار الجزائري أساسي + 7 عملات)</span></div>
         <div class="tbl-wrap">
           <table>
             <thead>
-              <tr><th>الرمز</th><th>العملة</th><th>الصفة</th><th>القيمة الحالية المحولة</th></tr>
+              <tr>
+                <th id="chCol1">الرمز</th>
+                <th id="chCol2">العملة</th>
+                <th id="chCol3">الحالة</th>
+                <th id="chCol4">القيمة المحولة</th>
+              </tr>
             </thead>
             <tbody id="currencyTableBody"></tbody>
           </table>
@@ -368,23 +370,103 @@
     </div>
 
     <!-- 10 Bottom Icons -->
-    <nav class="dock-10" aria-label="10 quick tools">
-      <button class="dock-btn active" id="d-ai" onclick="selectDock('ai', 'ai')"><span class="ic">🤖</span><span>المساعد</span></button>
-      <button class="dock-btn" id="d-calc" onclick="selectDock('calc', 'tables')"><span class="ic">🧮</span><span>حاسبة</span></button>
-      <button class="dock-btn" id="d-abs" onclick="selectDock('abs', 'varfocus')"><span class="ic">📏</span><span>مطلق</span></button>
-      <button class="dock-btn" id="d-rel" onclick="selectDock('rel', 'varfocus')"><span class="ic">📊</span><span>نسبي %</span></button>
-      <button class="dock-btn" id="d-bud" onclick="selectDock('bud', 'budget')"><span class="ic">💼</span><span>ميزانية</span></button>
-      <button class="dock-btn" id="d-qty" onclick="selectDock('qty', 'varfocus')"><span class="ic">📦</span><span>كميات</span></button>
-      <button class="dock-btn" id="d-perf" onclick="selectDock('perf', 'varfocus')"><span class="ic">🎯</span><span>أداء</span></button>
-      <button class="dock-btn" id="d-tbl" onclick="selectDock('tbl', 'tables')"><span class="ic">📋</span><span>جداول</span></button>
-      <button class="dock-btn" id="d-ch" onclick="selectDock('ch', 'charts')"><span class="ic">📈</span><span>منحنيات</span></button>
-      <button class="dock-btn" id="d-cur" onclick="selectDock('cur', 'currencies')"><span class="ic">💱</span><span>عملات</span></button>
+    <nav class="dock-10">
+      <button class="dock-btn active" id="d-ai" onclick="selectDock('ai', 'ai')"><span class="ic">🤖</span><span id="dLblAi">المساعد</span></button>
+      <button class="dock-btn" id="d-calc" onclick="selectDock('calc', 'tables')"><span class="ic">🧮</span><span id="dLblCalc">حاسبة</span></button>
+      <button class="dock-btn" id="d-abs" onclick="selectDock('abs', 'varfocus')"><span class="ic">📏</span><span id="dLblAbs">مطلق</span></button>
+      <button class="dock-btn" id="d-rel" onclick="selectDock('rel', 'varfocus')"><span class="ic">📊</span><span id="dLblRel">نسبي %</span></button>
+      <button class="dock-btn" id="d-bud" onclick="selectDock('bud', 'budget')"><span class="ic">💼</span><span id="dLblBud">ميزانية</span></button>
+      <button class="dock-btn" id="d-qty" onclick="selectDock('qty', 'varfocus')"><span class="ic">📦</span><span id="dLblQty">كميات</span></button>
+      <button class="dock-btn" id="d-perf" onclick="selectDock('perf', 'varfocus')"><span class="ic">🎯</span><span id="dLblPerf">أداء</span></button>
+      <button class="dock-btn" id="d-tbl" onclick="selectDock('tbl', 'tables')"><span class="ic">📋</span><span id="dLblTbl">جداول</span></button>
+      <button class="dock-btn" id="d-ch" onclick="selectDock('ch', 'charts')"><span class="ic">📈</span><span id="dLblCh">منحنيات</span></button>
+      <button class="dock-btn" id="d-cur" onclick="selectDock('cur', 'currencies')"><span class="ic">💱</span><span id="dLblCur">عملات</span></button>
     </nav>
   </div>
 
   <script>
-    // Approximate reference rates relative to 1 DZD for multi-currency display
-    const RATES_FROM_DZD = {
+    const LANGS = {
+      ar: {
+        dir: 'rtl',
+        spDesc: 'استوديو تحليل الفروقات والموازنات والمنحنيات',
+        spBtn: 'متابعة إلى البصمة',
+        lkTitle: 'قفل البصمة — إيان',
+        lkDesc: 'التحقق بالبصمة أو بالرمز للدخول',
+        pinBtn: 'دخول بالرمز',
+        curBase: 'العملة الأساسية: الدينار الجزائري (DZD)',
+        kLblAbs: 'الفرق المطلق', kLblRel: 'الفرق النسبي %', kLblBud: 'فرق الميزانية', kLblQty: 'فرق الكميات', kLblSt: 'التصنيف',
+        inCardTitle: '⚙️ بيانات المؤشر والموازنة', sampleBtn: '⚡ مثال', saveBtn: '💾 حفظ',
+        lName: 'البند / المؤشر', lNature: 'طبيعة المؤشر',
+        optRev: 'إيرادات / مبيعات (الأعلى أفضل)', optCost: 'تكاليف / مصاريف (الأقل أفضل)',
+        lPrev: 'القيمة التقديرية (Prévisionnel)', lReal: 'القيمة الفعلية (Réel)',
+        lBPrev: 'الميزانية التقديرية', lBReal: 'الميزانية الفعلية',
+        lQPrev: 'الكمية التقديرية', lQReal: 'الكمية الفعلية', lObj: 'الهدف المحدد (Objectif)',
+        aiTitle: '🤖 المساعد الذكي لتحليل الفروقات', aiRunBtn: '✨ تحليل فوري',
+        qWhy: '❓ ما سبب الفارق؟', qBud: '💼 تحليل الميزانية', qExec: '📌 ملخص تنفيذي', aiSendBtn: 'إرسال',
+        aiPlaceholder: 'اكتبي سؤالك للمساعد الذكي هنا...',
+        budTblTitle: '💼 جدول الميزانية التقديرية والفعلية',
+        chTitle: '📈 المنحنيات والرسوم البيانية', chRefreshBtn: '🔄 تحديث الرسوم',
+        fullTblTitle: '📋 جداول الفروقات الكاملة',
+        curTblTitle: '💱 العملات (الدينار الجزائري أساسي + 7 عملات)',
+        dLblAi: 'المساعد', dLblCalc: 'حاسبة', dLblAbs: 'مطلق', dLblRel: 'نسبي %', dLblBud: 'ميزانية',
+        dLblQty: 'كميات', dLblPerf: 'أداء', dLblTbl: 'جداول', dLblCh: 'منحنيات', dLblCur: 'عملات',
+        fav: 'ملائم (F)', unfav: 'غير ملائم (U)'
+      },
+      fr: {
+        dir: 'ltr',
+        spDesc: 'Studio d’Analyse des Écarts, Budgets et Courbes',
+        spBtn: 'Continuer vers Empreinte',
+        lkTitle: 'Verrouillage Biométrique — AYAN',
+        lkDesc: 'Empreinte ou code requis pour accéder',
+        pinBtn: 'Entrer par code',
+        curBase: 'Devise principale : Dinar Algérien (DZD)',
+        kLblAbs: 'Écart Absolu', kLblRel: 'Écart Relatif %', kLblBud: 'Écart Budget', kLblQty: 'Écart Qté', kLblSt: 'Statut',
+        inCardTitle: '⚙️ Données Indicateur & Budget', sampleBtn: '⚡ Exemple', saveBtn: '💾 Enreg.',
+        lName: 'Indicateur / Poste', lNature: 'Nature indicateur',
+        optRev: 'Revenus / Ventes (Plus élevé = mieux)', optCost: 'Coûts / Charges (Plus bas = mieux)',
+        lPrev: 'Prévisionnel', lReal: 'Réel',
+        lBPrev: 'Budget Prévisionnel', lBReal: 'Budget Réel',
+        lQPrev: 'Quantité Prévue', lQReal: 'Quantité Réelle', lObj: 'Objectif',
+        aiTitle: '🤖 Assistant Intelligent d’Écarts', aiRunBtn: '✨ Analyse IA',
+        qWhy: '❓ Cause de l’écart ?', qBud: '💼 Analyse budget', qExec: '📌 Résumé exécutif', aiSendBtn: 'Envoyer',
+        aiPlaceholder: 'Posez votre question à l’assistant IA...',
+        budTblTitle: '💼 Tableau Budgétaire (Prévu vs Réel)',
+        chTitle: '📈 Courbes & Graphiques', chRefreshBtn: '🔄 Actualiser',
+        fullTblTitle: '📋 Tableau Complet des Écarts',
+        curTblTitle: '💱 Devises (DZD Base + 7 Devises)',
+        dLblAi: 'IA', dLblCalc: 'Calcul', dLblAbs: 'Absolu', dLblRel: 'Relatif %', dLblBud: 'Budget',
+        dLblQty: 'Quantités', dLblPerf: 'Perf.', dLblTbl: 'Tableaux', dLblCh: 'Courbes', dLblCur: 'Devises',
+        fav: 'Favorable (F)', unfav: 'Défavorable (U)'
+      },
+      en: {
+        dir: 'ltr',
+        spDesc: 'Variance Analysis, Budget & Curves Studio',
+        spBtn: 'Continue to Biometrics',
+        lkTitle: 'Biometric Lock — AYAN',
+        lkDesc: 'Fingerprint or access code required',
+        pinBtn: 'Unlock Code',
+        curBase: 'Base Currency: Algerian Dinar (DZD)',
+        kLblAbs: 'Abs. Variance', kLblRel: 'Rel. Variance %', kLblBud: 'Budget Var.', kLblQty: 'Qty Var.', kLblSt: 'Status',
+        inCardTitle: '⚙️ Indicator & Budget Inputs', sampleBtn: '⚡ Sample', saveBtn: '💾 Save',
+        lName: 'Indicator / Item', lNature: 'Indicator Nature',
+        optRev: 'Revenue / Sales (Higher is better)', optCost: 'Cost / Expense (Lower is better)',
+        lPrev: 'Forecast (Prévisionnel)', lReal: 'Actual (Réel)',
+        lBPrev: 'Forecast Budget', lBReal: 'Actual Budget',
+        lQPrev: 'Forecast Qty', lQReal: 'Actual Qty', lObj: 'Target (Objectif)',
+        aiTitle: '🤖 AI Variance Assistant', aiRunBtn: '✨ Run AI',
+        qWhy: '❓ Why variance?', qBud: '💼 Budget check', qExec: '📌 Exec summary', aiSendBtn: 'Ask',
+        aiPlaceholder: 'Ask the AI assistant anything about your variances...',
+        budTblTitle: '💼 Budget Table (Forecast vs Actual)',
+        chTitle: '📈 Curves & Charts', chRefreshBtn: '🔄 Refresh Charts',
+        fullTblTitle: '📋 Full Variance Tables',
+        curTblTitle: '💱 Currencies (DZD Base + 7 Currencies)',
+        dLblAi: 'AI Help', dLblCalc: 'Calc', dLblAbs: 'Abs.', dLblRel: 'Rel. %', dLblBud: 'Budget',
+        dLblQty: 'Qty', dLblPerf: 'Perf.', dLblTbl: 'Tables', dLblCh: 'Curves', dLblCur: 'FX',
+        fav: 'Favorable (F)', unfav: 'Unfavorable (U)'
+      }
+    };
+
+    const RATES = {
       DZD: 1,
       USD: 1 / 135,
       EUR: 1 / 146,
@@ -395,26 +477,48 @@
       JPY: 1 / 0.88
     };
 
-    const CURRENCY_NAMES = {
-      DZD: 'الدينار الجزائري (أساسي)',
-      USD: 'الدولار الأمريكي',
-      EUR: 'اليورو',
-      GBP: 'الجنيه الإسترليني',
-      SAR: 'الريال السعودي',
-      AED: 'الدرهم الإماراتي',
-      CHF: 'الفرنك السويسري',
-      JPY: 'الين الياباني'
+    const CUR_NAMES = {
+      DZD: { ar: 'الدينار الجزائري (أساسي)', fr: 'Dinar Algérien (Base)', en: 'Algerian Dinar (Base)' },
+      USD: { ar: 'الدولار الأمريكي', fr: 'Dollar Américain', en: 'US Dollar' },
+      EUR: { ar: 'اليورو', fr: 'Euro', en: 'Euro' },
+      GBP: { ar: 'الجنيه الإسترليني', fr: 'Livre Sterling', en: 'British Pound' },
+      SAR: { ar: 'الريال السعودي', fr: 'Riyal Saoudien', en: 'Saudi Riyal' },
+      AED: { ar: 'الدرهم الإماراتي', fr: 'Dirham Émirati', en: 'UAE Dirham' },
+      CHF: { ar: 'الفرنك السويسري', fr: 'Franc Suisse', en: 'Swiss Franc' },
+      JPY: { ar: 'الين الياباني', fr: 'Yen Japonais', en: 'Japanese Yen' }
     };
 
-    let entries = [
+    let currentLang = 'ar';
+    let focusMode = 'abs';
+    let latest = null;
+    let curveChart = null;
+    let barChart = null;
+    let items = [
       { name: 'الإيرادات والمبيعات', nature: 'rev', prev: 250000, real: 285000, bPrev: 120000, bReal: 112000, qPrev: 500, qReal: 540, obj: 270000 },
       { name: 'تكلفة المواد الأولية', nature: 'cost', prev: 180000, real: 196000, bPrev: 180000, bReal: 196000, qPrev: 300, qReal: 320, obj: 175000 }
     ];
 
-    let focusType = 'abs';
-    let latest = null;
-    let curveChart = null;
-    let barChart = null;
+    function setLang(l) {
+      currentLang = l;
+      const d = LANGS[l];
+      document.documentElement.lang = l;
+      document.documentElement.dir = d.dir;
+
+      ['ar', 'fr', 'en'].forEach(x => {
+        document.getElementById(`btn-${x}`).classList.toggle('btn-p', x === l);
+        document.getElementById(`btn-${x}`).classList.toggle('btn-sec', x !== l);
+      });
+
+      Object.keys(d).forEach(k => {
+        if (k === 'dir') return;
+        const el = document.getElementById(k);
+        if (el) el.textContent = d[k];
+      });
+      document.getElementById('aiQuestion').placeholder = d.aiPlaceholder;
+      updateCurrencyLabel();
+      calcAll();
+      askAI('auto');
+    }
 
     function showScreen(id) {
       ['splashScreen', 'lockScreen', 'appScreen'].forEach(s => {
@@ -431,19 +535,19 @@
     function openApp() {
       showScreen('appScreen');
       calcAll();
-      renderCharts();
+      askAI('auto');
     }
 
     function tryPin() {
       const code = document.getElementById('pinInput').value.trim();
       if (code === 'AYAN2026' || code === '2026') openApp();
-      else document.getElementById('lkStatus').textContent = 'الرمز غير صحيح — استخدمي AYAN2026';
+      else document.getElementById('lkStatus').textContent = 'AYAN2026';
     }
 
     async function tryFingerprint() {
       const st = document.getElementById('lkStatus');
       if (!window.PublicKeyCredential) {
-        st.textContent = 'البصمة غير مدعومة في هذا المتصفح، أدخلي الرمز AYAN2026';
+        st.textContent = 'PIN: AYAN2026';
         return;
       }
       try {
@@ -463,61 +567,61 @@
         });
         if (cred) openApp();
       } catch {
-        st.textContent = 'لم تكتمل البصمة — جرّبي الرمز AYAN2026 أو أعيدي المحاولة';
+        st.textContent = 'AYAN2026';
       }
-    }
-
-    function setLang(l) {
-      document.documentElement.lang = l;
-      document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
     }
 
     function getCur() {
       return document.getElementById('currencySelect').value || 'DZD';
     }
 
-    function fmtMoney(dzdVal) {
+    function updateCurrencyLabel() {
       const cur = getCur();
-      const rate = RATES_FROM_DZD[cur] || 1;
-      const converted = (Number(dzdVal) || 0) * rate;
-      const sign = converted > 0 ? '+' : converted < 0 ? '-' : '';
-      return `${sign}${Math.abs(converted).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${cur}`;
+      const baseTxt = LANGS[currentLang].curBase;
+      document.getElementById('curSubtitle').textContent = cur === 'DZD' ? baseTxt : `${baseTxt} → ${cur}`;
     }
 
     function updateCurrency() {
-      const cur = getCur();
-      document.getElementById('curSubtitle').textContent = `العملة النشطة: ${CURRENCY_NAMES[cur]} (${cur})`;
+      updateCurrencyLabel();
       calcAll();
-      renderCharts();
+      if (document.getElementById('panel-charts').classList.contains('active')) renderCharts();
     }
 
-    function computeEntry(e) {
-      const prev = parseFloat(e.prev) || 0;
-      const real = parseFloat(e.real) || 0;
-      const bPrev = parseFloat(e.bPrev) || 0;
-      const bReal = parseFloat(e.bReal) || 0;
-      const qPrev = parseFloat(e.qPrev) || 0;
-      const qReal = parseFloat(e.qReal) || 0;
-      const obj = parseFloat(e.obj) || prev;
+    function fmt(dzdAmount) {
+      const cur = getCur();
+      const val = (Number(dzdAmount) || 0) * (RATES[cur] || 1);
+      const sign = val > 0 ? '+' : val < 0 ? '-' : '';
+      return `${sign}${Math.abs(val).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${cur}`;
+    }
+
+    function computeOne(x) {
+      const prev = parseFloat(x.prev) || 0;
+      const real = parseFloat(x.real) || 0;
+      const bPrev = parseFloat(x.bPrev) || 0;
+      const bReal = parseFloat(x.bReal) || 0;
+      const qPrev = parseFloat(x.qPrev) || 0;
+      const qReal = parseFloat(x.qReal) || 0;
+      const obj = parseFloat(x.obj) || prev;
 
       const absVar = real - prev;
       const relVar = Math.abs(prev) > 1e-9 ? ((real - prev) / Math.abs(prev)) * 100 : 0;
       const budVar = bReal - bPrev;
       const qtyVar = qReal - qPrev;
       const perfVar = real - obj;
-      const budUsagePct = Math.abs(bPrev) > 1e-9 ? (bReal / bPrev) * 100 : 0;
+      const budUse = Math.abs(bPrev) > 1e-9 ? (bReal / bPrev) * 100 : 0;
 
       let fav = true;
       if (Math.abs(absVar) > 1e-9) {
-        fav = e.nature === 'rev' ? absVar > 0 : absVar < 0;
+        fav = x.nature === 'rev' ? absVar > 0 : absVar < 0;
       }
 
-      return { ...e, prev, real, bPrev, bReal, qPrev, qReal, obj, absVar, relVar, budVar, qtyVar, perfVar, budUsagePct, fav };
+      return { ...x, prev, real, bPrev, bReal, qPrev, qReal, obj, absVar, relVar, budVar, qtyVar, perfVar, budUse, fav };
     }
 
     function calcAll() {
-      const c = computeEntry({
-        name: document.getElementById('inName').value.trim() || 'مؤشر',
+      const d = LANGS[currentLang];
+      const c = computeOne({
+        name: document.getElementById('inName').value.trim() || 'Item',
         nature: document.getElementById('inNature').value,
         prev: document.getElementById('inPrev').value,
         real: document.getElementById('inReal').value,
@@ -529,139 +633,144 @@
       });
 
       latest = c;
-      document.getElementById('kAbs').textContent = fmtMoney(c.absVar);
+      document.getElementById('kAbs').textContent = fmt(c.absVar);
       document.getElementById('kRel').textContent = `${c.relVar > 0 ? '+' : ''}${c.relVar.toFixed(1)}%`;
-      document.getElementById('kBud').textContent = fmtMoney(c.budVar);
-      document.getElementById('kQty').textContent = `${c.qtyVar > 0 ? '+' : ''}${c.qtyVar.toFixed(2)}`;
+      document.getElementById('kBud').textContent = fmt(c.budVar);
+      document.getElementById('kQty').textContent = `${c.qtyVar > 0 ? '+' : ''}${c.qtyVar.toFixed(1)}`;
 
-      const badge = document.getElementById('kBadge');
-      badge.textContent = c.fav ? 'ملائم (Favorable)' : 'غير ملائم (Unfavorable)';
-      badge.className = `badge ${c.fav ? 'b-fav' : 'b-unfav'}`;
+      const b = document.getElementById('kBadge');
+      b.textContent = c.fav ? d.fav : d.unfav;
+      b.className = `badge ${c.fav ? 'b-fav' : 'b-unfav'}`;
 
-      renderFocusDetail();
+      renderFocus();
       renderTables();
-      renderCurrenciesTable();
-      renderAI();
+      renderCurrencies();
     }
 
     function saveEntry() {
       if (!latest) return;
-      entries.unshift({ ...latest });
+      items.unshift({ ...latest });
       renderTables();
-      renderCharts();
-      renderAI();
+      askAI('auto');
+      if (document.getElementById('panel-charts').classList.contains('active')) renderCharts();
     }
 
     function loadSample() {
-      document.getElementById('inName').value = 'مبيعات خط الإنتاج الشمالي';
+      document.getElementById('inName').value = 'مبيعات الفرع الرئيسي';
       document.getElementById('inNature').value = 'rev';
-      document.getElementById('inPrev').value = 420000;
-      document.getElementById('inReal').value = 468000;
-      document.getElementById('inBPrev').value = 190000;
-      document.getElementById('inBReal').value = 178000;
-      document.getElementById('inQPrev').value = 800;
-      document.getElementById('inQReal').value = 890;
-      document.getElementById('inObj').value = 450000;
+      document.getElementById('inPrev').value = 300000;
+      document.getElementById('inReal').value = 345000;
+      document.getElementById('inBPrev').value = 140000;
+      document.getElementById('inBReal').value = 129000;
+      document.getElementById('inQPrev').value = 600;
+      document.getElementById('inQReal').value = 670;
+      document.getElementById('inObj').value = 320000;
       calcAll();
-      renderCharts();
+      askAI('auto');
     }
 
     function selectDock(dockId, panelId) {
-      document.querySelectorAll('.dock-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.dock-btn').forEach(btn => btn.classList.remove('active'));
       document.getElementById(`d-${dockId}`).classList.add('active');
 
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
       document.getElementById(`panel-${panelId}`).classList.add('active');
 
-      if (dockId === 'abs') focusType = 'abs';
-      if (dockId === 'rel') focusType = 'rel';
-      if (dockId === 'qty') focusType = 'qty';
-      if (dockId === 'perf') focusType = 'perf';
-
-      renderFocusDetail();
+      if (['abs', 'rel', 'qty', 'perf'].includes(dockId)) focusMode = dockId;
+      renderFocus();
       if (panelId === 'charts') renderCharts();
-      if (panelId === 'ai') renderAI();
+      if (panelId === 'ai') askAI('auto');
     }
 
-    function renderFocusDetail() {
+    function renderFocus() {
       if (!latest) return;
-      const titleEl = document.getElementById('focusTitle');
-      const boxEl = document.getElementById('focusDetail');
-
-      if (focusType === 'abs') {
-        titleEl.textContent = '📏 الفارق المطلق (Écart absolu)';
-        boxEl.innerHTML = `<div>القانون: <code>الفعلي − التقديري</code></div><div style="margin-top:6px;">القيمة الحالية: <strong>${fmtMoney(latest.absVar)}</strong></div>`;
-      } else if (focusType === 'rel') {
-        titleEl.textContent = '📊 الفارق النسبي (Écart relatif %)';
-        boxEl.innerHTML = `<div>القانون: <code>((الفعلي − التقديري) / |التقديري|) × 100</code></div><div style="margin-top:6px;">النسبة الحالية: <strong>${latest.relVar.toFixed(2)}%</strong></div>`;
-      } else if (focusType === 'qty') {
-        titleEl.textContent = '📦 فرق الكميات (Écart quantité)';
-        boxEl.innerHTML = `<div>القانون: <code>الكمية الفعلية − الكمية التقديرية</code></div><div style="margin-top:6px;">فرق الكمية: <strong>${latest.qtyVar.toFixed(2)}</strong></div>`;
+      const t = document.getElementById('focusTitle');
+      const box = document.getElementById('focusDetail');
+      if (focusMode === 'abs') {
+        t.textContent = '📏 Écart absolu';
+        box.innerHTML = `<strong>Réel - Prévisionnel</strong><div style="margin-top:6px;">${fmt(latest.absVar)}</div>`;
+      } else if (focusMode === 'rel') {
+        t.textContent = '📊 Écart relatif (%)';
+        box.innerHTML = `<strong>((Réel - Prévisionnel) / |Prévisionnel|) × 100</strong><div style="margin-top:6px;">${latest.relVar.toFixed(2)}%</div>`;
+      } else if (focusMode === 'qty') {
+        t.textContent = '📦 Écart quantité';
+        box.innerHTML = `<strong>Quantité réelle - Quantité prévisionnelle</strong><div style="margin-top:6px;">${latest.qtyVar.toFixed(2)}</div>`;
       } else {
-        titleEl.textContent = '🎯 فرق الأداء مقابل الهدف (Écart performance)';
-        boxEl.innerHTML = `<div>القانون: <code>الفعلي − الهدف المحدد</code></div><div style="margin-top:6px;">فرق الأداء: <strong>${fmtMoney(latest.perfVar)}</strong></div>`;
+        t.textContent = '🎯 Écart performance';
+        box.innerHTML = `<strong>Réel - Objectif</strong><div style="margin-top:6px;">${fmt(latest.perfVar)}</div>`;
       }
     }
 
     function renderTables() {
-      const list = entries.map(computeEntry);
-      document.getElementById('budgetTableBody').innerHTML = list.map(r => `
+      const d = LANGS[currentLang];
+      const rows = items.map(computeOne);
+
+      document.getElementById('budgetTableBody').innerHTML = rows.map(r => `
         <tr>
           <td><strong>${esc(r.name)}</strong></td>
-          <td>${fmtMoney(r.bPrev)}</td>
-          <td>${fmtMoney(r.bReal)}</td>
-          <td><strong>${fmtMoney(r.budVar)}</strong></td>
-          <td>${r.budUsagePct.toFixed(1)}%</td>
+          <td>${fmt(r.bPrev)}</td>
+          <td>${fmt(r.bReal)}</td>
+          <td><strong>${fmt(r.budVar)}</strong></td>
+          <td>${r.budUse.toFixed(1)}%</td>
         </tr>
       `).join('');
 
-      document.getElementById('fullTableBody').innerHTML = list.map(r => `
+      document.getElementById('fullTableBody').innerHTML = rows.map(r => `
         <tr>
           <td><strong>${esc(r.name)}</strong></td>
-          <td><strong>${fmtMoney(r.absVar)}</strong></td>
+          <td><strong>${fmt(r.absVar)}</strong></td>
           <td>${r.relVar.toFixed(1)}%</td>
-          <td>${fmtMoney(r.budVar)}</td>
+          <td>${fmt(r.budVar)}</td>
           <td>${r.qtyVar.toFixed(1)}</td>
-          <td>${fmtMoney(r.perfVar)}</td>
-          <td><span class="badge ${r.fav ? 'b-fav' : 'b-unfav'}">${r.fav ? 'ملائم' : 'غير ملائم'}</span></td>
+          <td>${fmt(r.perfVar)}</td>
+          <td><span class="badge ${r.fav ? 'b-fav' : 'b-unfav'}">${r.fav ? d.fav : d.unfav}</span></td>
         </tr>
       `).join('');
     }
 
-    function renderCurrenciesTable() {
-      const baseAbs = latest ? latest.absVar : 0;
+    function renderCurrencies() {
+      const base = latest ? latest.absVar : 0;
       const cur = getCur();
-      document.getElementById('currencyTableBody').innerHTML = Object.keys(RATES_FROM_DZD).map(code => {
-        const val = baseAbs * RATES_FROM_DZD[code];
-        const tag = code === 'DZD' ? 'عملة أساسية' : (code === cur ? 'نشطة حالياً' : 'عملة إضافية');
+      document.getElementById('currencyTableBody').innerHTML = Object.keys(RATES).map(code => {
+        const val = base * RATES[code];
+        const statusTxt = code === 'DZD' ? 'Base / أساسي' : (code === cur ? 'Active' : 'FX');
         return `
           <tr>
             <td><strong>${code}</strong></td>
-            <td>${CURRENCY_NAMES[code]}</td>
-            <td><span class="badge ${code === 'DZD' ? 'b-fav' : 'b-info'}">${tag}</span></td>
+            <td>${CUR_NAMES[code][currentLang] || CUR_NAMES[code].en}</td>
+            <td><span class="badge ${code === 'DZD' ? 'b-fav' : 'b-info'}">${statusTxt}</span></td>
             <td style="direction:ltr; text-align:right;"><strong>${val.toFixed(2)} ${code}</strong></td>
           </tr>
         `;
       }).join('');
     }
 
-    function renderAI() {
+    function askAI(mode) {
       if (!latest) return;
-      const verdict = latest.fav ? 'إيجابي / ملائم' : 'سلبي / غير ملائم (يستدعي مراجعة)';
-      document.getElementById('aiContent').innerHTML = `
-        <div><strong>1. نتيجة الحساب الفعلية:</strong> البند "<em>${esc(latest.name)}</em>" يسجل فرقاً مطلقاً قدره <strong>${fmtMoney(latest.absVar)}</strong> ونسبة انحراف <strong>${latest.relVar.toFixed(1)}%</strong>، والتصنيف حسب طبيعة المؤشر هو: <strong>${verdict}</strong>.</div>
-        <div style="margin-top:8px;"><strong>2. الموازنة والكميات:</strong> فرق الميزانية يبلغ <strong>${fmtMoney(latest.budVar)}</strong> وفرق الكمية <strong>${latest.qtyVar.toFixed(2)}</strong>.</div>
-        <div style="margin-top:8px;"><strong>3. فرضيات وتوصيات للمراجعة (غير مؤكدة ميدانياً):</strong> في حال وجود انحراف غير ملائم، يُنصح بفحص محاور 5M (اليد العاملة، الأساليب، المعدات، المواد، المحيط) ومطابقة الفواتير الفعلية مع الموازنة المعتمدة.</div>
-      `;
+      const d = LANGS[currentLang];
+      const statusTxt = latest.fav ? d.fav : d.unfav;
+      const customQ = document.getElementById('aiQuestion').value.trim();
+
+      let bodyHtml = '';
+      if (mode === 'why') {
+        bodyHtml = `<div><strong>${esc(latest.name)}:</strong> ${statusTxt} (${fmt(latest.absVar)} / ${latest.relVar.toFixed(1)}%). <em>فرضية للمراجعة:</em> قد يرتبط الفارق بتغير الكميات (${latest.qtyVar.toFixed(1)}) أو الأسعار/المصاريف حسب طبيعة المؤشر، ويتطلب تحققاً ميدانياً دون افتراض سبب غير مؤكد.</div>`;
+      } else if (mode === 'budget') {
+        bodyHtml = `<div><strong>الميزانية:</strong> التقديرية ${fmt(latest.bPrev)} مقابل الفعلية ${fmt(latest.bReal)} ← فرق الميزانية <strong>${fmt(latest.budVar)}</strong> (نسبة الاستهلاك ${latest.budUse.toFixed(1)}%).</div>`;
+      } else if (mode === 'exec') {
+        bodyHtml = `<div><strong>ملخص تنفيذي:</strong> المؤشر "${esc(latest.name)}" حقق فرقاً مطلقاً ${fmt(latest.absVar)} وفرق أداء مقابل الهدف ${fmt(latest.perfVar)} (${statusTxt}).</div>`;
+      } else if (mode === 'custom' && customQ) {
+        bodyHtml = `<div><strong>سؤال:</strong> ${esc(customQ)}</div><div style="margin-top:6px;"><strong>الرد بناءً على بياناتك الحالية (${esc(latest.name)}):</strong> الفرق المطلق ${fmt(latest.absVar)}، الفرق النسبي ${latest.relVar.toFixed(1)}%، فرق الميزانية ${fmt(latest.budVar)}، الحالة: <strong>${statusTxt}</strong>.</div>`;
+      } else {
+        bodyHtml = `<div><strong>التحليل التلقائي لـ "${esc(latest.name)}":</strong> الفرق المطلق <strong>${fmt(latest.absVar)}</strong> (${latest.relVar.toFixed(1)}%) • الحالة: <strong>${statusTxt}</strong> • فرق الميزانية: <strong>${fmt(latest.budVar)}</strong> • فرق الكمية: <strong>${latest.qtyVar.toFixed(1)}</strong>.</div>`;
+      }
+
+      document.getElementById('aiContent').innerHTML = bodyHtml;
     }
 
     function renderCharts() {
       if (typeof Chart === 'undefined') return;
-      const list = entries.map(computeEntry).slice().reverse();
-      const labels = list.map(x => x.name.slice(0, 14));
-      const prevs = list.map(x => x.prev);
-      const reals = list.map(x => x.real);
-      const absVars = list.map(x => x.absVar);
+      const rows = items.map(computeOne).slice().reverse();
+      const labels = rows.map(r => r.name.slice(0, 14));
 
       if (curveChart) curveChart.destroy();
       if (barChart) barChart.destroy();
@@ -671,11 +780,12 @@
         data: {
           labels,
           datasets: [
-            { label: 'الفعلي', data: reals, borderColor: '#7655E8', tension: 0.35, fill: false },
-            { label: 'التقديري', data: prevs, borderColor: '#0F8A5F', tension: 0.35, fill: false },
-            { label: 'منحنى الفارق', data: absVars, borderColor: '#C62841', borderDash: [5, 5], tension: 0.35, fill: false }
+            { label: 'Réel', data: rows.map(r => r.real), borderColor: '#7655E8', tension: 0.3 },
+            { label: 'Prévisionnel', data: rows.map(r => r.prev), borderColor: '#0F8A5F', tension: 0.3 },
+            { label: 'Écart', data: rows.map(r => r.absVar), borderColor: '#C62841', borderDash: [4, 4], tension: 0.3 }
           ]
-        }
+        },
+        options: { animation: false, responsive: true }
       });
 
       barChart = new Chart(document.getElementById('barChart'), {
@@ -683,17 +793,18 @@
         data: {
           labels,
           datasets: [
-            { label: 'الفرق المطلق', data: absVars, backgroundColor: '#7655E8' },
-            { label: 'فرق الميزانية', data: list.map(x => x.budVar), backgroundColor: '#B9F0DA' }
+            { label: 'Écart', data: rows.map(r => r.absVar), backgroundColor: '#7655E8' },
+            { label: 'Budget Var', data: rows.map(r => r.budVar), backgroundColor: '#B9F0DA' }
           ]
-        }
+        },
+        options: { animation: false, responsive: true }
       });
     }
 
     function exportCSV() {
-      const list = entries.map(computeEntry);
-      const lines = ['Indicator,Forecast,Actual,AbsVar,RelPct,BudgetVar,QtyVar,PerfVar'].concat(
-        list.map(r => `"${r.name}",${r.prev},${r.real},${r.absVar},${r.relVar.toFixed(2)},${r.budVar},${r.qtyVar},${r.perfVar}`)
+      const rows = items.map(computeOne);
+      const lines = ['Name,Forecast,Actual,AbsVar,RelPct,BudgetVar,QtyVar,PerfVar'].concat(
+        rows.map(r => `"${r.name}",${r.prev},${r.real},${r.absVar},${r.relVar.toFixed(2)},${r.budVar},${r.qtyVar},${r.perfVar}`)
       );
       const a = document.createElement('a');
       a.href = URL.createObjectURL(new Blob(['\uFEFF' + lines.join('\n')], { type: 'text/csv;charset=utf-8;' }));
@@ -706,11 +817,10 @@
     }
 
     setTimeout(() => {
-      if (document.getElementById('splashScreen').classList.contains('active')) {
-        goLock();
-      }
-    }, 1100);
+      if (document.getElementById('splashScreen').classList.contains('active')) goLock();
+    }, 1000);
     calcAll();
+    askAI('auto');
   </script>
 </body>
 </html>
