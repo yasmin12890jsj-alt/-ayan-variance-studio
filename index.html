@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#7655E8" />
+  <meta name="theme-color" content="#6442DC" />
   <title>إيان | AYAN — Variance Studio</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -47,57 +47,93 @@
     .screen { display: none; min-height: 100vh; }
     .screen.active { display: flex; }
 
-    /* First Screen: Video-Style App Name Intro */
+    /* First Screen: Dark Purple Halo Intro + Instant Continue */
     #splashScreen {
-      background: linear-gradient(145deg, #4B28C4 0%, #7655E8 55%, #9D7EFF 100%);
+      background: radial-gradient(circle at 50% 42%, #3E1F9E 0%, #1E0E4F 62%, #11082E 100%);
       color: #fff;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
       padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .halo-ring {
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(157, 126, 255, 0.28);
+      animation: haloPulse 2.2s ease-out infinite;
+      pointer-events: none;
+    }
+    .halo-ring-2 {
+      width: 350px;
+      height: 350px;
+      border-color: rgba(157, 126, 255, 0.16);
+      animation-delay: 0.4s;
+    }
+    @keyframes haloPulse {
+      0% { transform: scale(0.85); opacity: 0.8; }
+      100% { transform: scale(1.15); opacity: 0.15; }
     }
     .splash-badge {
       width: 96px;
       height: 96px;
-      border-radius: 28px;
-      background: rgba(255, 255, 255, 0.18);
-      border: 2px solid rgba(255, 255, 255, 0.35);
+      border-radius: 26px;
+      background: linear-gradient(145deg, #8A6BFF, #5B38D6);
+      border: 1.5px solid rgba(255, 255, 255, 0.28);
       display: grid;
       place-items: center;
-      font-size: 2.6rem;
-      margin-bottom: 14px;
-      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.2);
-      animation: ayanPop 1.1s ease-out forwards, ayanFloat 2s ease-in-out 1.1s infinite;
+      font-size: 2.5rem;
+      margin: 0 auto 16px;
+      box-shadow: 0 14px 34px rgba(118, 85, 232, 0.45);
+      position: relative;
+      z-index: 2;
+      animation: ayanPop 0.75s ease-out forwards;
     }
     .splash-title {
-      font-size: 2.1rem;
+      font-size: 2.15rem;
       font-weight: 900;
-      letter-spacing: 0.4px;
-      animation: ayanReveal 0.85s ease-out 0.15s both;
+      letter-spacing: 0.5px;
+      position: relative;
+      z-index: 2;
+      animation: ayanReveal 0.7s ease-out 0.1s both;
     }
     .splash-sub {
-      margin-top: 6px;
+      margin-top: 8px;
       font-size: 0.92rem;
-      opacity: 0.94;
-      animation: ayanReveal 0.85s ease-out 0.55s both;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 340px;
+      position: relative;
+      z-index: 2;
+      animation: ayanReveal 0.7s ease-out 0.25s both;
+    }
+    .continue-pill {
+      margin-top: 22px;
+      padding: 10px 34px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+      background: linear-gradient(135deg, #7C5CF0, #5E3BD6);
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 10px 26px rgba(118, 85, 232, 0.5);
+      position: relative;
+      z-index: 2;
+      animation: ayanReveal 0.7s ease-out 0.35s both;
     }
 
     @keyframes ayanPop {
-      0% { opacity: 0; transform: scale(0.6) rotate(-8deg); }
-      100% { opacity: 1; transform: scale(1) rotate(0deg); }
-    }
-    @keyframes ayanFloat {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
+      0% { opacity: 0; transform: scale(0.7); }
+      100% { opacity: 1; transform: scale(1); }
     }
     @keyframes ayanReveal {
-      from { opacity: 0; transform: translateY(12px); }
+      from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes ayanBar {
-      from { transform: scaleX(0); }
-      to { transform: scaleX(1); }
     }
 
     /* Second Screen: Biometric Lock */
@@ -208,18 +244,14 @@
 </head>
 <body>
 
-  <!-- 1. First Screen (Video-Style App Name Intro) -->
-  <div id="splashScreen" class="screen active" onclick="goLock()">
-    <div style="width:100%; max-width:350px; border-radius:24px; padding:26px 18px; background:rgba(15, 13, 26, 0.28); border:1.5px solid rgba(255,255,255,0.28); box-shadow:0 18px 40px rgba(0,0,0,0.28); position:relative; overflow:hidden;">
-      <div style="font-size:0.72rem; font-weight:800; letter-spacing:1.2px; opacity:0.85; margin-bottom:12px;">▶ INTRO PREVIEW</div>
-      <div class="splash-badge" style="margin:0 auto 12px;">📐</div>
-      <div class="splash-title" style="font-size:2rem; animation:ayanReveal 0.8s ease-out 0.15s both;">إيان | AYAN</div>
-      <div style="font-size:0.92rem; font-weight:800; color:#FFE995; margin-top:4px; animation:ayanReveal 0.8s ease-out 0.35s both;">AYAN VARIANCE STUDIO</div>
-      <div id="spDesc" class="splash-sub" style="animation:ayanReveal 0.8s ease-out 0.55s both;">منصة تحليل الفروقات والموازنات والمنحنيات</div>
-      <div style="width:100%; height:4px; border-radius:999px; background:rgba(255,255,255,0.2); overflow:hidden; margin-top:18px;">
-        <div style="height:100%; width:100%; background:#FFE995; transform-origin:right; animation:ayanBar 2.4s linear forwards;"></div>
-      </div>
-    </div>
+  <!-- 1. First Screen (Video-Style Halo Intro + Instant Continue) -->
+  <div id="splashScreen" class="screen active">
+    <div class="halo-ring"></div>
+    <div class="halo-ring halo-ring-2"></div>
+    <div class="splash-badge">📐</div>
+    <div class="splash-title">إيان | AYAN</div>
+    <div id="spDesc" class="splash-sub">تحليل الفروقات • Analyse des Écarts • Variance Analysis</div>
+    <button type="button" class="continue-pill" id="spBtn" onclick="goLock()">متابعة</button>
   </div>
 
   <!-- 2. Second Screen (Biometric Lock) -->
@@ -413,7 +445,7 @@
     const LANGS = {
       ar: {
         dir: 'rtl',
-        spDesc: 'منصة تحليل الفروقات والموازنات والمنحنيات', spHint: 'جاري الانتقال للبصمة...',
+        spDesc: 'تحليل الفروقات • Analyse des Écarts • Variance Analysis', spBtn: 'متابعة',
         lkTitle: 'قفل البصمة — إيان', lkDesc: 'التحقق بالبصمة أو بالرمز للدخول', pinBtn: 'دخول بالرمز',
         curBase: 'العملة الأساسية: الدينار الجزائري (DZD)',
         kLblAbs: 'الفرق المطلق', kLblRel: 'الفرق النسبي %', kLblBud: 'فرق الميزانية', kLblQty: 'فرق الكميات', kLblSt: 'التصنيف',
@@ -435,7 +467,7 @@
       },
       fr: {
         dir: 'ltr',
-        spDesc: 'Studio d’Analyse des Écarts, Budgets et Courbes', spHint: 'Passage vers empreinte...',
+        spDesc: 'Studio d’Analyse des Écarts, Budgets et Courbes', spBtn: 'Continuer',
         lkTitle: 'Verrouillage Biométrique — AYAN', lkDesc: 'Empreinte ou code requis', pinBtn: 'Entrer par code',
         curBase: 'Devise principale : Dinar Algérien (DZD)',
         kLblAbs: 'Écart Absolu', kLblRel: 'Écart Relatif %', kLblBud: 'Écart Budget', kLblQty: 'Écart Qté', kLblSt: 'Statut',
@@ -457,7 +489,7 @@
       },
       en: {
         dir: 'ltr',
-        spDesc: 'Variance Analysis, Budget & Curves Studio', spHint: 'Opening biometric lock...',
+        spDesc: 'Variance Analysis, Budget & Curves Studio', spBtn: 'Continue',
         lkTitle: 'Biometric Lock — AYAN', lkDesc: 'Fingerprint or code required', pinBtn: 'Unlock Code',
         curBase: 'Base Currency: Algerian Dinar (DZD)',
         kLblAbs: 'Abs. Variance', kLblRel: 'Rel. Variance %', kLblBud: 'Budget Var.', kLblQty: 'Qty Var.', kLblSt: 'Status',
@@ -841,11 +873,11 @@
       return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
-    setTimeout(() => {
-      if (document.getElementById('splashScreen').classList.contains('active')) goLock();
-    }, 2400);
     calcAll();
     askAI('auto');
+    setTimeout(() => {
+      if (document.getElementById('splashScreen').classList.contains('active')) goLock();
+    }, 1800);
   </script>
 </body>
 </html>
