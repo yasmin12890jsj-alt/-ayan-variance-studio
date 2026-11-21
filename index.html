@@ -47,7 +47,7 @@
     .screen { display: none; min-height: 100vh; }
     .screen.active { display: flex; }
 
-    /* First Screen: Fast & Clean Splash */
+    /* First Screen: Animated Name Intro */
     #splashScreen {
       background: linear-gradient(145deg, #4B28C4 0%, #7655E8 55%, #9D7EFF 100%);
       color: #fff;
@@ -68,24 +68,36 @@
       font-size: 2.6rem;
       margin-bottom: 14px;
       box-shadow: 0 14px 30px rgba(0, 0, 0, 0.2);
+      animation: ayanPop 1.1s ease-out forwards, ayanFloat 2s ease-in-out 1.1s infinite;
     }
     .splash-title {
       font-size: 2.1rem;
       font-weight: 900;
       letter-spacing: 0.4px;
+      animation: ayanReveal 0.85s ease-out 0.15s both;
     }
     .splash-sub {
       margin-top: 6px;
       font-size: 0.92rem;
       opacity: 0.94;
+      animation: ayanReveal 0.85s ease-out 0.55s both;
     }
-    .splash-pill {
-      margin-top: 14px;
-      padding: 4px 12px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.16);
-      font-size: 0.76rem;
-      font-weight: 800;
+
+    @keyframes ayanPop {
+      0% { opacity: 0; transform: scale(0.6) rotate(-8deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0deg); }
+    }
+    @keyframes ayanFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    @keyframes ayanReveal {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes ayanBar {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
     }
 
     /* Second Screen: Biometric Lock */
@@ -196,12 +208,15 @@
 </head>
 <body>
 
-  <!-- 1. First Screen (Splash) -->
+  <!-- 1. First Screen (Animated Name Intro) -->
   <div id="splashScreen" class="screen active" onclick="goLock()">
     <div class="splash-badge">📐</div>
     <div class="splash-title">إيان | AYAN</div>
+    <div style="font-size:0.95rem; font-weight:800; opacity:0.95; margin-top:4px; animation:ayanReveal 0.85s ease-out 0.35s both;">AYAN VARIANCE STUDIO</div>
     <div id="spDesc" class="splash-sub">منصة تحليل الفروقات والموازنات والمنحنيات</div>
-    <div class="splash-pill" id="spHint">جاري الانتقال للبصمة...</div>
+    <div style="width:160px; height:4px; border-radius:999px; background:rgba(255,255,255,0.25); overflow:hidden; margin-top:16px;">
+      <div style="height:100%; width:100%; background:#FFE995; transform-origin:right; animation:ayanBar 2.3s linear forwards;"></div>
+    </div>
   </div>
 
   <!-- 2. Second Screen (Biometric Lock) -->
@@ -825,7 +840,7 @@
 
     setTimeout(() => {
       if (document.getElementById('splashScreen').classList.contains('active')) goLock();
-    }, 750);
+    }, 2300);
     calcAll();
     askAI('auto');
   </script>
