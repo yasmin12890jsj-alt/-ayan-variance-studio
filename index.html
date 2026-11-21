@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
   <style>
     :root {
       --primary: #7655E8;
@@ -62,12 +62,11 @@
       transition: background 0.25s ease, color 0.25s ease;
     }
 
-    /* Splash Screen */
     #splash {
       position: fixed; inset: 0; z-index: 9999;
       background: linear-gradient(135deg, #5230C8 0%, #7655E8 55%, #9B7BFF 100%);
       color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center;
-      text-align: center; padding: 24px; transition: opacity 0.4s ease, visibility 0.4s ease;
+      text-align: center; padding: 24px; transition: opacity 0.35s ease, visibility 0.35s ease;
     }
     #splash.hide { opacity: 0; visibility: hidden; pointer-events: none; }
     .splash-logo {
@@ -77,7 +76,6 @@
       box-shadow: 0 16px 36px rgba(0,0,0,0.22);
     }
 
-    /* Biometric Lock Screen */
     #lockScreen {
       position: fixed; inset: 0; z-index: 9000;
       background: var(--bg-grad); display: none;
@@ -97,7 +95,6 @@
     }
     .fp-btn:active { transform: scale(0.95); }
 
-    /* Layout */
     #mainApp { display: none; }
     #mainApp.show { display: block; }
 
@@ -131,7 +128,6 @@
       .shell { grid-template-columns: 245px 1fr; align-items: start; }
     }
 
-    /* Sidebar */
     .sidebar {
       background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
       padding: 12px; box-shadow: var(--shadow);
@@ -264,14 +260,12 @@
 </head>
 <body>
 
-  <!-- Splash -->
-  <div id="splash">
+  <div id="splash" onclick="dismissSplashNow()">
     <div class="splash-logo">📐</div>
     <div style="font-size:2.1rem; font-weight:900;">إيان | AYAN</div>
     <div id="splashTag" style="font-size:0.95rem; opacity:0.92; margin-top:6px;">استوديو تحليل الفروقات المؤسسي الشامل</div>
   </div>
 
-  <!-- Biometric Lock -->
   <div id="lockScreen">
     <div class="lock-box">
       <div style="font-size:1.8rem;">🔐</div>
@@ -289,7 +283,6 @@
     </div>
   </div>
 
-  <!-- Main App -->
   <div id="mainApp">
     <header class="topbar">
       <div class="topbar-inner">
@@ -327,7 +320,6 @@
       </aside>
 
       <main>
-        <!-- 1. DASHBOARD -->
         <section id="sec-dashboard" class="section active">
           <div class="kpis">
             <div class="kpi"><div class="kpi-top"><span data-i18n="k_count">إجمالي التحليلات</span><span>📌</span></div><div class="kpi-num" id="kCount">0</div></div>
@@ -379,7 +371,6 @@
           </div>
         </section>
 
-        <!-- 2. DATA MANAGEMENT -->
         <section id="sec-data" class="section">
           <div class="card">
             <div class="card-hd">
@@ -388,48 +379,41 @@
             </div>
 
             <div class="grid-form cols-3">
-              <div class="f-group"><label data-i18n="f_org">اسم المؤسسة *</label><input id="fOrg" type="text" placeholder="مثال: مؤسسة إيان للصناعة" /></div>
-              <div class="f-group"><label data-i18n="f_dept">القسم / المصلحة *</label><input id="fDept" type="text" placeholder="الإنتاج / المالية / المبيعات" /></div>
-              <div class="f-group"><label data-i18n="f_period">الفترة الزمنية *</label><input id="fPeriod" type="text" placeholder="2026-11 أو Q4-2026" /></div>
-
+              <div class="f-group"><label data-i18n="f_org">اسم المؤسسة *</label><input id="fOrg" type="text" /></div>
+              <div class="f-group"><label data-i18n="f_dept">القسم / المصلحة *</label><input id="fDept" type="text" /></div>
+              <div class="f-group"><label data-i18n="f_period">الفترة الزمنية *</label><input id="fPeriod" type="text" /></div>
+              <div class="f-group"><label data-i18n="f_ind">نوع المؤشر *</label><input id="fIndicator" type="text" /></div>
               <div class="f-group">
-                <label data-i18n="f_ind">نوع المؤشر *</label>
-                <input id="fIndicator" type="text" placeholder="الإيرادات / تكلفة المواد / الإنتاج" />
-              </div>
-              <div class="f-group">
-                <label data-i18n="f_pol">طبيعة المؤشر (لتحديد الإيجابي/السلبي) *</label>
+                <label data-i18n="f_pol">طبيعة المؤشر *</label>
                 <select id="fPolarity">
-                  <option value="revenue" data-i18n="pol_rev">إيرادات / مبيعات / إنتاج (الأعلى أفضل)</option>
-                  <option value="cost" data-i18n="pol_cost">تكاليف / مصاريف / إنفاق (الأقل أفضل)</option>
+                  <option value="revenue">إيرادات / مبيعات / إنتاج (الأعلى أفضل)</option>
+                  <option value="cost">تكاليف / مصاريف / إنفاق (الأقل أفضل)</option>
                 </select>
               </div>
-              <div class="f-group"><label data-i18n="f_owner">المسؤول عن البيانات *</label><input id="fOwner" type="text" placeholder="اسم المسؤول" /></div>
-
+              <div class="f-group"><label data-i18n="f_owner">المسؤول عن البيانات *</label><input id="fOwner" type="text" /></div>
               <div class="f-group"><label data-i18n="f_prev">القيمة التقديرية (Prévisionnel) *</label><input id="fPrev" type="number" step="any" /></div>
               <div class="f-group"><label data-i18n="f_real">القيمة الفعلية (Réel) *</label><input id="fReal" type="number" step="any" /></div>
               <div class="f-group"><label data-i18n="f_obj">الهدف المحدد (Objectif)</label><input id="fObj" type="number" step="any" /></div>
-
               <div class="f-group"><label data-i18n="f_bprev">الميزانية التقديرية</label><input id="fBPrev" type="number" step="any" /></div>
               <div class="f-group"><label data-i18n="f_breal">الميزانية الفعلية</label><input id="fBReal" type="number" step="any" /></div>
               <div class="f-group"><label data-i18n="f_qprev">الكمية التقديرية</label><input id="fQPrev" type="number" step="any" /></div>
-
               <div class="f-group"><label data-i18n="f_qreal">الكمية الفعلية</label><input id="fQReal" type="number" step="any" /></div>
               <div class="f-group" style="grid-column: 1 / -1;"><label data-i18n="f_notes">ملاحظات إضافية</label><textarea id="fNotes"></textarea></div>
             </div>
 
             <div class="btn-bar">
-              <button class="btn btn-p" onclick="saveRecord()">💾 <span data-i18n="save_rec">حفظ وحساب تلقائي</span></button>
-              <button class="btn btn-sec" onclick="resetRecordForm()">↺ <span data-i18n="reset_form">تفريغ النموذج</span></button>
+              <button class="btn btn-p" onclick="saveRecord()">💾 حفظ وحساب تلقائي</button>
+              <button class="btn btn-sec" onclick="resetRecordForm()">↺ تفريغ النموذج</button>
               <label class="btn btn-mint" style="cursor:pointer;">
-                📥 <span data-i18n="imp_csv">استيراد CSV</span>
+                📥 استيراد CSV
                 <input type="file" accept=".csv,.txt" onchange="importCSV(event)" style="display:none;" />
               </label>
-              <button class="btn btn-peach" onclick="exportRecordsCSV()">📤 <span data-i18n="exp_csv">تصدير CSV/Excel</span></button>
+              <button class="btn btn-peach" onclick="exportRecordsCSV()">📤 تصدير CSV/Excel</button>
             </div>
           </div>
 
           <div class="card">
-            <div class="card-hd"><span data-i18n="records_tbl">📋 سجل البيانات المحسوبة</span></div>
+            <div class="card-hd"><span>📋 سجل البيانات المحسوبة</span></div>
             <div class="tbl-wrap">
               <table>
                 <thead>
@@ -438,411 +422,4 @@
                     <th data-i18n="th_ind">المؤشر</th>
                     <th data-i18n="th_abs">الفرق المطلق</th>
                     <th data-i18n="th_rel">الفرق %</th>
-                    <th data-i18n="th_bud">فرق الميزانية</th>
-                    <th data-i18n="th_qty">فرق الكمية</th>
-                    <th data-i18n="th_st">الحالة</th>
-                    <th data-i18n="th_act">إجراءات</th>
-                  </tr>
-                </thead>
-                <tbody id="recordsBody"></tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        <!-- 3. ANALYSIS -->
-        <section id="sec-analysis" class="section">
-          <div class="card">
-            <div class="card-hd"><span data-i18n="ana_filters">🔬 تصفية وترتيب الفروقات المتقدم</span></div>
-            <div class="grid-form cols-3">
-              <div class="f-group"><label data-i18n="fl_dept">تصفية حسب القسم</label><select id="flDept" onchange="renderAnalysis()"><option value="ALL">ALL</option></select></div>
-              <div class="f-group"><label data-i18n="fl_per">تصفية حسب الفترة</label><select id="flPeriod" onchange="renderAnalysis()"><option value="ALL">ALL</option></select></div>
-              <div class="f-group"><label data-i18n="fl_sort">الترتيب</label>
-                <select id="flSort" onchange="renderAnalysis()">
-                  <option value="abs_desc" data-i18n="s_abs">الأكبر فرقاً مطلقاً</option>
-                  <option value="rel_desc" data-i18n="s_rel">الأكبر نسبة انحراف %</option>
-                  <option value="exceed_only" data-i18n="s_ex">المتجاوزة للحد المسموح فقط</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-hd"><span data-i18n="ana_res">📌 نتائج التحليل والفروقات المهمة</span></div>
-            <div class="tbl-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th data-i18n="th_org">المؤسسة / القسم</th>
-                    <th data-i18n="th_ind">المؤشر</th>
-                    <th data-i18n="th_per">الفترة</th>
-                    <th data-i18n="th_abs">الفرق المطلق</th>
-                    <th data-i18n="th_rel">الفرق %</th>
-                    <th data-i18n="th_perf">فرق الأداء</th>
-                    <th data-i18n="th_st">الحالة</th>
-                    <th data-i18n="th_alert">تجاوز الحد</th>
-                  </tr>
-                </thead>
-                <tbody id="analysisBody"></tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        <!-- 4. CAUSES (5M / ISHIKAWA) & CORRECTIVE ACTIONS -->
-        <section id="sec-causes" class="section">
-          <div class="card">
-            <div class="card-hd"><span data-i18n="cause_hd">🧩 تحليل الأسباب (5M & Ishikawa) والإجراءات التصحيحية</span></div>
-            <div class="grid-form cols-3">
-              <div class="f-group"><label data-i18n="sel_var">اختيار الفرق المسجل *</label><select id="cVarSelect"></select></div>
-              <div class="f-group"><label data-i18n="c_main">السبب الرئيسي *</label><input id="cMain" type="text" /></div>
-              <div class="f-group"><label data-i18n="c_5m">محور 5M الرئيسي</label>
-                <select id="c5M">
-                  <option value="Main-d'œuvre">Main-d'œuvre (اليد العاملة)</option>
-                  <option value="Méthodes">Méthodes (الطرق والأساليب)</option>
-                  <option value="Matériel">Matériel (المعدات)</option>
-                  <option value="Matière">Matière (المواد الأولية)</option>
-                  <option value="Milieu">Milieu (المحيط والظروف)</option>
-                </select>
-              </div>
-              <div class="f-group"><label data-i18n="c_sec">الأسباب الثانوية (Ishikawa)</label><input id="cSec" type="text" /></div>
-              <div class="f-group"><label data-i18n="c_sev">مستوى الخطورة</label>
-                <select id="cSev">
-                  <option value="Low">Low / منخفض</option>
-                  <option value="Medium">Medium / متوسط</option>
-                  <option value="High">High / مرتفع</option>
-                  <option value="Critical">Critical / حرج</option>
-                </select>
-              </div>
-              <div class="f-group"><label data-i18n="c_resp">المسؤول عن التنفيذ *</label><input id="cResp" type="text" /></div>
-              <div class="f-group" style="grid-column: 1 / -1;"><label data-i18n="c_act">الإجراء التصحيحي المقترح *</label><input id="cAction" type="text" /></div>
-              <div class="f-group"><label data-i18n="c_st">حالة الإجراء</label>
-                <select id="cStatus">
-                  <option value="En attente">En attente</option>
-                  <option value="En cours">En cours</option>
-                  <option value="Terminé">Terminé</option>
-                  <option value="Annulé">Annulé</option>
-                </select>
-              </div>
-              <div class="f-group"><label data-i18n="c_prog">نسبة التقدم (%)</label><input id="cProg" type="number" min="0" max="100" value="0" /></div>
-              <div class="f-group"><label data-i18n="c_eff">تقييم الفعالية / ملاحظات</label><input id="cEff" type="text" /></div>
-            </div>
-            <div class="btn-bar">
-              <button class="btn btn-p" onclick="saveCauseAction()">💾 <span data-i18n="save_ca">حفظ السبب والإجراء</span></button>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-hd"><span data-i18n="ca_list">📌 سجل الأسباب والإجراءات التصحيحية</span></div>
-            <div id="causesList"></div>
-          </div>
-        </section>
-
-        <!-- 5. CHARTS -->
-        <section id="sec-charts" class="section">
-          <div class="charts-grid">
-            <div class="chart-box"><div style="font-weight:800; margin-bottom:8px;">📊 Bar Chart — Réel vs Prévisionnel</div><canvas id="chBar" height="180"></canvas></div>
-            <div class="chart-box"><div style="font-weight:800; margin-bottom:8px;">📈 Line Chart — تطور الفروقات</div><canvas id="chLine" height="180"></canvas></div>
-            <div class="chart-box"><div style="font-weight:800; margin-bottom:8px;">🥧 Pie Chart — توزيع الحالات</div><canvas id="chPie" height="180"></canvas></div>
-            <div class="chart-box"><div style="font-weight:800; margin-bottom:8px;">📶 Histogram — توزيع نسب الانحراف %</div><canvas id="chHist" height="180"></canvas></div>
-          </div>
-        </section>
-
-        <!-- 6. AI ASSISTANT -->
-        <section id="sec-ai" class="section">
-          <div class="card">
-            <div class="card-hd">
-              <span data-i18n="ai_hd">🤖 المساعد الذكي لتحليل الفروقات (AI)</span>
-              <button class="btn btn-p" onclick="runAIAssistant()">✨ <span data-i18n="ai_run">توليد التشخيص والملخص</span></button>
-            </div>
-            <p style="font-size:0.82rem; color:var(--muted);" data-i18n="ai_note">يعتمد التحليل على البيانات المسجلة فعلياً فقط، ويفصل بوضوح بين النتائج المحسوبة والفرضيات المقترحة.</p>
-            <div id="aiOutput" class="ai-panel"></div>
-          </div>
-        </section>
-
-        <!-- 7. REPORTS -->
-        <section id="sec-reports" class="section">
-          <div class="card">
-            <div class="card-hd">
-              <span data-i18n="rep_hd">📄 مركز التقارير والتصدير</span>
-              <div class="btn-bar" style="margin-top:0;">
-                <button class="btn btn-mint" onclick="exportRecordsCSV()">📥 CSV / Excel</button>
-                <button class="btn btn-peach" onclick="window.print()">🖨️ PDF / Print</button>
-              </div>
-            </div>
-            <div class="grid-form cols-3">
-              <div class="f-group">
-                <label data-i18n="rep_type">نوع التقرير</label>
-                <select id="repType" onchange="buildReport()">
-                  <option value="exec">تقرير شامل للإدارة / Executive</option>
-                  <option value="monthly">تقرير شهري / دوري</option>
-                  <option value="dept">تقرير حسب القسم</option>
-                  <option value="fin">تقرير مالي وميزانية</option>
-                </select>
-              </div>
-              <div class="f-group"><label data-i18n="rep_conc">الاستنتاجات</label><input id="repConc" type="text" placeholder="استنتاجات الإدارة..." oninput="buildReport()" /></div>
-              <div class="f-group"><label data-i18n="rep_rec">التوصيات</label><input id="repRec" type="text" placeholder="التوصيات المعتمدة..." oninput="buildReport()" /></div>
-            </div>
-            <div id="reportPreview" class="ai-panel" style="margin-top:12px;"></div>
-          </div>
-        </section>
-
-        <!-- 8. LAWS & PROJECT BUDGET -->
-        <section id="sec-laws" class="section">
-          <div class="card">
-            <div class="card-hd"><span data-i18n="laws_hd">⚖️ قوانين حساب الفروقات المعتمدة</span></div>
-            <div class="law-box"><strong>1. الفرق المطلق (Écart absolu):</strong><div class="formula-code">Ecart_Absolu = Reel - Previsionnel</div></div>
-            <div class="law-box"><strong>2. الفرق النسبي (Écart relatif %):</strong><div class="formula-code">Ecart_Relatif_% = Previsionnel != 0 ? ((Reel - Previsionnel) / |Previsionnel|) * 100 : 0</div></div>
-            <div class="law-box"><strong>3. فرق الميزانية (Écart budgétaire):</strong><div class="formula-code">Ecart_Budget = Budget_Reel - Budget_Previsionnel</div></div>
-            <div class="law-box"><strong>4. فرق الكميات (Écart quantité):</strong><div class="formula-code">Ecart_Quantite = Quantite_Reel - Quantite_Previsionnel</div></div>
-            <div class="law-box"><strong>5. فرق الأداء (Écart performance):</strong><div class="formula-code">Ecart_Performance = Performance_Reel - Objectif</div></div>
-          </div>
-
-          <div class="card">
-            <div class="card-hd"><span data-i18n="proj_bud_hd">💼 ميزانية مشروع إنشاء التطبيق (مُتابعة حية)</span></div>
-            <div class="tbl-wrap">
-              <table>
-                <thead>
-                  <tr><th>المرحلة</th><th>المخصص التقديري</th><th>الفعلي المسجل</th><th>الفرق</th></tr>
-                </thead>
-                <tbody>
-                  <tr><td>UI/UX & DB</td><td>45,000 DZD</td><td>45,000 DZD</td><td>0.00 DZD</td></tr>
-                  <tr><td>Calculations & Charts</td><td>65,000 DZD</td><td>65,000 DZD</td><td>0.00 DZD</td></tr>
-                  <tr><td>Roles, Reports & AI</td><td>75,000 DZD</td><td>75,000 DZD</td><td>0.00 DZD</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        <!-- 9. USERS & NOTIFICATIONS -->
-        <section id="sec-users" class="section">
-          <div class="card">
-            <div class="card-hd"><span data-i18n="role_hd">👥 الدور والصلاحيات النشطة</span></div>
-            <div class="grid-form">
-              <div class="f-group">
-                <label data-i18n="sel_role">تبديل الدور التجريبي</label>
-                <select id="roleSelect" onchange="changeRole()">
-                  <option value="Administrateur">Administrateur (صلاحيات كاملة)</option>
-                  <option value="Directeur">Directeur (اطلاع شامل وتقارير)</option>
-                  <option value="Analyste">Analyste (إدخال وتحليل البيانات)</option>
-                  <option value="Responsable">Responsable (متابعة القسم والإجراءات)</option>
-                  <option value="Lecteur">Lecteur (قراءة فقط)</option>
-                </select>
-              </div>
-              <div class="f-group">
-                <label data-i18n="cur_user">المستخدم الحالي</label>
-                <input id="userNameInput" type="text" value="ياسمين — محاسبة تحليلية" onchange="updateUserName()" />
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-hd">
-              <span data-i18n="notif_hd">🔔 الإشعارات والتنبيهات</span>
-              <button class="btn btn-sec" onclick="clearNotifs()">✓</button>
-            </div>
-            <div id="notifList"></div>
-          </div>
-        </section>
-
-        <!-- 10. AUDIT LOG -->
-        <section id="sec-audit" class="section">
-          <div class="card">
-            <div class="card-hd"><span data-i18n="audit_hd">🗂️ سجل العمليات والتدقيق (Audit Logs)</span></div>
-            <div class="tbl-wrap">
-              <table>
-                <thead><tr><th>الوقت</th><th>المستخدم</th><th>الدور</th><th>العملية</th><th>التفاصيل</th></tr></thead>
-                <tbody id="auditBody"></tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        <!-- 11. SETTINGS & DATABASE -->
-        <section id="sec-settings" class="section">
-          <div class="card">
-            <div class="card-hd"><span data-i18n="set_hd">⚙️ إعدادات المؤسسة وقاعدة البيانات</span></div>
-            <div class="grid-form cols-3">
-              <div class="f-group"><label data-i18n="set_org">اسم المؤسسة الافتراضي</label><input id="setOrg" type="text" onchange="saveSettings()" /></div>
-              <div class="f-group"><label data-i18n="set_cur">العملة</label>
-                <select id="setCur" onchange="saveSettings()">
-                  <option value="DZD">DZD (د.ج)</option>
-                  <option value="USD">USD ($)</option>
-                  <option value="EUR">EUR (€)</option>
-                </select>
-              </div>
-              <div class="f-group"><label data-i18n="set_thr">حد الانحراف المسموح (%)</label><input id="setThr" type="number" step="0.5" min="0" onchange="saveSettings()" /></div>
-            </div>
-            <div class="btn-bar">
-              <button class="btn btn-mint" onclick="backupDB()">💾 <span data-i18n="db_bak">نسخة احتياطية JSON</span></button>
-              <button class="btn btn-del" onclick="wipeAllDB()">⚠️ <span data-i18n="db_wipe">تهيئة قاعدة البيانات</span></button>
-            </div>
-          </div>
-        </section>
-      </main>
-    </div>
-
-    <nav class="bottom-bar">
-      <button class="b-nav active" data-sec="dashboard" onclick="goSec('dashboard')"><span>🏠</span><span data-i18n="nav_dash">الرئيسية</span></button>
-      <button class="b-nav" data-sec="data" onclick="goSec('data')"><span>📝</span><span data-i18n="nav_data">البيانات</span></button>
-      <button class="b-nav" data-sec="analysis" onclick="goSec('analysis')"><span>🔬</span><span data-i18n="nav_analysis">التحليل</span></button>
-      <button class="b-nav" data-sec="charts" onclick="goSec('charts')"><span>📈</span><span data-i18n="nav_charts">الرسوم</span></button>
-      <button class="b-nav" data-sec="ai" onclick="goSec('ai')"><span>🤖</span><span data-i18n="nav_ai">الذكي</span></button>
-    </nav>
-  </div>
-
-  <div class="toast" id="toast"></div>
-
-  <script>
-    const DB_KEY = 'AYAN_ENTERPRISE_DB_V1';
-    const BIO_KEY = 'AYAN_BIO_CRED_V1';
-    let lang = 'ar';
-    let editingId = null;
-    let charts = {};
-
-    const T = {
-      ar: {
-        dir: 'rtl',
-        nav_dash: 'الرئيسية', nav_data: 'إدارة البيانات', nav_analysis: 'تحليل الفروقات',
-        nav_causes: 'الأسباب 5M & التصحيح', nav_charts: 'الرسوم البيانية', nav_ai: 'المساعد الذكي AI',
-        nav_reports: 'التقارير والتصدير', nav_laws: 'القوانين والميزانية', nav_users: 'الصلاحيات والإشعارات',
-        nav_audit: 'سجل العمليات', nav_settings: 'الإعدادات وقاعدة البيانات',
-        k_count: 'إجمالي التحليلات', k_fav: 'فروقات إيجابية (F)', k_unfav: 'فروقات سلبية (U)',
-        k_open: 'غير محلولة', k_ach: 'نسبة تحقيق الأهداف', k_fin: 'إجمالي الفروقات المالية',
-        k_bud: 'فرق الميزانية', k_qty: 'فرق الكميات',
-        dash_recent: '🕒 آخر العمليات والتحليلات', load_demo: 'بيانات اختبار (DEMO)', clear_demo: 'حذف بيانات الاختبار',
-        th_org: 'المؤسسة / القسم', th_per: 'الفترة', th_ind: 'المؤشر', th_prev: 'التقديري',
-        th_real: 'الفعلي', th_abs: 'الفرق المطلق', th_rel: 'الفرق %', th_st: 'الحالة',
-        th_bud: 'فرق الميزانية', th_qty: 'فرق الكمية', th_act: 'إجراءات', th_perf: 'فرق الأداء', th_alert: 'تجاوز الحد',
-        fav: 'ملائم (F)', unfav: 'غير ملائم (U)', nul: 'لا يوجد فرق (N)'
-      },
-      fr: {
-        dir: 'ltr',
-        nav_dash: 'Tableau de bord', nav_data: 'Gestion des données', nav_analysis: 'Analyse des écarts',
-        nav_causes: 'Causes 5M & Actions', nav_charts: 'Graphiques', nav_ai: 'Assistant IA',
-        nav_reports: 'Rapports & Export', nav_laws: 'Formules & Budget', nav_users: 'Rôles & Alertes',
-        nav_audit: 'Historique (Audit)', nav_settings: 'Paramètres & BDD',
-        k_count: 'Total analyses', k_fav: 'Écarts favorables (F)', k_unfav: 'Écarts défavorables (U)',
-        k_open: 'Non résolus', k_ach: 'Taux réalisation', k_fin: 'Écart financier total',
-        k_bud: 'Écart budgétaire', k_qty: 'Écart quantité',
-        dash_recent: '🕒 Dernières opérations', load_demo: 'Données test (DEMO)', clear_demo: 'Supprimer test',
-        th_org: 'Org. / Département', th_per: 'Période', th_ind: 'Indicateur', th_prev: 'Prévisionnel',
-        th_real: 'Réel', th_abs: 'Écart absolu', th_rel: 'Écart %', th_st: 'Statut',
-        th_bud: 'Écart budget', th_qty: 'Écart qté', th_act: 'Actions', th_perf: 'Écart perf.', th_alert: 'Seuil',
-        fav: 'Favorable (F)', unfav: 'Défavorable (U)', nul: 'Nul (N)'
-      },
-      en: {
-        dir: 'ltr',
-        nav_dash: 'Dashboard', nav_data: 'Data Management', nav_analysis: 'Variance Analysis',
-        nav_causes: '5M Causes & Actions', nav_charts: 'Charts', nav_ai: 'AI Assistant',
-        nav_reports: 'Reports & Export', nav_laws: 'Formulas & Budget', nav_users: 'Roles & Alerts',
-        nav_audit: 'Audit Logs', nav_settings: 'Settings & DB',
-        k_count: 'Total Analyses', k_fav: 'Favorable (F)', k_unfav: 'Unfavorable (U)',
-        k_open: 'Unresolved', k_ach: 'Target Achievement', k_fin: 'Total Financial Var.',
-        k_bud: 'Budget Variance', k_qty: 'Qty Variance',
-        dash_recent: '🕒 Recent Analyses', load_demo: 'Load Demo Data', clear_demo: 'Clear Demo Data',
-        th_org: 'Org. / Dept.', th_per: 'Period', th_ind: 'Indicator', th_prev: 'Forecast',
-        th_real: 'Actual', th_abs: 'Abs. Variance', th_rel: 'Var. %', th_st: 'Status',
-        th_bud: 'Budget Var.', th_qty: 'Qty Var.', th_act: 'Actions', th_perf: 'Perf. Var.', th_alert: 'Threshold',
-        fav: 'Favorable (F)', unfav: 'Unfavorable (U)', nul: 'Null (N)'
-      }
-    };
-
-    function defaultDB() {
-      return {
-        settings: { org: 'AYAN Enterprise', currency: 'DZD', thresholdPct: 10 },
-        session: { user: 'ياسمين — محاسبة تحليلية', role: 'Administrateur' },
-        records: [],
-        causes: [],
-        notifications: [],
-        audits: []
-      };
-    }
-
-    let db = loadDB();
-
-    function loadDB() {
-      try {
-        const raw = localStorage.getItem(DB_KEY);
-        return raw ? { ...defaultDB(), ...JSON.parse(raw) } : defaultDB();
-      } catch {
-        return defaultDB();
-      }
-    }
-
-    function saveDB() {
-      localStorage.setItem(DB_KEY, JSON.stringify(db));
-    }
-
-    function toast(msg) {
-      const el = document.getElementById('toast');
-      el.textContent = msg;
-      el.classList.add('show');
-      setTimeout(() => el.classList.remove('show'), 2400);
-    }
-
-    function addAudit(action, details) {
-      db.audits.unshift({
-        time: new Date().toLocaleString(),
-        user: db.session.user,
-        role: db.session.role,
-        action,
-        details
-      });
-      db.audits = db.audits.slice(0, 120);
-      saveDB();
-    }
-
-    function pushNotif(msg) {
-      db.notifications.unshift({ id: Date.now(), time: new Date().toLocaleTimeString(), msg });
-      db.notifications = db.notifications.slice(0, 40);
-      saveDB();
-    }
-
-    // Splash & Lock
-    window.addEventListener('DOMContentLoaded', () => {
-      syncSettingsUI();
-      setLang('ar');
-      refreshAll();
-      setTimeout(() => {
-        document.getElementById('splash').classList.add('hide');
-        document.getElementById('lockScreen').classList.add('active');
-      }, 1200);
-    });
-
-    function openApp() {
-      document.getElementById('lockScreen').classList.remove('active');
-      document.getElementById('mainApp').classList.add('show');
-      addAudit('UNLOCK', 'Authenticated access to AYAN');
-      refreshAll();
-    }
-
-    function lockNow() {
-      document.getElementById('mainApp').classList.remove('show');
-      document.getElementById('pinInput').value = '';
-      document.getElementById('lockMsg').textContent = '';
-      document.getElementById('lockScreen').classList.add('active');
-    }
-
-    function unlockPin() {
-      const v = document.getElementById('pinInput').value.trim();
-      if (v === 'AYAN2026' || v === '2026') openApp();
-      else document.getElementById('lockMsg').textContent = 'رمز غير صحيح (AYAN2026)';
-    }
-
-    async function unlockBiometric() {
-      const msg = document.getElementById('lockMsg');
-      if (!window.PublicKeyCredential) {
-        msg.textContent = 'البصمة غير مدعومة هنا؛ استخدمي الرمز AYAN2026';
-        return;
-      }
-      try {
-        const ch = new Uint8Array(16);
-        window.crypto.getRandomValues(ch);
-        const savedId = localStorage.getItem(BIO_KEY);
-        if (!savedId) {
-          const uid = new Uint8Array(16);
-          window.crypto.getRandomValues(uid);
-          const cred = await navigator.credentials.create({
-            
+                    <th data-i18n="th_bud">فرق
