@@ -4,21 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#7655E8" />
-  <title>إيان | AYAN — Variance Analysis Enterprise Studio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+  <title>إيان | AYAN — Variance Studio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary: #7655E8;
-      --primary-2: #5A38D2;
-      --mint: #B9F0DA;
-      --lavender: #D8CBFF;
-      --peach: #FFE1C7;
-      --butter: #FFE995;
       --bg: #F4F1FF;
-      --bg-grad: linear-gradient(180deg, #EAE3FF 0%, #F5F2FF 45%, #FCFaff 100%);
       --card: #FFFFFF;
       --card-2: #F9F7FF;
       --text: #1B172C;
@@ -28,398 +19,324 @@
       --fav-bg: #E0F8EE;
       --unfav: #C62841;
       --unfav-bg: #FFE6EB;
-      --null-c: #5B647A;
-      --null-bg: #ECEFF6;
-      --shadow: 0 10px 26px rgba(118, 85, 232, 0.08);
-      --radius: 20px;
+      --butter: #FFE995;
+      --mint: #B9F0DA;
+      --peach: #FFE1C7;
     }
-
     body.dark {
       --bg: #0F0D1A;
-      --bg-grad: linear-gradient(180deg, #161229 0%, #0F0D1A 55%, #0A0812 100%);
       --card: #19152B;
       --card-2: #221D3A;
       --text: #F5F2FF;
       --muted: #A69FC4;
       --border: #2F284E;
-      --fav: #3DD598;
-      --fav-bg: rgba(61, 213, 152, 0.15);
-      --unfav: #FF6B81;
-      --unfav-bg: rgba(255, 107, 129, 0.16);
-      --null-c: #A69FC4;
-      --null-bg: rgba(166, 159, 196, 0.14);
-      --shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
     }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Cairo', sans-serif;
-      background: var(--bg-grad);
+      background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      padding-bottom: 86px;
-      transition: background 0.25s ease, color 0.25s ease;
+      padding-bottom: 80px;
     }
+    .screen { display: none; min-height: 100vh; }
+    .screen.active { display: flex; }
 
-    #splash {
-      position: fixed; inset: 0; z-index: 9999;
-      background: linear-gradient(135deg, #5230C8 0%, #7655E8 55%, #9B7BFF 100%);
-      color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center;
-      text-align: center; padding: 24px; transition: opacity 0.35s ease, visibility 0.35s ease;
+    #splashScreen {
+      background: linear-gradient(135deg, #5230C8, #7655E8, #9B7BFF);
+      color: #fff;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
     }
-    #splash.hide { opacity: 0; visibility: hidden; pointer-events: none; }
-    .splash-logo {
-      width: 104px; height: 104px; border-radius: 30px;
-      background: rgba(255,255,255,0.16); border: 2px solid rgba(255,255,255,0.35);
-      display: grid; place-items: center; font-size: 2.8rem; margin-bottom: 16px;
-      box-shadow: 0 16px 36px rgba(0,0,0,0.22);
+    .logo-box {
+      width: 96px; height: 96px; border-radius: 26px;
+      background: rgba(255,255,255,0.18);
+      display: grid; place-items: center; font-size: 2.6rem; margin-bottom: 14px;
     }
-
-    #lockScreen {
-      position: fixed; inset: 0; z-index: 9000;
-      background: var(--bg-grad); display: none;
-      align-items: center; justify-content: center; padding: 18px;
-    }
-    #lockScreen.active { display: flex; }
-    .lock-box {
-      width: 100%; max-width: 430px; background: var(--card);
-      border: 1.5px solid var(--border); border-radius: 26px; padding: 24px 20px;
-      text-align: center; box-shadow: var(--shadow);
-    }
-    .fp-btn {
-      width: 88px; height: 88px; border-radius: 50%;
-      border: 2.5px solid var(--primary); background: var(--card-2);
-      color: var(--primary); font-size: 2.4rem; display: grid; place-items: center;
-      margin: 16px auto; cursor: pointer; box-shadow: 0 10px 22px rgba(118,85,232,0.2);
-    }
-    .fp-btn:active { transform: scale(0.95); }
-
-    #mainApp { display: none; }
-    #mainApp.show { display: block; }
-
-    .topbar {
-      position: sticky; top: 0; z-index: 400;
-      background: linear-gradient(135deg, #6442DC 0%, #7D5DF0 65%, #9679FF 100%);
-      color: #fff; padding: 12px 16px; box-shadow: 0 8px 24px rgba(118,85,232,0.22);
-    }
-    .topbar-inner {
-      max-width: 1280px; margin: 0 auto;
-      display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;
-    }
-    .brand { display: flex; align-items: center; gap: 10px; }
-    .brand-mark {
-      width: 38px; height: 38px; border-radius: 12px;
-      background: rgba(255,255,255,0.2); display: grid; place-items: center; font-size: 1.2rem;
-    }
-    .top-actions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-    .t-btn {
-      border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.16);
-      color: #fff; border-radius: 10px; padding: 5px 9px; font-family: inherit;
-      font-size: 0.76rem; font-weight: 800; cursor: pointer;
-    }
-    .t-btn.active { background: var(--butter); color: #1B172C; border-color: var(--butter); }
-
-    .shell {
-      max-width: 1280px; margin: 0 auto; padding: 14px;
-      display: grid; grid-template-columns: 1fr; gap: 14px;
-    }
-    @media (min-width: 960px) {
-      .shell { grid-template-columns: 245px 1fr; align-items: start; }
-    }
-
-    .sidebar {
-      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 12px; box-shadow: var(--shadow);
-    }
-    @media (max-width: 959px) {
-      .sidebar { display: none; }
-      .sidebar.drawer-open {
-        display: block; position: fixed; top: 64px; bottom: 74px;
-        inset-inline-start: 10px; width: 255px; z-index: 600; overflow-y: auto;
-      }
-    }
-    .nav-item {
-      width: 100%; border: none; background: transparent; color: var(--text);
-      padding: 9px 12px; border-radius: 12px; font-family: inherit; font-size: 0.84rem;
-      font-weight: 800; display: flex; align-items: center; gap: 8px; cursor: pointer;
-      text-align: start; margin-bottom: 3px;
-    }
-    .nav-item:hover { background: var(--card-2); }
-    .nav-item.active { background: var(--primary); color: #fff; }
-
-    .section { display: none; }
-    .section.active { display: block; animation: fadeUp 0.2s ease; }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-    .card {
-      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 16px; box-shadow: var(--shadow); margin-bottom: 14px;
-    }
-    .card-hd {
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 8px; margin-bottom: 12px; font-weight: 900; font-size: 1rem;
-    }
-
-    .kpis {
-      display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px;
-    }
-    @media (min-width: 640px) { .kpis { grid-template-columns: repeat(4, 1fr); } }
-    .kpi {
-      background: var(--card); border: 1px solid var(--border); border-radius: 18px;
-      padding: 13px; box-shadow: var(--shadow);
-    }
-    .kpi-top { display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: 800; color: var(--muted); }
-    .kpi-num { font-size: 1.15rem; font-weight: 900; margin-top: 6px; direction: ltr; text-align: right; }
-
-    .grid-form { display: grid; grid-template-columns: 1fr; gap: 10px; }
-    @media (min-width: 640px) { .grid-form { grid-template-columns: repeat(2, 1fr); } }
-    @media (min-width: 1024px) { .grid-form.cols-3 { grid-template-columns: repeat(3, 1fr); } }
-
-    .f-group { display: flex; flex-direction: column; gap: 4px; }
-    .f-group label { font-size: 0.78rem; font-weight: 800; color: var(--muted); }
-    .f-group input, .f-group select, .f-group textarea {
-      border: 1.5px solid var(--border); background: var(--card-2); color: var(--text);
-      border-radius: 12px; padding: 9px 11px; font-family: inherit; font-size: 0.88rem; font-weight: 700;
-    }
-    .f-group textarea { min-height: 64px; resize: vertical; }
-
-    .btn-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
     .btn {
-      border: none; border-radius: 12px; padding: 9px 14px; font-family: inherit;
-      font-size: 0.82rem; font-weight: 800; cursor: pointer; display: inline-flex;
-      align-items: center; gap: 6px;
+      border: none; border-radius: 12px; padding: 10px 16px;
+      font-family: inherit; font-weight: 800; cursor: pointer; font-size: 0.88rem;
     }
     .btn-p { background: var(--primary); color: #fff; }
+    .btn-sec { background: var(--card-2); color: var(--text); border: 1.5px solid var(--border); }
     .btn-mint { background: var(--mint); color: #1B172C; }
     .btn-peach { background: var(--peach); color: #1B172C; }
-    .btn-butter { background: var(--butter); color: #1B172C; }
-    .btn-sec { background: var(--card-2); color: var(--text); border: 1.5px solid var(--border); }
-    .btn-del { background: var(--unfav-bg); color: var(--unfav); }
 
-    .pill {
-      display: inline-block; padding: 3px 9px; border-radius: 999px;
-      font-size: 0.72rem; font-weight: 800;
+    #lockScreen {
+      align-items: center; justify-content: center; padding: 18px;
     }
-    .p-fav { background: var(--fav-bg); color: var(--fav); }
-    .p-unfav { background: var(--unfav-bg); color: var(--unfav); }
-    .p-null { background: var(--null-bg); color: var(--null-c); }
-    .p-info { background: rgba(118,85,232,0.14); color: var(--primary); }
+    .lock-card {
+      width: 100%; max-width: 400px; background: var(--card);
+      border: 1.5px solid var(--border); border-radius: 24px; padding: 24px; text-align: center;
+    }
+    .fp-circle {
+      width: 84px; height: 84px; border-radius: 50%;
+      border: 2.5px solid var(--primary); background: var(--card-2);
+      color: var(--primary); font-size: 2.3rem; display: grid; place-items: center;
+      margin: 16px auto; cursor: pointer;
+    }
+    .inp {
+      width: 100%; border: 1.5px solid var(--border); background: var(--card-2);
+      color: var(--text); border-radius: 12px; padding: 10px 12px;
+      font-family: inherit; font-weight: 700; margin-top: 8px;
+    }
 
-    .tbl-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 14px; }
-    table { width: 100%; border-collapse: collapse; min-width: 780px; font-size: 0.82rem; }
+    #appScreen.active { display: block; }
+    .topbar {
+      background: linear-gradient(135deg, #6442DC, #8665F5);
+      color: #fff; padding: 12px 16px; display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 8px;
+    }
+    .container { max-width: 1000px; margin: 0 auto; padding: 14px; }
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 16px; margin-bottom: 14px;
+    }
+    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    @media (min-width: 640px) { .grid-2 { grid-template-columns: repeat(2, 1fr); } }
+    .kpis { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px; }
+    @media (min-width: 640px) { .kpis { grid-template-columns: repeat(4, 1fr); } }
+    .kpi { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 12px; }
+    .kpi-v { font-size: 1.15rem; font-weight: 900; margin-top: 4px; direction: ltr; text-align: right; }
+    .badge { display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 0.74rem; font-weight: 800; }
+    .b-fav { background: var(--fav-bg); color: var(--fav); }
+    .b-unfav { background: var(--unfav-bg); color: var(--unfav); }
+    .row-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    .tbl-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 14px; margin-top: 10px; }
+    table { width: 100%; border-collapse: collapse; min-width: 600px; font-size: 0.84rem; }
     th, td { padding: 9px 10px; border-bottom: 1px solid var(--border); text-align: start; }
-    th { background: var(--card-2); font-weight: 900; }
-
-    .charts-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
-    @media (min-width: 820px) { .charts-grid { grid-template-columns: repeat(2, 1fr); } }
-    .chart-box { background: var(--card-2); border: 1px solid var(--border); border-radius: 16px; padding: 12px; }
-
-    .law-box {
-      background: var(--card-2); border: 1px solid var(--border); border-radius: 14px;
-      padding: 12px; margin-bottom: 8px;
-    }
-    .formula-code {
-      direction: ltr; text-align: left; font-family: monospace; font-weight: 800;
-      background: var(--card); border: 1px solid var(--border); padding: 7px 10px;
-      border-radius: 10px; margin-top: 6px; font-size: 0.82rem; color: var(--primary);
-    }
-
-    .ai-panel {
-      background: var(--card-2); border: 1.5px solid var(--border); border-radius: 16px;
-      padding: 14px; margin-top: 10px;
-    }
-
-    .bottom-bar {
-      position: fixed; bottom: 0; left: 0; right: 0; z-index: 450;
-      background: var(--card); border-top: 1px solid var(--border);
-      display: flex; justify-content: space-around; padding: 6px 4px 8px;
-    }
-    @media (min-width: 960px) { .bottom-bar { display: none; } }
-    .b-nav {
-      border: none; background: transparent; color: var(--muted); font-family: inherit;
-      font-size: 0.72rem; font-weight: 800; display: flex; flex-direction: column;
-      align-items: center; gap: 2px; padding: 5px 6px; border-radius: 12px; cursor: pointer;
-    }
-    .b-nav.active { background: rgba(118,85,232,0.14); color: var(--primary); }
-
-    .toast {
-      position: fixed; bottom: 84px; inset-inline-end: 16px; z-index: 9500;
-      background: #1B172C; color: #fff; padding: 10px 16px; border-radius: 14px;
-      font-size: 0.82rem; font-weight: 800; display: none; box-shadow: 0 10px 24px rgba(0,0,0,0.25);
-    }
-    .toast.show { display: block; }
-
-    @media print {
-      #splash, #lockScreen, .topbar, .sidebar, .bottom-bar, .btn-bar, .toast { display: none !important; }
-      #mainApp, .section { display: block !important; }
-      .shell { grid-template-columns: 1fr !important; padding: 0 !important; }
-      body { background: #fff !important; color: #000 !important; padding-bottom: 0 !important; }
+    th { background: var(--card-2); }
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; background: var(--card);
+      border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 8px;
     }
   </style>
 </head>
 <body>
 
-  <div id="splash" onclick="dismissSplashNow()">
-    <div class="splash-logo">📐</div>
-    <div style="font-size:2.1rem; font-weight:900;">إيان | AYAN</div>
-    <div id="splashTag" style="font-size:0.95rem; opacity:0.92; margin-top:6px;">استوديو تحليل الفروقات المؤسسي الشامل</div>
+  <!-- 1. Splash -->
+  <div id="splashScreen" class="screen active">
+    <div class="logo-box">📐</div>
+    <h1 style="font-size:2rem; font-weight:900;">إيان | AYAN</h1>
+    <p id="spSub" style="margin-top:6px; opacity:0.92;">استوديو تحليل الفروقات المؤسسي الشامل</p>
+    <div class="row-actions" style="margin-top:18px;">
+      <button class="btn btn-sec" onclick="goLock()">متابعة الآن</button>
+    </div>
   </div>
 
-  <div id="lockScreen">
-    <div class="lock-box">
-      <div style="font-size:1.8rem;">🔐</div>
-      <h2 id="lockHeading" style="font-size:1.25rem; font-weight:900; margin-top:6px;">قفل البصمة — إيان</h2>
-      <p id="lockSub" style="font-size:0.82rem; color:var(--muted); margin-top:4px;">لا يُفتح التطبيق إلا بعد التحقق بالبصمة الصحيحة أو الرمز المعتمد</p>
+  <!-- 2. Biometric Lock -->
+  <div id="lockScreen" class="screen">
+    <div class="lock-card">
+      <div style="font-size:1.7rem;">🔐</div>
+      <h2 id="lkTitle" style="font-size:1.2rem; font-weight:900; margin-top:4px;">قفل البصمة — إيان</h2>
+      <p id="lkDesc" style="font-size:0.82rem; color:var(--muted); margin-top:4px;">التحقق بالبصمة أو بالرمز للدخول</p>
 
-      <button class="fp-btn" onclick="unlockBiometric()" title="Biometric">👆</button>
-      <div id="fpBtnText" style="font-weight:800; font-size:0.88rem;">اضغطي للتحقق بالبصمة</div>
-      <div id="lockMsg" style="min-height:22px; font-size:0.8rem; font-weight:800; margin-top:8px; color:var(--unfav);"></div>
+      <button class="fp-circle" onclick="tryFingerprint()">👆</button>
+      <div id="lkStatus" style="font-size:0.82rem; font-weight:800; color:var(--unfav); min-height:20px;"></div>
 
-      <div style="margin-top:12px; padding-top:12px; border-top:1px dashed var(--border); display:flex; gap:8px;">
-        <input type="password" id="pinInput" placeholder="رمز الدخول (افتراضي: AYAN2026)" style="flex:1; border:1.5px solid var(--border); background:var(--card-2); color:var(--text); border-radius:11px; padding:8px 10px; font-family:inherit; text-align:center;" />
-        <button class="btn btn-p" onclick="unlockPin()">دخول</button>
+      <input id="pinCode" type="password" class="inp" placeholder="رمز الدخول: AYAN2026" />
+      <div class="row-actions" style="justify-content:center;">
+        <button class="btn btn-p" onclick="tryPin()">دخول بالرمز</button>
       </div>
     </div>
   </div>
 
-  <div id="mainApp">
-    <header class="topbar">
-      <div class="topbar-inner">
-        <div class="brand">
-          <button class="t-btn" onclick="toggleDrawer()" style="font-size:1rem;">☰</button>
-          <div class="brand-mark">📊</div>
-          <div>
-            <div style="font-weight:900; font-size:1.05rem;">إيان | AYAN</div>
-            <div id="activeUserBanner" style="font-size:0.72rem; opacity:0.9;">—</div>
+  <!-- 3. Main App -->
+  <div id="appScreen" class="screen">
+    <div style="width:100%;">
+      <header class="topbar">
+        <div>
+          <strong style="font-size:1.05rem;">📊 إيان | AYAN</strong>
+          <div id="subBar" style="font-size:0.75rem; opacity:0.9;">تحليل الفروقات والموازنات</div>
+        </div>
+        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+          <button class="btn btn-sec" style="padding:5px 9px; font-size:0.75rem;" onclick="setLang('ar')">AR</button>
+          <button class="btn btn-sec" style="padding:5px 9px; font-size:0.75rem;" onclick="setLang('fr')">FR</button>
+          <button class="btn btn-sec" style="padding:5px 9px; font-size:0.75rem;" onclick="setLang('en')">EN</button>
+          <button class="btn btn-sec" style="padding:5px 9px; font-size:0.75rem;" onclick="document.body.classList.toggle('dark')">🌙</button>
+          <button class="btn btn-sec" style="padding:5px 9px; font-size:0.75rem;" onclick="goLock()">🔒</button>
+        </div>
+      </header>
+
+      <div class="container">
+        <div class="kpis">
+          <div class="kpi"><div style="font-size:0.78rem; color:var(--muted);">إجمالي الفروقات</div><div class="kpi-v" id="kAbs">0.00</div></div>
+          <div class="kpi"><div style="font-size:0.78rem; color:var(--muted);">نسبة الفرق %</div><div class="kpi-v" id="kRel">0.0%</div></div>
+          <div class="kpi"><div style="font-size:0.78rem; color:var(--muted);">فرق الميزانية</div><div class="kpi-v" id="kBud">0.00</div></div>
+          <div class="kpi"><div style="font-size:0.78rem; color:var(--muted);">الحالة</div><div style="margin-top:8px;"><span id="kSt" class="badge b-fav">—</span></div></div>
+        </div>
+
+        <div id="tabCalc" class="card">
+          <h3 style="font-weight:900; margin-bottom:10px;">حساب الفروقات تلقائياً</h3>
+          <div class="grid-2">
+            <div><label style="font-size:0.8rem; font-weight:800;">اسم البند / المؤشر</label><input id="mName" class="inp" value="الإيرادات الشهرية" oninput="calcAll()" /></div>
+            <div>
+              <label style="font-size:0.8rem; font-weight:800;">طبيعة المؤشر</label>
+              <select id="mType" class="inp" onchange="calcAll()">
+                <option value="rev">إيرادات / مبيعات (الأعلى أفضل)</option>
+                <option value="cost">تكاليف / مصاريف (الأقل أفضل)</option>
+              </select>
+            </div>
+            <div><label style="font-size:0.8rem; font-weight:800;">القيمة التقديرية (Prévisionnel)</label><input id="mPrev" type="number" step="any" class="inp" value="100000" oninput="calcAll()" /></div>
+            <div><label style="font-size:0.8rem; font-weight:800;">القيمة الفعلية (Réel)</label><input id="mReal" type="number" step="any" class="inp" value="115000" oninput="calcAll()" /></div>
+            <div><label style="font-size:0.8rem; font-weight:800;">الميزانية التقديرية</label><input id="mBPrev" type="number" step="any" class="inp" value="50000" oninput="calcAll()" /></div>
+            <div><label style="font-size:0.8rem; font-weight:800;">الميزانية الفعلية</label><input id="mBReal" type="number" step="any" class="inp" value="47000" oninput="calcAll()" /></div>
+          </div>
+          <div class="row-actions">
+            <button class="btn btn-p" onclick="addRow()">💾 حفظ في الجدول</button>
+            <button class="btn btn-mint" onclick="exportCsv()">📥 تصدير CSV</button>
+            <button class="btn btn-peach" onclick="window.print()">🖨️ طباعة / PDF</button>
           </div>
         </div>
-        <div class="top-actions">
-          <button class="t-btn active" id="l-ar" onclick="setLang('ar')">AR</button>
-          <button class="t-btn" id="l-fr" onclick="setLang('fr')">FR</button>
-          <button class="t-btn" id="l-en" onclick="setLang('en')">EN</button>
-          <button class="t-btn" id="darkToggle" onclick="toggleDark()">🌙</button>
-          <button class="t-btn" onclick="lockNow()">🔒</button>
+
+        <div id="tabTable" class="card">
+          <h3 style="font-weight:900;">سجل الفروقات المحسوبة</h3>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr><th>البند</th><th>التقديري</th><th>الفعلي</th><th>الفرق المطلق</th><th>الفرق %</th><th>فرق الميزانية</th><th>الحالة</th></tr>
+              </thead>
+              <tbody id="rowsBody"></tbody>
+            </table>
+          </div>
         </div>
       </div>
-    </header>
 
-    <div class="shell">
-      <aside class="sidebar" id="sidebar">
-        <button class="nav-item active" data-sec="dashboard" onclick="goSec('dashboard')">🏠 <span data-i18n="nav_dash">الرئيسية</span></button>
-        <button class="nav-item" data-sec="data" onclick="goSec('data')">📝 <span data-i18n="nav_data">إدارة البيانات</span></button>
-        <button class="nav-item" data-sec="analysis" onclick="goSec('analysis')">🔬 <span data-i18n="nav_analysis">تحليل الفروقات</span></button>
-        <button class="nav-item" data-sec="causes" onclick="goSec('causes')">🧩 <span data-i18n="nav_causes">الأسباب 5M & التصحيح</span></button>
-        <button class="nav-item" data-sec="charts" onclick="goSec('charts')">📈 <span data-i18n="nav_charts">الرسوم البيانية</span></button>
-        <button class="nav-item" data-sec="ai" onclick="goSec('ai')">🤖 <span data-i18n="nav_ai">المساعد الذكي AI</span></button>
-        <button class="nav-item" data-sec="reports" onclick="goSec('reports')">📄 <span data-i18n="nav_reports">التقارير والتصدير</span></button>
-        <button class="nav-item" data-sec="laws" onclick="goSec('laws')">⚖️ <span data-i18n="nav_laws">القوانين والميزانية</span></button>
-        <button class="nav-item" data-sec="users" onclick="goSec('users')">👥 <span data-i18n="nav_users">الصلاحيات والإشعارات</span></button>
-        <button class="nav-item" data-sec="audit" onclick="goSec('audit')">🗂️ <span data-i18n="nav_audit">سجل العمليات</span></button>
-        <button class="nav-item" data-sec="settings" onclick="goSec('settings')">⚙️ <span data-i18n="nav_settings">الإعدادات وقاعدة البيانات</span></button>
-      </aside>
+      <nav class="bottom-nav">
+        <button class="btn btn-sec" onclick="document.getElementById('tabCalc').scrollIntoView({behavior:'smooth'})">📊 الحساب</button>
+        <button class="btn btn-sec" onclick="document.getElementById('tabTable').scrollIntoView({behavior:'smooth'})">📋 الجدول</button>
+      </nav>
+    </div>
+  </div>
 
-      <main>
-        <section id="sec-dashboard" class="section active">
-          <div class="kpis">
-            <div class="kpi"><div class="kpi-top"><span data-i18n="k_count">إجمالي التحليلات</span><span>📌</span></div><div class="kpi-num" id="kCount">0</div></div>
-            <div class="kpi"><div class="kpi-top"><span data-i18n="k_fav">فروقات إيجابية (F)</span><span>✅</span></div><div class="kpi-num" id="kFav" style="color:var(--fav);">0</div></div>
-            <div class="kpi"><div class="kpi-top"><span data-i18n="k_unfav">فروقات سلبية (U)</span><span>⚠️</span></div><div class="kpi-num" id="kUnfav" style="color:var(--unfav);">0</div></div>
-            <div class="kpi"><div class="kpi-top"><span data-i18n="k_open">غير محلولة</span><span>⏳</span></div><div class="kpi-num" id="kOpen">0</div></div>
-            <div class="kpi"><div class="kpi-top"><span data-i18n="k_ach">نسبة تحقيق الأهداف</span><span>🎯</span></div><div class="kpi-num" id="kAch">0.0%</div></div>
-            <div class="kpi"><div class="kpi-top"><span data-i18n="k_fin">إجمالي الفروقات المالية</span><span>💰</span></div><div class="kpi-num" id="kFin">0.00</div></div>
-            <div class="kpi"><div class="kpi-top"><span data-i18n="k_bud">فرق الميزانية</span><span>💼</span></div><div class="kpi-num" id="kBud">0.00</div></div>
-            <div class="kpi"><div class="kpi-top"><span data-i18n="k_qty">فرق الكميات</span><span>📦</span></div><div class="kpi-num" id="kQty">0.00</div></div>
-          </div>
+  <script>
+    let savedRows = [];
+    let currentCalc = null;
 
-          <div class="card">
-            <div class="card-hd">
-              <span data-i18n="dash_recent">🕒 آخر العمليات والتحليلات</span>
-              <div class="btn-bar" style="margin-top:0;">
-                <button class="btn btn-mint" onclick="loadDemoData()">⚡ <span data-i18n="load_demo">بيانات اختبار (DEMO)</span></button>
-                <button class="btn btn-del" onclick="clearDemoData()">🧹 <span data-i18n="clear_demo">حذف بيانات الاختبار</span></button>
-              </div>
-            </div>
-            <div class="tbl-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th data-i18n="th_org">المؤسسة / القسم</th>
-                    <th data-i18n="th_per">الفترة</th>
-                    <th data-i18n="th_ind">المؤشر</th>
-                    <th data-i18n="th_prev">التقديري</th>
-                    <th data-i18n="th_real">الفعلي</th>
-                    <th data-i18n="th_abs">الفرق المطلق</th>
-                    <th data-i18n="th_rel">الفرق %</th>
-                    <th data-i18n="th_st">الحالة</th>
-                  </tr>
-                </thead>
-                <tbody id="dashRecentBody"></tbody>
-              </table>
-            </div>
-          </div>
+    function showScreen(id) {
+      ['splashScreen', 'lockScreen', 'appScreen'].forEach(s => {
+        document.getElementById(s).classList.toggle('active', s === id);
+      });
+    }
 
-          <div class="charts-grid">
-            <div class="chart-box">
-              <div style="font-weight:800; font-size:0.86rem; margin-bottom:8px;" data-i18n="ch_cmp">📊 مقارنة الفعلي بالتقديري</div>
-              <canvas id="dashBarChart" height="170"></canvas>
-            </div>
-            <div class="chart-box">
-              <div style="font-weight:800; font-size:0.86rem; margin-bottom:8px;" data-i18n="ch_dist">🥧 توزيع الفروقات حسب الحالة</div>
-              <canvas id="dashPieChart" height="170"></canvas>
-            </div>
-          </div>
-        </section>
+    function goLock() {
+      document.getElementById('lkStatus').textContent = '';
+      document.getElementById('pinCode').value = '';
+      showScreen('lockScreen');
+    }
 
-        <section id="sec-data" class="section">
-          <div class="card">
-            <div class="card-hd">
-              <span id="formHeading" data-i18n="data_form">📝 إدخال / تعديل بيانات التحليل</span>
-              <span class="pill p-info" id="editModeBadge">NEW</span>
-            </div>
+    function openMain() {
+      showScreen('appScreen');
+      calcAll();
+    }
 
-            <div class="grid-form cols-3">
-              <div class="f-group"><label data-i18n="f_org">اسم المؤسسة *</label><input id="fOrg" type="text" /></div>
-              <div class="f-group"><label data-i18n="f_dept">القسم / المصلحة *</label><input id="fDept" type="text" /></div>
-              <div class="f-group"><label data-i18n="f_period">الفترة الزمنية *</label><input id="fPeriod" type="text" /></div>
-              <div class="f-group"><label data-i18n="f_ind">نوع المؤشر *</label><input id="fIndicator" type="text" /></div>
-              <div class="f-group">
-                <label data-i18n="f_pol">طبيعة المؤشر *</label>
-                <select id="fPolarity">
-                  <option value="revenue">إيرادات / مبيعات / إنتاج (الأعلى أفضل)</option>
-                  <option value="cost">تكاليف / مصاريف / إنفاق (الأقل أفضل)</option>
-                </select>
-              </div>
-              <div class="f-group"><label data-i18n="f_owner">المسؤول عن البيانات *</label><input id="fOwner" type="text" /></div>
-              <div class="f-group"><label data-i18n="f_prev">القيمة التقديرية (Prévisionnel) *</label><input id="fPrev" type="number" step="any" /></div>
-              <div class="f-group"><label data-i18n="f_real">القيمة الفعلية (Réel) *</label><input id="fReal" type="number" step="any" /></div>
-              <div class="f-group"><label data-i18n="f_obj">الهدف المحدد (Objectif)</label><input id="fObj" type="number" step="any" /></div>
-              <div class="f-group"><label data-i18n="f_bprev">الميزانية التقديرية</label><input id="fBPrev" type="number" step="any" /></div>
-              <div class="f-group"><label data-i18n="f_breal">الميزانية الفعلية</label><input id="fBReal" type="number" step="any" /></div>
-              <div class="f-group"><label data-i18n="f_qprev">الكمية التقديرية</label><input id="fQPrev" type="number" step="any" /></div>
-              <div class="f-group"><label data-i18n="f_qreal">الكمية الفعلية</label><input id="fQReal" type="number" step="any" /></div>
-              <div class="f-group" style="grid-column: 1 / -1;"><label data-i18n="f_notes">ملاحظات إضافية</label><textarea id="fNotes"></textarea></div>
-            </div>
+    function tryPin() {
+      const code = document.getElementById('pinCode').value.trim();
+      if (code === 'AYAN2026' || code === '2026') {
+        openMain();
+      } else {
+        document.getElementById('lkStatus').textContent = 'الرمز غير صحيح — استخدمي AYAN2026';
+      }
+    }
 
-            <div class="btn-bar">
-              <button class="btn btn-p" onclick="saveRecord()">💾 حفظ وحساب تلقائي</button>
-              <button class="btn btn-sec" onclick="resetRecordForm()">↺ تفريغ النموذج</button>
-              <label class="btn btn-mint" style="cursor:pointer;">
-                📥 استيراد CSV
-                <input type="file" accept=".csv,.txt" onchange="importCSV(event)" style="display:none;" />
-              </label>
-              <button class="btn btn-peach" onclick="exportRecordsCSV()">📤 تصدير CSV/Excel</button>
-            </div>
-          </div>
+    async function tryFingerprint() {
+      const st = document.getElementById('lkStatus');
+      if (!window.PublicKeyCredential) {
+        st.textContent = 'البصمة غير مدعومة في هذا المتصفح، أدخلي الرمز AYAN2026';
+        return;
+      }
+      try {
+        const ch = new Uint8Array(16);
+        window.crypto.getRandomValues(ch);
+        const uid = new Uint8Array(16);
+        window.crypto.getRandomValues(uid);
+        const cred = await navigator.credentials.create({
+          publicKey: {
+            challenge: ch,
+            rp: { name: 'AYAN Studio' },
+            user: { id: uid, name: 'ayan@local', displayName: 'AYAN' },
+            pubKeyCredParams: [{ type: 'public-key', alg: -7 }, { type: 'public-key', alg: -257 }],
+            authenticatorSelection: { authenticatorAttachment: 'platform', userVerification: 'required' },
+            timeout: 45000
+          }
+        });
+        if (cred) openMain();
+      } catch {
+        st.textContent = 'لم تكتمل البصمة — جرّبي الرمز AYAN2026 أو أعيدي المحاولة';
+      }
+    }
 
-          <div class="card">
-            <div class="card-hd"><span>📋 سجل البيانات المحسوبة</span></div>
-            <div class="tbl-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th data-i18n="th_org">المؤسسة / القسم</th>
-                    <th data-i18n="th_ind">المؤشر</th>
-                    <th data-i18n="th_abs">الفرق المطلق</th>
-                    <th data-i18n="th_rel">الفرق %</th>
-                    <th data-i18n="th_bud">فرق
+    function setLang(l) {
+      document.documentElement.lang = l;
+      document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+    }
+
+    function calcAll() {
+      const name = document.getElementById('mName').value.trim() || 'مؤشر';
+      const type = document.getElementById('mType').value;
+      const prev = parseFloat(document.getElementById('mPrev').value) || 0;
+      const real = parseFloat(document.getElementById('mReal').value) || 0;
+      const bPrev = parseFloat(document.getElementById('mBPrev').value) || 0;
+      const bReal = parseFloat(document.getElementById('mBReal').value) || 0;
+
+      const abs = real - prev;
+      const rel = Math.abs(prev) > 1e-9 ? ((real - prev) / Math.abs(prev)) * 100 : 0;
+      const bud = bReal - bPrev;
+
+      let fav = true;
+      if (Math.abs(abs) > 1e-9) {
+        fav = type === 'rev' ? abs > 0 : abs < 0;
+      }
+
+      currentCalc = { name, prev, real, abs, rel, bud, fav };
+      document.getElementById('kAbs').textContent = abs.toFixed(2);
+      document.getElementById('kRel').textContent = `${rel.toFixed(1)}%`;
+      document.getElementById('kBud').textContent = bud.toFixed(2);
+
+      const st = document.getElementById('kSt');
+      st.textContent = fav ? 'ملائم (F)' : 'غير ملائم (U)';
+      st.className = `badge ${fav ? 'b-fav' : 'b-unfav'}`;
+    }
+
+    function addRow() {
+      if (!currentCalc) return;
+      savedRows.unshift({ ...currentCalc });
+      renderRows();
+    }
+
+    function renderRows() {
+      document.getElementById('rowsBody').innerHTML = savedRows.map(r => `
+        <tr>
+          <td><strong>${r.name}</strong></td>
+          <td>${r.prev.toFixed(2)}</td>
+          <td>${r.real.toFixed(2)}</td>
+          <td><strong>${r.abs.toFixed(2)}</strong></td>
+          <td>${r.rel.toFixed(1)}%</td>
+          <td>${r.bud.toFixed(2)}</td>
+          <td><span class="badge ${r.fav ? 'b-fav' : 'b-unfav'}">${r.fav ? 'ملائم' : 'غير ملائم'}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    function exportCsv() {
+      const lines = ['Name,Forecast,Actual,AbsVar,RelPct,BudgetVar,Status'].concat(
+        savedRows.map(r => `"${r.name}",${r.prev},${r.real},${r.abs},${r.rel.toFixed(2)},${r.bud},${r.fav ? 'Favorable' : 'Unfavorable'}`)
+      );
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob(['\uFEFF' + lines.join('\n')], { type: 'text/csv;charset=utf-8;' }));
+      a.download = 'ayan-variances.csv';
+      a.click();
+    }
+
+    setTimeout(() => {
+      if (document.getElementById('splashScreen').classList.contains('active')) {
+        goLock();
+      }
+    }, 1200);
+    calcAll();
+  </script>
+</body>
+</html>
