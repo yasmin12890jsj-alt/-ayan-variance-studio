@@ -41,119 +41,23 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      padding-bottom: 102px;
+      padding-bottom: 84px;
     }
 
     .screen { display: none; min-height: 100vh; }
     .screen.active { display: flex; }
 
-    /* 1. First Screen: Animated Brand Video Reel + Optional intro.mp4 */
     #splashScreen {
-      position: relative;
-      overflow: hidden;
-      background: radial-gradient(circle at 20% 20%, #8E6EFF 0%, #5B38D4 48%, #241559 100%);
-      color: #fff;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 24px;
+      background: linear-gradient(135deg, #5230C8, #7655E8, #9B7BFF);
+      color: #fff; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 24px;
     }
-
-    #introVideoEl {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.35;
-      display: none;
-      pointer-events: none;
-    }
-
-    .reel-orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(8px);
-      pointer-events: none;
-      animation: floatOrb 4.5s ease-in-out infinite alternate;
-    }
-
-    .orb-1 {
-      width: 220px; height: 220px;
-      background: rgba(185, 240, 218, 0.18);
-      top: -40px; right: -40px;
-    }
-
-    .orb-2 {
-      width: 260px; height: 260px;
-      background: rgba(255, 233, 149, 0.16);
-      bottom: -60px; left: -50px;
-      animation-delay: 1s;
-    }
-
-    @keyframes floatOrb {
-      0% { transform: translate(0, 0) scale(1); }
-      100% { transform: translate(18px, -16px) scale(1.12); }
-    }
-
-    .reel-stage {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      animation: videoReveal 1.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
-
-    @keyframes videoReveal {
-      0% { opacity: 0; transform: scale(0.84) translateY(18px); filter: blur(6px); }
-      100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
-    }
-
     .splash-logo {
-      width: 98px; height: 98px; border-radius: 28px;
-      background: rgba(255,255,255,0.18);
-      border: 2px solid rgba(255,255,255,0.35);
-      display: grid; place-items: center;
-      font-size: 2.5rem; margin-bottom: 14px;
-      box-shadow: 0 18px 36px rgba(0,0,0,0.28);
-      animation: pulseBadge 2s infinite ease-in-out;
+      width: 90px; height: 90px; border-radius: 24px;
+      background: rgba(255,255,255,0.18); display: grid; place-items: center;
+      font-size: 2.4rem; margin-bottom: 12px;
     }
 
-    @keyframes pulseBadge {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.06); }
-    }
-
-    .brand-reel-title {
-      font-size: 2.2rem;
-      font-weight: 900;
-      letter-spacing: 0.5px;
-      background: linear-gradient(90deg, #FFFFFF 0%, #FFE995 50%, #B9F0DA 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .reel-track {
-      width: 190px; height: 5px;
-      background: rgba(255,255,255,0.22);
-      border-radius: 999px; overflow: hidden; margin-top: 16px;
-    }
-
-    .reel-bar {
-      width: 55%; height: 100%;
-      background: #FFE995; border-radius: 999px;
-      animation: sweepBar 1.4s ease-in-out infinite;
-    }
-
-    @keyframes sweepBar {
-      0% { transform: translateX(-110%); }
-      100% { transform: translateX(250%); }
-    }
-
-    /* 2. Lock */
     #lockScreen { align-items: center; justify-content: center; padding: 18px; }
     .lock-card {
       width: 100%; max-width: 390px; background: var(--card);
@@ -166,7 +70,6 @@
       margin: 14px auto; cursor: pointer;
     }
 
-    /* 3. Main App */
     #appScreen.active { display: block; }
     .topbar {
       background: linear-gradient(135deg, #6442DC, #8665F5);
@@ -192,7 +95,7 @@
     @media (min-width: 680px) { .kpis { grid-template-columns: repeat(5, 1fr); } }
     .kpi { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 10px; }
     .kpi-lbl { font-size: 0.72rem; color: var(--muted); font-weight: 800; }
-    .kpi-val { font-size: 0.98rem; font-weight: 900; margin-top: 3px; direction: ltr; text-align: right; }
+    .kpi-val { font-size: 0.96rem; font-weight: 900; margin-top: 3px; direction: ltr; text-align: right; }
 
     .grid-2 { display: grid; grid-template-columns: 1fr; gap: 8px; }
     @media (min-width: 640px) { .grid-2 { grid-template-columns: repeat(2, 1fr); } }
@@ -239,39 +142,37 @@
       border-radius: 14px; padding: 12px; line-height: 1.6; font-size: 0.84rem; margin-top: 8px;
     }
 
+    /* Single-row smooth horizontal 10-icon dock */
     .dock-10 {
       position: fixed; bottom: 0; left: 0; right: 0; z-index: 300;
       background: var(--card); border-top: 1px solid var(--border);
-      display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px;
-      padding: 5px 4px 7px;
+      display: flex; flex-direction: row; align-items: center; gap: 6px;
+      overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+      padding: 6px 8px 8px; box-shadow: 0 -6px 18px rgba(0,0,0,0.08);
     }
-    @media (min-width: 820px) { .dock-10 { grid-template-columns: repeat(10, 1fr); } }
+    .dock-10::-webkit-scrollbar { display: none; }
     .dock-btn {
-      border: none; background: transparent; color: var(--muted);
-      font-family: inherit; font-size: 0.64rem; font-weight: 800;
+      flex: 0 0 auto; min-width: 68px;
+      border: 1px solid transparent; background: var(--card-2); color: var(--muted);
+      font-family: inherit; font-size: 0.68rem; font-weight: 800;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 2px; padding: 5px 2px; border-radius: 10px; cursor: pointer;
+      gap: 2px; padding: 6px 8px; border-radius: 12px; cursor: pointer;
     }
-    .dock-btn .ic { font-size: 1.05rem; line-height: 1; }
-    .dock-btn.active { background: rgba(118,85,232,0.18); color: var(--primary); }
+    .dock-btn .ic { font-size: 1.1rem; line-height: 1; }
+    .dock-btn.active {
+      background: var(--primary); color: #fff; border-color: var(--primary);
+    }
   </style>
 </head>
 <body>
 
-  <!-- 1. First Screen: Animated Brand Video Reel + Optional intro.mp4 -->
+  <!-- 1. Splash -->
   <div id="splashScreen" class="screen active">
-    <video id="introVideoEl" autoplay muted playsinline></video>
-    <div class="reel-orb orb-1"></div>
-    <div class="reel-orb orb-2"></div>
-
-    <div class="reel-stage">
-      <div class="splash-logo">🎬</div>
-      <div class="brand-reel-title">إيان | AYAN</div>
-      <p id="spDesc" style="margin-top:6px; opacity:0.94; font-weight:700;">عرض تعريفي لتطبيق تحليل الفروقات والموازنات</p>
-      <div class="reel-track"><div class="reel-bar"></div></div>
-      <div style="margin-top:16px;">
-        <button class="btn btn-sec" id="spBtn" onclick="goLock()">متابعة إلى البصمة</button>
-      </div>
+    <div class="splash-logo">📐</div>
+    <h1 style="font-size:1.9rem; font-weight:900;">إيان | AYAN</h1>
+    <p id="spDesc" style="margin-top:6px; opacity:0.92;">استوديو تحليل الفروقات والموازنات والمنحنيات</p>
+    <div style="margin-top:14px;">
+      <button class="btn btn-sec" id="spBtn" onclick="goLock()">متابعة إلى البصمة</button>
     </div>
   </div>
 
@@ -284,4 +185,622 @@
       <button class="fp-btn" onclick="tryFingerprint()">👆</button>
       <div id="lkStatus" style="font-size:0.78rem; font-weight:800; color:var(--unfav); min-height:20px;"></div>
       <input id="pinInput" type="password" class="inp" placeholder="رمز الدخول: AYAN2026" />
-      <div
+      <div style="margin-top:10px;">
+        <button class="btn btn-p" id="pinBtn" onclick="tryPin()">دخول بالرمز</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Main App -->
+  <div id="appScreen" class="screen">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div>
+          <strong style="font-size:1.02rem;">📊 إيان | AYAN</strong>
+          <div id="curSubtitle" style="font-size:0.72rem; opacity:0.92;">العملة الأساسية: الدينار الجزائري (DZD)</div>
+        </div>
+        <div class="top-btns">
+          <button class="btn btn-p" style="padding:4px 8px; font-size:0.72rem;" id="btn-ar" onclick="setLang('ar')">AR</button>
+          <button class="btn btn-sec" style="padding:4px 8px; font-size:0.72rem;" id="btn-fr" onclick="setLang('fr')">FR</button>
+          <button class="btn btn-sec" style="padding:4px 8px; font-size:0.72rem;" id="btn-en" onclick="setLang('en')">EN</button>
+          <button class="btn btn-sec" style="padding:4px 8px; font-size:0.72rem;" onclick="document.body.classList.toggle('dark')">🌙</button>
+          <button class="btn btn-sec" style="padding:4px 8px; font-size:0.72rem;" onclick="goLock()">🔒</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <!-- KPIs -->
+      <div class="kpis">
+        <div class="kpi"><div class="kpi-lbl" id="kLblAbs">الفرق المطلق</div><div class="kpi-val" id="kAbs">0.00</div></div>
+        <div class="kpi"><div class="kpi-lbl" id="kLblRel">الفرق النسبي %</div><div class="kpi-val" id="kRel">0.0%</div></div>
+        <div class="kpi"><div class="kpi-lbl" id="kLblBud">فرق الميزانية</div><div class="kpi-val" id="kBud">0.00</div></div>
+        <div class="kpi"><div class="kpi-lbl" id="kLblQty">فرق الكميات</div><div class="kpi-val" id="kQty">0.00</div></div>
+        <div class="kpi"><div class="kpi-lbl" id="kLblSt">التصنيف</div><div style="margin-top:5px;"><span id="kBadge" class="badge b-fav">—</span></div></div>
+      </div>
+
+      <!-- Inputs Card -->
+      <div class="card" id="calcCard">
+        <div class="card-title">
+          <span id="inCardTitle">⚙️ بيانات المؤشر والموازنة</span>
+          <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+            <select id="currencySelect" class="inp" style="width:auto; padding:5px 9px;" onchange="updateCurrency()">
+              <option value="DZD" selected>🇩🇿 DZD (أساسي)</option>
+              <option value="USD">🇺🇸 USD ($)</option>
+              <option value="EUR">🇪🇺 EUR (€)</option>
+              <option value="GBP">🇬🇧 GBP (£)</option>
+              <option value="SAR">🇸🇦 SAR</option>
+              <option value="AED">🇦🇪 AED</option>
+              <option value="CHF">🇨🇭 CHF</option>
+              <option value="JPY">🇯🇵 JPY (¥)</option>
+            </select>
+            <button class="btn btn-mint" id="sampleBtn" onclick="loadSample()">⚡ مثال</button>
+            <button class="btn btn-p" id="saveBtn" onclick="saveEntry()">💾 حفظ</button>
+          </div>
+        </div>
+
+        <div class="grid-2 grid-3">
+          <div class="field"><label id="lName">البند / المؤشر</label><input id="inName" class="inp" value="الإيرادات والمبيعات" onchange="calcAll()" /></div>
+          <div class="field">
+            <label id="lNature">طبيعة المؤشر</label>
+            <select id="inNature" class="inp" onchange="calcAll()">
+              <option value="rev" id="optRev">إيرادات / مبيعات (الأعلى أفضل)</option>
+              <option value="cost" id="optCost">تكاليف / مصاريف (الأقل أفضل)</option>
+            </select>
+          </div>
+          <div class="field"><label id="lPrev">القيمة التقديرية (Prévisionnel)</label><input id="inPrev" type="number" step="any" class="inp" value="250000" onchange="calcAll()" /></div>
+          <div class="field"><label id="lReal">القيمة الفعلية (Réel)</label><input id="inReal" type="number" step="any" class="inp" value="285000" onchange="calcAll()" /></div>
+          <div class="field"><label id="lBPrev">الميزانية التقديرية</label><input id="inBPrev" type="number" step="any" class="inp" value="120000" onchange="calcAll()" /></div>
+          <div class="field"><label id="lBReal">الميزانية الفعلية</label><input id="inBReal" type="number" step="any" class="inp" value="112000" onchange="calcAll()" /></div>
+          <div class="field"><label id="lQPrev">الكمية التقديرية</label><input id="inQPrev" type="number" step="any" class="inp" value="500" onchange="calcAll()" /></div>
+          <div class="field"><label id="lQReal">الكمية الفعلية</label><input id="inQReal" type="number" step="any" class="inp" value="540" onchange="calcAll()" /></div>
+          <div class="field"><label id="lObj">الهدف المحدد (Objectif)</label><input id="inObj" type="number" step="any" class="inp" value="270000" onchange="calcAll()" /></div>
+        </div>
+      </div>
+
+      <!-- Active Workspace Panel -->
+      <div id="workspaceArea">
+        <div id="panel-ai" class="panel active card">
+          <div class="card-title">
+            <span id="aiTitle">🤖 المساعد الذكي لتحليل الفروقات</span>
+            <button class="btn btn-p" id="aiRunBtn" onclick="askAI('auto')">✨ تحليل فوري</button>
+          </div>
+          <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px;">
+            <button class="btn btn-sec" id="qWhy" onclick="askAI('why')">❓ ما سبب الفارق؟</button>
+            <button class="btn btn-sec" id="qBud" onclick="askAI('budget')">💼 تحليل الميزانية</button>
+            <button class="btn btn-sec" id="qExec" onclick="askAI('exec')">📌 ملخص تنفيذي</button>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <input id="aiQuestion" class="inp" placeholder="اكتبي سؤالك للمساعد الذكي هنا..." />
+            <button class="btn btn-butter" id="aiSendBtn" onclick="askAI('custom')">إرسال</button>
+          </div>
+          <div id="aiContent" class="ai-box"></div>
+        </div>
+
+        <div id="panel-varfocus" class="panel card">
+          <div class="card-title"><span id="focusTitle">📐 تفاصيل الفارق</span></div>
+          <div id="focusDetail" class="ai-box"></div>
+        </div>
+
+        <div id="panel-budget" class="panel card">
+          <div class="card-title"><span id="budTblTitle">💼 جدول الميزانية التقديرية والفعلية</span></div>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>البند</th>
+                  <th>الميزانية التقديرية</th>
+                  <th>الميزانية الفعلية</th>
+                  <th>فرق الميزانية</th>
+                  <th>نسبة الاستهلاك</th>
+                </tr>
+              </thead>
+              <tbody id="budgetTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="panel-charts" class="panel card">
+          <div class="card-title"><span id="chTitle">📈 المنحنيات والرسوم البيانية</span></div>
+          <div class="charts-grid">
+            <div class="chart-box"><canvas id="curveChart" height="150"></canvas></div>
+            <div class="chart-box"><canvas id="barChart" height="150"></canvas></div>
+          </div>
+        </div>
+
+        <div id="panel-tables" class="panel card">
+          <div class="card-title">
+            <span id="fullTblTitle">📋 جداول الفروقات الكاملة</span>
+            <div style="display:flex; gap:6px;">
+              <button class="btn btn-mint" onclick="exportCSV()">📥 CSV</button>
+              <button class="btn btn-peach" onclick="window.print()">🖨️ PDF</button>
+            </div>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>البند</th>
+                  <th>الفرق المطلق</th>
+                  <th>الفرق النسبي %</th>
+                  <th>فرق الميزانية</th>
+                  <th>فرق الكمية</th>
+                  <th>فرق الأداء</th>
+                  <th>الحالة</th>
+                </tr>
+              </thead>
+              <tbody id="fullTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="panel-currencies" class="panel card">
+          <div class="card-title"><span id="curTblTitle">💱 العملات (الدينار الجزائري أساسي + 7 عملات)</span></div>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr><th>الرمز</th><th>العملة</th><th>الحالة</th><th>القيمة المحولة</th></tr>
+              </thead>
+              <tbody id="currencyTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10 Bottom Icons (Single-row horizontal scroll + instant tap) -->
+    <nav class="dock-10" aria-label="10 navigation icons">
+      <button type="button" class="dock-btn active" id="d-ai" onclick="fastDock('ai', 'ai')"><span class="ic">🤖</span><span id="dLblAi">المساعد</span></button>
+      <button type="button" class="dock-btn" id="d-calc" onclick="fastDock('calc', 'tables')"><span class="ic">🧮</span><span id="dLblCalc">حاسبة</span></button>
+      <button type="button" class="dock-btn" id="d-abs" onclick="fastDock('abs', 'varfocus')"><span class="ic">📏</span><span id="dLblAbs">مطلق</span></button>
+      <button type="button" class="dock-btn" id="d-rel" onclick="fastDock('rel', 'varfocus')"><span class="ic">📊</span><span id="dLblRel">نسبي %</span></button>
+      <button type="button" class="dock-btn" id="d-bud" onclick="fastDock('bud', 'budget')"><span class="ic">💼</span><span id="dLblBud">ميزانية</span></button>
+      <button type="button" class="dock-btn" id="d-qty" onclick="fastDock('qty', 'varfocus')"><span class="ic">📦</span><span id="dLblQty">كميات</span></button>
+      <button type="button" class="dock-btn" id="d-perf" onclick="fastDock('perf', 'varfocus')"><span class="ic">🎯</span><span id="dLblPerf">أداء</span></button>
+      <button type="button" class="dock-btn" id="d-tbl" onclick="fastDock('tbl', 'tables')"><span class="ic">📋</span><span id="dLblTbl">جداول</span></button>
+      <button type="button" class="dock-btn" id="d-ch" onclick="fastDock('ch', 'charts')"><span class="ic">📈</span><span id="dLblCh">منحنيات</span></button>
+      <button type="button" class="dock-btn" id="d-cur" onclick="fastDock('cur', 'currencies')"><span class="ic">💱</span><span id="dLblCur">عملات</span></button>
+    </nav>
+  </div>
+
+  <script>
+    const LANGS = {
+      ar: {
+        dir: 'rtl',
+        spDesc: 'استوديو تحليل الفروقات والموازنات والمنحنيات', spBtn: 'متابعة إلى البصمة',
+        lkTitle: 'قفل البصمة — إيان', lkDesc: 'التحقق بالبصمة أو بالرمز للدخول', pinBtn: 'دخول بالرمز',
+        curBase: 'العملة الأساسية: الدينار الجزائري (DZD)',
+        kLblAbs: 'الفرق المطلق', kLblRel: 'الفرق النسبي %', kLblBud: 'فرق الميزانية', kLblQty: 'فرق الكميات', kLblSt: 'التصنيف',
+        inCardTitle: '⚙️ بيانات المؤشر والموازنة', sampleBtn: '⚡ مثال', saveBtn: '💾 حفظ',
+        lName: 'البند / المؤشر', lNature: 'طبيعة المؤشر',
+        optRev: 'إيرادات / مبيعات (الأعلى أفضل)', optCost: 'تكاليف / مصاريف (الأقل أفضل)',
+        lPrev: 'القيمة التقديرية (Prévisionnel)', lReal: 'القيمة الفعلية (Réel)',
+        lBPrev: 'الميزانية التقديرية', lBReal: 'الميزانية الفعلية',
+        lQPrev: 'الكمية التقديرية', lQReal: 'الكمية الفعلية', lObj: 'الهدف المحدد (Objectif)',
+        aiTitle: '🤖 المساعد الذكي لتحليل الفروقات', aiRunBtn: '✨ تحليل فوري',
+        qWhy: '❓ ما سبب الفارق؟', qBud: '💼 تحليل الميزانية', qExec: '📌 ملخص تنفيذي', aiSendBtn: 'إرسال',
+        aiPlaceholder: 'اكتبي سؤالك للمساعد الذكي هنا...',
+        budTblTitle: '💼 جدول الميزانية التقديرية والفعلية',
+        chTitle: '📈 المنحنيات والرسوم البيانية', fullTblTitle: '📋 جداول الفروقات الكاملة',
+        curTblTitle: '💱 العملات (الدينار الجزائري أساسي + 7 عملات)',
+        dLblAi: 'المساعد', dLblCalc: 'حاسبة', dLblAbs: 'مطلق', dLblRel: 'نسبي %', dLblBud: 'ميزانية',
+        dLblQty: 'كميات', dLblPerf: 'أداء', dLblTbl: 'جداول', dLblCh: 'منحنيات', dLblCur: 'عملات',
+        fav: 'ملائم (F)', unfav: 'غير ملائم (U)'
+      },
+      fr: {
+        dir: 'ltr',
+        spDesc: 'Studio d’Analyse des Écarts, Budgets et Courbes', spBtn: 'Continuer vers Empreinte',
+        lkTitle: 'Verrouillage Biométrique — AYAN', lkDesc: 'Empreinte ou code requis', pinBtn: 'Entrer par code',
+        curBase: 'Devise principale : Dinar Algérien (DZD)',
+        kLblAbs: 'Écart Absolu', kLblRel: 'Écart Relatif %', kLblBud: 'Écart Budget', kLblQty: 'Écart Qté', kLblSt: 'Statut',
+        inCardTitle: '⚙️ Données Indicateur & Budget', sampleBtn: '⚡ Exemple', saveBtn: '💾 Enreg.',
+        lName: 'Indicateur / Poste', lNature: 'Nature indicateur',
+        optRev: 'Revenus / Ventes (Plus élevé = mieux)', optCost: 'Coûts / Charges (Plus bas = mieux)',
+        lPrev: 'Prévisionnel', lReal: 'Réel',
+        lBPrev: 'Budget Prévisionnel', lBReal: 'Budget Réel',
+        lQPrev: 'Quantité Prévue', lQReal: 'Quantité Réelle', lObj: 'Objectif',
+        aiTitle: '🤖 Assistant IA d’Écarts', aiRunBtn: '✨ Analyse IA',
+        qWhy: '❓ Cause écart ?', qBud: '💼 Budget', qExec: '📌 Résumé', aiSendBtn: 'Envoyer',
+        aiPlaceholder: 'Posez votre question à l’IA...',
+        budTblTitle: '💼 Tableau Budgétaire',
+        chTitle: '📈 Courbes & Graphiques', fullTblTitle: '📋 Tableau Complet des Écarts',
+        curTblTitle: '💱 Devises (DZD Base + 7 Devises)',
+        dLblAi: 'IA', dLblCalc: 'Calcul', dLblAbs: 'Absolu', dLblRel: 'Relatif %', dLblBud: 'Budget',
+        dLblQty: 'Quantités', dLblPerf: 'Perf.', dLblTbl: 'Tableaux', dLblCh: 'Courbes', dLblCur: 'Devises',
+        fav: 'Favorable (F)', unfav: 'Défavorable (U)'
+      },
+      en: {
+        dir: 'ltr',
+        spDesc: 'Variance Analysis, Budget & Curves Studio', spBtn: 'Continue to Biometrics',
+        lkTitle: 'Biometric Lock — AYAN', lkDesc: 'Fingerprint or code required', pinBtn: 'Unlock Code',
+        curBase: 'Base Currency: Algerian Dinar (DZD)',
+        kLblAbs: 'Abs. Variance', kLblRel: 'Rel. Variance %', kLblBud: 'Budget Var.', kLblQty: 'Qty Var.', kLblSt: 'Status',
+        inCardTitle: '⚙️ Indicator & Budget Inputs', sampleBtn: '⚡ Sample', saveBtn: '💾 Save',
+        lName: 'Indicator / Item', lNature: 'Indicator Nature',
+        optRev: 'Revenue / Sales (Higher is better)', optCost: 'Cost / Expense (Lower is better)',
+        lPrev: 'Forecast', lReal: 'Actual',
+        lBPrev: 'Forecast Budget', lBReal: 'Actual Budget',
+        lQPrev: 'Forecast Qty', lQReal: 'Actual Qty', lObj: 'Target',
+        aiTitle: '🤖 AI Variance Assistant', aiRunBtn: '✨ Run AI',
+        qWhy: '❓ Why variance?', qBud: '💼 Budget', qExec: '📌 Summary', aiSendBtn: 'Ask',
+        aiPlaceholder: 'Ask the AI assistant...',
+        budTblTitle: '💼 Budget Table',
+        chTitle: '📈 Curves & Charts', fullTblTitle: '📋 Full Variance Tables',
+        curTblTitle: '💱 Currencies (DZD Base + 7 FX)',
+        dLblAi: 'AI Help', dLblCalc: 'Calc', dLblAbs: 'Abs.', dLblRel: 'Rel. %', dLblBud: 'Budget',
+        dLblQty: 'Qty', dLblPerf: 'Perf.', dLblTbl: 'Tables', dLblCh: 'Curves', dLblCur: 'FX',
+        fav: 'Favorable (F)', unfav: 'Unfavorable (U)'
+      }
+    };
+
+    const RATES = {
+      DZD: 1, USD: 1 / 135, EUR: 1 / 146, GBP: 1 / 172,
+      SAR: 1 / 36, AED: 1 / 36.7, CHF: 1 / 153, JPY: 1 / 0.88
+    };
+
+    const CUR_NAMES = {
+      DZD: { ar: 'الدينار الجزائري (أساسي)', fr: 'Dinar Algérien (Base)', en: 'Algerian Dinar (Base)' },
+      USD: { ar: 'الدولار الأمريكي', fr: 'Dollar Américain', en: 'US Dollar' },
+      EUR: { ar: 'اليورو', fr: 'Euro', en: 'Euro' },
+      GBP: { ar: 'الجنيه الإسترليني', fr: 'Livre Sterling', en: 'British Pound' },
+      SAR: { ar: 'الريال السعودي', fr: 'Riyal Saoudien', en: 'Saudi Riyal' },
+      AED: { ar: 'الدرهم الإماراتي', fr: 'Dirham Émirati', en: 'UAE Dirham' },
+      CHF: { ar: 'الفرنك السويسري', fr: 'Franc Suisse', en: 'Swiss Franc' },
+      JPY: { ar: 'الين الياباني', fr: 'Yen Japonais', en: 'Japanese Yen' }
+    };
+
+    let lang = 'ar';
+    let focusType = 'abs';
+    let latest = null;
+    let cChart = null;
+    let bChart = null;
+    let items = [
+      { name: 'الإيرادات والمبيعات', nature: 'rev', prev: 250000, real: 285000, bPrev: 120000, bReal: 112000, qPrev: 500, qReal: 540, obj: 270000 },
+      { name: 'تكلفة المواد الأولية', nature: 'cost', prev: 180000, real: 196000, bPrev: 180000, bReal: 196000, qPrev: 300, qReal: 320, obj: 175000 }
+    ];
+
+    function setLang(l) {
+      lang = l;
+      const d = LANGS[l];
+      document.documentElement.lang = l;
+      document.documentElement.dir = d.dir;
+      ['ar', 'fr', 'en'].forEach(x => {
+        const b = document.getElementById(`btn-${x}`);
+        b.className = `btn ${x === l ? 'btn-p' : 'btn-sec'}`;
+        b.style.padding = '4px 8px';
+        b.style.fontSize = '0.72rem';
+      });
+      Object.keys(d).forEach(k => {
+        if (k === 'dir') return;
+        const el = document.getElementById(k);
+        if (el) el.textContent = d[k];
+      });
+      document.getElementById('aiQuestion').placeholder = d.aiPlaceholder;
+      updateCurrencyLabel();
+      calcAll();
+    }
+
+    function showScreen(id) {
+      ['splashScreen', 'lockScreen', 'appScreen'].forEach(s => {
+        document.getElementById(s).classList.toggle('active', s === id);
+      });
+    }
+
+    function goLock() {
+      document.getElementById('lkStatus').textContent = '';
+      document.getElementById('pinInput').value = '';
+      showScreen('lockScreen');
+    }
+
+    function openApp() {
+      showScreen('appScreen');
+      calcAll();
+      askAI('auto');
+    }
+
+    function tryPin() {
+      const code = document.getElementById('pinInput').value.trim();
+      if (code === 'AYAN2026' || code === '2026') openApp();
+      else document.getElementById('lkStatus').textContent = 'AYAN2026';
+    }
+
+    async function tryFingerprint() {
+      const st = document.getElementById('lkStatus');
+      if (!window.PublicKeyCredential) { st.textContent = 'PIN: AYAN2026'; return; }
+      try {
+        const ch = new Uint8Array(16); window.crypto.getRandomValues(ch);
+        const uid = new Uint8Array(16); window.crypto.getRandomValues(uid);
+        const cred = await navigator.credentials.create({
+          publicKey: {
+            challenge: ch,
+            rp: { name: 'AYAN Studio' },
+            user: { id: uid, name: 'ayan@local', displayName: 'AYAN' },
+            pubKeyCredParams: [{ type: 'public-key', alg: -7 }, { type: 'public-key', alg: -257 }],
+            authenticatorSelection: { authenticatorAttachment: 'platform', userVerification: 'required' },
+            timeout: 45000
+          }
+        });
+        if (cred) openApp();
+      } catch {
+        st.textContent = 'AYAN2026';
+      }
+    }
+
+    function getCur() { return document.getElementById('currencySelect').value || 'DZD'; }
+
+    function updateCurrencyLabel() {
+      const cur = getCur();
+      const base = LANGS[lang].curBase;
+      document.getElementById('curSubtitle').textContent = cur === 'DZD' ? base : `${base} → ${cur}`;
+    }
+
+    function updateCurrency() {
+      updateCurrencyLabel();
+      calcAll();
+      if (cChart && bChart) initOrUpdateCharts();
+    }
+
+    function fmt(dzd) {
+      const cur = getCur();
+      const val = (Number(dzd) || 0) * (RATES[cur] || 1);
+      const s = val > 0 ? '+' : val < 0 ? '-' : '';
+      return `${s}${Math.abs(val).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${cur}`;
+    }
+
+    function calcAll() {
+      const d = LANGS[lang];
+      const prev = parseFloat(document.getElementById('inPrev').value) || 0;
+      const real = parseFloat(document.getElementById('inReal').value) || 0;
+      const bPrev = parseFloat(document.getElementById('inBPrev').value) || 0;
+      const bReal = parseFloat(document.getElementById('inBReal').value) || 0;
+      const qPrev = parseFloat(document.getElementById('inQPrev').value) || 0;
+      const qReal = parseFloat(document.getElementById('inQReal').value) || 0;
+      const obj = parseFloat(document.getElementById('inObj').value) || prev;
+      const nature = document.getElementById('inNature').value;
+      const name = document.getElementById('inName').value.trim() || 'Item';
+
+      const absVar = real - prev;
+      const relVar = Math.abs(prev) > 1e-9 ? ((real - prev) / Math.abs(prev)) * 100 : 0;
+      const budVar = bReal - bPrev;
+      const qtyVar = qReal - qPrev;
+      const perfVar = real - obj;
+      const budUse = Math.abs(bPrev) > 1e-9 ? (bReal / bPrev) * 100 : 0;
+
+      let fav = true;
+      if (Math.abs(absVar) > 1e-9) fav = nature === 'rev' ? absVar > 0 : absVar < 0;
+
+      latest = { name, nature, prev, real, bPrev, bReal, qPrev, qReal, obj, absVar, relVar, budVar, qtyVar, perfVar, budUse, fav };
+
+      document.getElementById('kAbs').textContent = fmt(absVar);
+      document.getElementById('kRel').textContent = `${relVar > 0 ? '+' : ''}${relVar.toFixed(1)}%`;
+      document.getElementById('kBud').textContent = fmt(budVar);
+      document.getElementById('kQty').textContent = `${qtyVar > 0 ? '+' : ''}${qtyVar.toFixed(1)}`;
+
+      const b = document.getElementById('kBadge');
+      b.textContent = fav ? d.fav : d.unfav;
+      b.className = `badge ${fav ? 'b-fav' : 'b-unfav'}`;
+
+      renderFocus();
+      renderTables();
+      renderCurrencies();
+    }
+
+    function saveEntry() {
+      if (!latest) return;
+      items.unshift({ ...latest });
+      renderTables();
+      askAI('auto');
+      if (cChart && bChart) initOrUpdateCharts();
+    }
+
+    function loadSample() {
+      document.getElementById('inName').value = 'مبيعات الفرع الرئيسي';
+      document.getElementById('inNature').value = 'rev';
+      document.getElementById('inPrev').value = 300000;
+      document.getElementById('inReal').value = 345000;
+      document.getElementById('inBPrev').value = 140000;
+      document.getElementById('inBReal').value = 129000;
+      document.getElementById('inQPrev').value = 600;
+      document.getElementById('inQReal').value = 670;
+      document.getElementById('inObj').value = 320000;
+      calcAll();
+      askAI('auto');
+      if (cChart && bChart) initOrUpdateCharts();
+    }
+
+    // Fast immediate switch without smooth-scroll delay
+    function fastDock(dockId, panelId) {
+      const dockBtns = document.querySelectorAll('.dock-btn');
+      for (let i = 0; i < dockBtns.length; i++) dockBtns[i].classList.remove('active');
+      const curBtn = document.getElementById(`d-${dockId}`);
+      if (curBtn) {
+        curBtn.classList.add('active');
+        curBtn.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'center' });
+      }
+
+      const panels = document.querySelectorAll('.panel');
+      for (let i = 0; i < panels.length; i++) panels[i].classList.remove('active');
+      const target = document.getElementById(`panel-${panelId}`);
+      if (target) target.classList.add('active');
+
+      if (['abs', 'rel', 'qty', 'perf'].includes(dockId)) {
+        focusType = dockId;
+        renderFocus();
+      } else if (panelId === 'charts') {
+        initOrUpdateCharts();
+      } else if (panelId === 'ai') {
+        askAI('auto');
+      }
+
+      const area = document.getElementById('workspaceArea');
+      if (area) area.scrollIntoView({ behavior: 'auto', block: 'nearest' });
+    }
+
+    function renderFocus() {
+      if (!latest) return;
+      const t = document.getElementById('focusTitle');
+      const box = document.getElementById('focusDetail');
+      if (focusType === 'abs') {
+        t.textContent = '📏 Écart absolu';
+        box.innerHTML = `<strong>Réel - Prévisionnel</strong><div style="margin-top:6px;">${fmt(latest.absVar)}</div>`;
+      } else if (focusType === 'rel') {
+        t.textContent = '📊 Écart relatif (%)';
+        box.innerHTML = `<strong>((Réel - Prévisionnel) / |Prévisionnel|) × 100</strong><div style="margin-top:6px;">${latest.relVar.toFixed(2)}%</div>`;
+      } else if (focusType === 'qty') {
+        t.textContent = '📦 Écart quantité';
+        box.innerHTML = `<strong>Quantité réelle - Quantité prévisionnelle</strong><div style="margin-top:6px;">${latest.qtyVar.toFixed(2)}</div>`;
+      } else {
+        t.textContent = '🎯 Écart performance';
+        box.innerHTML = `<strong>Réel - Objectif</strong><div style="margin-top:6px;">${fmt(latest.perfVar)}</div>`;
+      }
+    }
+
+    function renderTables() {
+      if (!latest) return;
+      const d = LANGS[lang];
+      const all = [latest, ...items];
+
+      document.getElementById('budgetTableBody').innerHTML = all.map(r => `
+        <tr>
+          <td><strong>${esc(r.name)}</strong></td>
+          <td>${fmt(r.bPrev)}</td>
+          <td>${fmt(r.bReal)}</td>
+          <td><strong>${fmt(r.budVar ?? ((r.bReal || 0) - (r.bPrev || 0)))}</strong></td>
+          <td>${(r.budUse ?? 0).toFixed(1)}%</td>
+        </tr>
+      `).join('');
+
+      document.getElementById('fullTableBody').innerHTML = all.map(r => {
+        const prev = Number(r.prev) || 0;
+        const real = Number(r.real) || 0;
+        const absV = r.absVar ?? (real - prev);
+        const relV = r.relVar ?? (Math.abs(prev) > 1e-9 ? ((real - prev) / Math.abs(prev)) * 100 : 0);
+        const budV = r.budVar ?? ((Number(r.bReal) || 0) - (Number(r.bPrev) || 0));
+        const qtyV = r.qtyVar ?? ((Number(r.qReal) || 0) - (Number(r.qPrev) || 0));
+        const perfV = r.perfVar ?? (real - (Number(r.obj) || prev));
+        const fav = r.fav ?? (r.nature === 'rev' ? absV >= 0 : absV <= 0);
+        return `
+          <tr>
+            <td><strong>${esc(r.name)}</strong></td>
+            <td><strong>${fmt(absV)}</strong></td>
+            <td>${relV.toFixed(1)}%</td>
+            <td>${fmt(budV)}</td>
+            <td>${qtyV.toFixed(1)}</td>
+            <td>${fmt(perfV)}</td>
+            <td><span class="badge ${fav ? 'b-fav' : 'b-unfav'}">${fav ? d.fav : d.unfav}</span></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderCurrencies() {
+      const base = latest ? latest.absVar : 0;
+      const cur = getCur();
+      document.getElementById('currencyTableBody').innerHTML = Object.keys(RATES).map(code => {
+        const val = base * RATES[code];
+        const tag = code === 'DZD' ? 'DZD (Base)' : (code === cur ? 'Active' : 'FX');
+        return `
+          <tr>
+            <td><strong>${code}</strong></td>
+            <td>${CUR_NAMES[code][lang] || CUR_NAMES[code].en}</td>
+            <td><span class="badge ${code === 'DZD' ? 'b-fav' : 'b-info'}">${tag}</span></td>
+            <td style="direction:ltr; text-align:right;"><strong>${val.toFixed(2)} ${code}</strong></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function askAI(mode) {
+      if (!latest) return;
+      const d = LANGS[lang];
+      const st = latest.fav ? d.fav : d.unfav;
+      const q = document.getElementById('aiQuestion').value.trim();
+
+      let html = '';
+      if (mode === 'why') {
+        html = `<div><strong>${esc(latest.name)} (${st}):</strong> ${fmt(latest.absVar)} (${latest.relVar.toFixed(1)}%). <em>فرضية للمراجعة:</em> قد يرتبط الفارق بتغير الكمية (${latest.qtyVar.toFixed(1)}) أو التكلفة/السعر، ويحتاج تحققاً ميدانياً دون افتراض سبب غير مؤكد.</div>`;
+      } else if (mode === 'budget') {
+        html = `<div><strong>الميزانية:</strong> التقديرية ${fmt(latest.bPrev)} مقابل الفعلية ${fmt(latest.bReal)} ← فرق الميزانية <strong>${fmt(latest.budVar)}</strong> (${latest.budUse.toFixed(1)}%).</div>`;
+      } else if (mode === 'exec') {
+        html = `<div><strong>ملخص تنفيذي:</strong> "${esc(latest.name)}" يسجل فرقاً مطلقاً ${fmt(latest.absVar)} وفرق أداء ${fmt(latest.perfVar)} (${st}).</div>`;
+      } else if (mode === 'custom' && q) {
+        html = `<div><strong>سؤال:</strong> ${esc(q)}</div><div style="margin-top:6px;"><strong>الرد على بيانات "${esc(latest.name)}":</strong> الفرق المطلق ${fmt(latest.absVar)}، النسبي ${latest.relVar.toFixed(1)}%، الميزانية ${fmt(latest.budVar)}، الحالة: <strong>${st}</strong>.</div>`;
+      } else {
+        html = `<div><strong>التحليل الفوري لـ "${esc(latest.name)}":</strong> الفرق المطلق <strong>${fmt(latest.absVar)}</strong> (${latest.relVar.toFixed(1)}%) • الحالة: <strong>${st}</strong> • الميزانية: <strong>${fmt(latest.budVar)}</strong> • الكمية: <strong>${latest.qtyVar.toFixed(1)}</strong>.</div>`;
+      }
+      document.getElementById('aiContent').innerHTML = html;
+    }
+
+    function initOrUpdateCharts() {
+      if (typeof Chart === 'undefined') return;
+      const rows = [latest, ...items].filter(Boolean).slice().reverse();
+      const labels = rows.map(r => r.name.slice(0, 12));
+      const reals = rows.map(r => Number(r.real) || 0);
+      const prevs = rows.map(r => Number(r.prev) || 0);
+      const absVars = rows.map((r, i) => r.absVar ?? (reals[i] - prevs[i]));
+      const budVars = rows.map(r => r.budVar ?? ((Number(r.bReal) || 0) - (Number(r.bPrev) || 0)));
+
+      if (!cChart) {
+        cChart = new Chart(document.getElementById('curveChart'), {
+          type: 'line',
+          data: {
+            labels,
+            datasets: [
+              { label: 'Réel', data: reals, borderColor: '#7655E8', tension: 0.25 },
+              { label: 'Prévisionnel', data: prevs, borderColor: '#0F8A5F', tension: 0.25 },
+              { label: 'Écart', data: absVars, borderColor: '#C62841', borderDash: [4, 4], tension: 0.25 }
+            ]
+          },
+          options: { animation: false, responsive: true }
+        });
+      } else {
+        cChart.data.labels = labels;
+        cChart.data.datasets[0].data = reals;
+        cChart.data.datasets[1].data = prevs;
+        cChart.data.datasets[2].data = absVars;
+        cChart.update('none');
+      }
+
+      if (!bChart) {
+        bChart = new Chart(document.getElementById('barChart'), {
+          type: 'bar',
+          data: {
+            labels,
+            datasets: [
+              { label: 'Écart', data: absVars, backgroundColor: '#7655E8' },
+              { label: 'Budget Var', data: budVars, backgroundColor: '#B9F0DA' }
+            ]
+          },
+          options: { animation: false, responsive: true }
+        });
+      } else {
+        bChart.data.labels = labels;
+        bChart.data.datasets[0].data = absVars;
+        bChart.data.datasets[1].data = budVars;
+        bChart.update('none');
+      }
+    }
+
+    function exportCSV() {
+      const list = [latest, ...items].filter(Boolean);
+      const lines = ['Name,Forecast,Actual,BudgetPrev,BudgetReal,QtyPrev,QtyReal'].concat(
+        list.map(r => `"${r.name}",${r.prev},${r.real},${r.bPrev},${r.bReal},${r.qPrev},${r.qReal}`)
+      );
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob(['\uFEFF' + lines.join('\n')], { type: 'text/csv;charset=utf-8;' }));
+      a.download = `ayan-${Date.now()}.csv`;
+      a.click();
+    }
+
+    function esc(s) {
+      return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    setTimeout(() => {
+      if (document.getElementById('splashScreen').classList.contains('active')) goLock();
+    }, 900);
+    calcAll();
+    askAI('auto');
+  </script>
+</body>
+</html>
