@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#7655E8" />
+  <title>إيان | AYAN — استوديو تحليل الفروقات الشامل</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #7655E8;
+      --primary-dark: #5b3ad0;
+      --mint: #B9F0DA;
+      --lavender: #D8CBFF;
+      --peach: #FFE1C7;
+      --butter: #FFE995;
+      --bg: #F6F4FF;
+      --card: #FFFFFF;
+      --text: #1E1B2E;
+      --muted: #67627D;
+      --fav: #138A5B;
+      --fav-bg: #E3F9F0;
+      --unfav: #C92A42;
+      --unfav-bg: #FFE6EB;
+      --border: #E8E3FA;
+      --shadow: 0 10px 28px rgba(118, 85, 232, 0.08);
+      --radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(180deg, #EFEAFF 0%, var(--bg) 45%, #FBF9FF 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 92px;
+      line-height: 1.55;
+    }
+
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 16px 16px 28px;
+    }
+
+    /* Header */
+    .top-header {
+      background: linear-gradient(135deg, #7655E8 0%, #9274F6 65%, #A68BFF 100%);
+      color: #fff;
+      border-radius: 26px;
+      padding: 20px;
+      box-shadow: 0 14px 30px rgba(118, 85, 232, 0.22);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+
+    .top-header::after {
+      content: "";
+      position: absolute;
+      width: 170px;
+      height: 170px;
+      background: rgba(255, 233, 149, 0.22);
+      border-radius: 50%;
+      top: -55px;
+      left: -40px;
+      pointer-events: none;
+    }
+
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand-title {
+      font-size: 1.55rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-badge {
+      background: var(--butter);
+      color: var(--text);
+      font-size: 0.78rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    .header-sub {
+      font-size: 0.9rem;
+      opacity: 0.94;
+      margin-top: 4px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .currency-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(8px);
+      padding: 6px 12px;
+      border-radius: 14px;
+      font-size: 0.85rem;
+    }
+
+    .currency-box select {
+      background: #fff;
+      color: var(--text);
+      border: none;
+      border-radius: 10px;
+      padding: 4px 10px;
+      font-family: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    @media (min-width: 720px) {
+      .kpi-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .kpi-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 15px;
+      box-shadow: var(--shadow);
+    }
+
+    .kpi-card.mint { background: linear-gradient(160deg, #FFFFFF 55%, var(--mint) 180%); }
+    .kpi-card.lavender { background: linear-gradient(160deg, #FFFFFF 55%, var(--lavender) 180%); }
+    .kpi-card.peach { background: linear-gradient(160deg, #FFFFFF 55%, var(--peach) 180%); }
+    .kpi-card.butter { background: linear-gradient(160deg, #FFFFFF 55%, var(--butter) 180%); }
+
+    .kpi-label {
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .kpi-value {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-top: 6px;
+      direction: ltr;
+      text-align: right;
+    }
+
+    .kpi-tag {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+    }
+
+    .tag-fav { background: var(--fav-bg); color: var(--fav); }
+    .tag-unfav { background: var(--unfav-bg); color: var(--unfav); }
+    .tag-neutral { background: #EFEAFF; color: var(--primary); }
+
+    /* Views */
+    .view { display: none; }
+    .view.active { display: block; animation: fadeIn 0.25s ease; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 1.08rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .mode-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .pill-btn {
+      border: 1.5px solid var(--border);
+      background: #FAF9FF;
+      color: var(--text);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 0.86rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .pill-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    @media (min-width: 640px) {
+      .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .field label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .field input, .field select {
+      border: 1.5px solid #DDD6FA;
+      border-radius: 14px;
+      padding: 11px 13px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      color: var(--text);
+      background: #FCFBFF;
+      transition: 0.2s;
+    }
+
+    .field input:focus, .field select:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(118, 85, 232, 0.14);
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 14px;
+      padding: 11px 18px;
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      flex: 1;
+      min-width: 160px;
+    }
+
+    .btn-primary:hover { background: var(--primary-dark); }
+
+    .btn-mint {
+      background: var(--mint);
+      color: var(--text);
+    }
+
+    .btn-peach {
+      background: var(--peach);
+      color: var(--text);
+    }
+
+    .btn-outline {
+      background: #fff;
+      color: var(--text);
+      border: 1.5px solid var(--border);
+    }
+
+    .btn-danger {
+      background: var(--unfav-bg);
+      color: var(--unfav);
+    }
+
+    /* Breakdown Boxes */
+    .breakdown-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    @media (min-width: 680px) {
+      .breakdown-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .box-item {
+      border-radius: 16px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      background: #FAF8FF;
+    }
+
+    .box-item h4 {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .box-val {
+      font-size: 1.15rem;
+      font-weight: 800;
+      direction: ltr;
+      text-align: right;
+    }
+
+    .box-formula {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .insight-banner {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      border-right: 5px solid var(--primary);
+      background: #F3EFFF;
+    }
+
+    /* Table */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 640px;
+      background: #fff;
+      font-size: 0.88rem;
+    }
+
+    th, td {
+      padding: 11px 12px;
+      text-align: right;
+      border-bottom: 1px solid #EFEBFD;
+    }
+
+    th {
+      background: #F4F0FF;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .status-pill {
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      display: inline-block;
+    }
+
+    .status-fav { background: var(--fav-bg); color: var(--fav); }
+    .status-unfav { background: var(--unfav-bg); color: var(--unfav); }
+
+    /* History list */
+    .history-item {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 10px;
+      background: #FCFBFF;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .history-meta {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 8px 10px;
+      z-index: 100;
+      box-shadow: 0 -8px 24px rgba(30, 27, 46, 0.06);
+    }
+
+    .nav-btn {
+      flex: 1;
+      max-width: 160px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 6px 4px;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .nav-btn span.icon {
+      font-size: 1.15rem;
+    }
+
+    .nav-btn.active {
+      background: #EFEAFF;
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    @media print {
+      .bottom-nav, .btn-row, .mode-pills, .currency-box {
+        display: none !important;
+      }
+      body {
+        background: #fff;
+        padding-bottom: 0;
+      }
+      .view { display: block !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Top Header -->
+    <header class="top-header">
+      <div class="header-row">
+        <div>
+          <div class="brand-title">
+            <span>إيان | AYAN</span>
+            <span class="brand-badge">تحليل الفروقات الشامل</span>
+          </div>
+          <p class="header-sub">منصة تحليل الفروقات المالية، التكاليف، الإنتاج، الميزانية، والمؤشرات الأدائيّة</p>
+        </div>
+        <div class="currency-box">
+          <label for="currencySelect">العملة:</label>
+          <select id="currencySelect" onchange="updateCurrency()">
+            <option value="DZD" selected>د.ج (DZD)</option>
+            <option value="USD">دولار ($)</option>
+            <option value="EUR">يورو (€)</option>
+          </select>
+        </div>
+      </div>
+    </header>
+
+    <!-- Live KPI Summary -->
+    <section class="kpi-grid">
+      <div class="kpi-card lavender">
+        <div class="kpi-label">إجمالي الفارق الكلي</div>
+        <div class="kpi-value" id="kpiTotalVar">0.00</div>
+        <span class="kpi-tag tag-neutral" id="kpiTotalStatus">بانتظار الحساب</span>
+      </div>
+      <div class="kpi-card mint">
+        <div class="kpi-label">فارق الكمية / الحجم</div>
+        <div class="kpi-value" id="kpiQtyVar">0.00</div>
+        <span class="kpi-tag tag-neutral" id="kpiQtyStatus">—</span>
+      </div>
+      <div class="kpi-card peach">
+        <div class="kpi-label">فارق السعر / المعدل</div>
+        <div class="kpi-value" id="kpiPriceVar">0.00</div>
+        <span class="kpi-tag tag-neutral" id="kpiPriceStatus">—</span>
+      </div>
+      <div class="kpi-card butter">
+        <div class="kpi-label">نسبة الانحراف (%)</div>
+        <div class="kpi-value" id="kpiPctVar">0.0%</div>
+        <span class="kpi-tag tag-neutral" id="kpiEfficiency">مؤشر الأداء</span>
+      </div>
+    </section>
+
+    <!-- VIEW 1: Analyzer & Simulator -->
+    <section id="view-analyzer" class="view active">
+      <div class="card">
+        <div class="card-title">
+          <span>حاسبة ومحاكاة الفروقات التفصيلية</span>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.8rem;" onclick="loadSampleData()">تحميل مثال جاهز</button>
+        </div>
+
+        <div class="mode-pills">
+          <button class="pill-btn active" id="mode-cost" onclick="setAnalysisMode('cost')">فروق التكاليف (مواد/أجور)</button>
+          <button class="pill-btn" id="mode-sales" onclick="setAnalysisMode('sales')">فروق المبيعات والإيرادات</button>
+          <button class="pill-btn" id="mode-budget" onclick="setAnalysisMode('budget')">موازنة تقديرية vs فعلية</button>
+        </div>
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="itemName">اسم البند / المركز / المنتج</label>
+            <input type="text" id="itemName" value="مادة أولية أ - خط الإنتاج 1" oninput="calculateVariance()" />
+          </div>
+          <div class="field">
+            <label for="periodLabel">الفترة المحاسبية</label>
+            <input type="text" id="periodLabel" value="نوفمبر 2026" oninput="calculateVariance()" />
+          </div>
+          <div class="field">
+            <label for="stdQty" id="lblStdQty">الكمية / الوحدات المعيارية (المخططة)</label>
+            <input type="number" id="stdQty" value="1000" step="any" oninput="calculateVariance()" />
+          </div>
+          <div class="field">
+            <label for="actQty" id="lblActQty">الكمية / الوحدات الفعلية</label>
+            <input type="number" id="actQty" value="1120" step="any" oninput="calculateVariance()" />
+          </div>
+          <div class="field">
+            <label for="stdPrice" id="lblStdPrice">السعر / التكلفة المعيارية للوحدة</label>
+            <input type="number" id="stdPrice" value="250" step="any" oninput="calculateVariance()" />
+          </div>
+          <div class="field">
+            <label for="actPrice" id="lblActPrice">السعر / التكلفة الفعلية للوحدة</label>
+            <input type="number" id="actPrice" value="235" step="any" oninput="calculateVariance()" />
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="saveCurrentAnalysis()">💾 حفظ في السجل</button>
+          <button class="btn btn-mint" onclick="exportCSV()">📥 تصدير CSV</button>
+          <button class="btn btn-peach" onclick="window.print()">🖨️ طباعة / PDF</button>
+          <button class="btn btn-outline" onclick="resetForm()">↺ تفريغ</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span>تفصيل الفروقات والنتائج المحاسبية</span>
+          <span class="status-pill" id="overallBadge">—</span>
+        </div>
+
+        <div class="breakdown-grid">
+          <div class="box-item">
+            <h4>الفارق الكمي / الحجمي (QV)</h4>
+            <div class="box-val" id="resQtyVar">0.00</div>
+            <div class="box-formula" id="formulaQty">(الفعلي − المعياري) × السعر المعياري</div>
+            <span class="kpi-tag" id="badgeQty">—</span>
+          </div>
+          <div class="box-item">
+            <h4>الفارق السعري / المعدل (PV)</h4>
+            <div class="box-val" id="resPriceVar">0.00</div>
+            <div class="box-formula" id="formulaPrice">(السعر الفعلي − المعياري) × الكمية الفعلية</div>
+            <span class="kpi-tag" id="badgePrice">—</span>
+          </div>
+          <div class="box-item">
+            <h4>صافي الفارق الإجمالي (TV)</h4>
+            <div class="box-val" id="resTotalVar">0.00</div>
+            <div class="box-formula">التكلفة/الإيراد الفعلي − المعياري المخطط</div>
+            <span class="kpi-tag" id="badgeTotal">—</span>
+          </div>
+        </div>
+
+        <div class="insight-banner" id="insightText">
+          جاري احتساب التحليل التفسيري للفروق...
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 2: Report Table -->
+    <section id="view-report" class="view">
+      <div class="card">
+        <div class="card-title">
+          <span>جدول التقرير المقارن المفصل</span>
+          <button class="btn btn-mint" style="padding: 7px 14px; font-size: 0.82rem;" onclick="exportCSV()">تصدير الجدول CSV</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>البيان</th>
+                <th>المعياري / المخطط</th>
+                <th>الفعلي</th>
+                <th>فارق الكمية</th>
+                <th>فارق السعر</th>
+                <th>الفارق الكلي</th>
+                <th>الحالة</th>
+              </tr>
+            </thead>
+            <tbody id="reportTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: Saved History -->
+    <section id="view-history" class="view">
+      <div class="card">
+        <div class="card-title">
+          <span>سجل العمليات والمحاكيات المحفوظة</span>
+          <button class="btn btn-danger" style="padding: 6px 12px; font-size: 0.8rem;" onclick="clearHistory()">حذف الكل</button>
+        </div>
+        <div id="historyList"></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" id="nav-analyzer" onclick="switchView('analyzer')">
+      <span class="icon">📊</span>
+      <span>التحليل</span>
+    </button>
+    <button class="nav-btn" id="nav-report" onclick="switchView('report')">
+      <span class="icon">📋</span>
+      <span>التقرير</span>
+    </button>
+    <button class="nav-btn" id="nav-history" onclick="switchView('history')">
+      <span class="icon">🗂️</span>
+      <span>السجل</span>
+    </button>
+  </nav>
+
+  <script>
+    const STORAGE_KEY = 'ayan_variance_history_v1';
+    let currentMode = 'cost'; // 'cost' | 'sales' | 'budget'
+    let latestCalc = null;
+
+    function getCurrencyLabel() {
+      const val = document.getElementById('currencySelect').value;
+      if (val === 'DZD') return 'د.ج';
+      if (val === 'USD') return '$';
+      return '€';
+    }
+
+    function formatMoney(num) {
+      const sign = num > 0 ? '+' : num < 0 ? '-' : '';
+      const absVal = Math.abs(Number(num) || 0).toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+      return `${sign}${absVal} ${getCurrencyLabel()}`;
+    }
+
+    function updateCurrency() {
+      calculateVariance();
+      renderHistory();
+    }
+
+    function setAnalysisMode(mode) {
+      currentMode = mode;
+      document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(`mode-${mode}`).classList.add('active');
+
+      const lblStdQty = document.getElementById('lblStdQty');
+      const lblActQty = document.getElementById('lblActQty');
+      const lblStdPrice = document.getElementById('lblStdPrice');
+      const lblActPrice = document.getElementById('lblActPrice');
+
+      if (mode === 'cost') {
+        lblStdQty.textContent = 'الكمية / الساعات المعيارية المخططة';
+        lblActQty.textContent = 'الكمية / الساعات الفعلية';
+        lblStdPrice.textContent = 'التكلفة المعيارية للوحدة / الساعة';
+        lblActPrice.textContent = 'التكلفة الفعلية للوحدة / الساعة';
+      } else if (mode === 'sales') {
+        lblStdQty.textContent = 'حجم المبيعات المعياري (وحدات)';
+        lblActQty.textContent = 'حجم المبيعات الفعلي (وحدات)';
+        lblStdPrice.textContent = 'سعر البيع المعياري للوحدة';
+        lblActPrice.textContent = 'سعر البيع الفعلي للوحدة';
+      } else {
+        lblStdQty.textContent = 'النشاط / الوحدات المخططة في الموازنة';
+        lblActQty.textContent = 'النشاط / الوحدات الفعلية المحققة';
+        lblStdPrice.textContent = 'المخصص المخطط لكل وحدة';
+        lblActPrice.textContent = 'الإنفاق الفعلي لكل وحدة';
+      }
+      calculateVariance();
+    }
+
+    // For costs/budgets: lower actual than standard is Favorable (F)
+    // For sales/revenue: higher actual than standard is Favorable (F)
+    function isFavorable(rawDelta) {
+      if (Math.abs(rawDelta) < 1e-9) return true;
+      return currentMode === 'sales' ? rawDelta > 0 : rawDelta < 0;
+    }
+
+    function calculateVariance() {
+      const itemName = document.getElementById('itemName').value.trim() || 'بند غير مسمى';
+      const periodLabel = document.getElementById('periodLabel').value.trim() || 'الفترة الحالية';
+      const stdQty = parseFloat(document.getElementById('stdQty').value) || 0;
+      const actQty = parseFloat(document.getElementById('actQty').value) || 0;
+      const stdPrice = parseFloat(document.getElementById('stdPrice').value) || 0;
+      const actPrice = parseFloat(document.getElementById('actPrice').value) || 0;
+
+      const stdTotal = stdQty * stdPrice;
+      const actTotal = actQty * actPrice;
+
+      // Raw impact on cost/budget or revenue
+      const rawQtyVar = (actQty - stdQty) * stdPrice;
+      const rawPriceVar = (actPrice - stdPrice) * actQty;
+      const rawTotalVar = actTotal - stdTotal;
+
+      const qtyFav = isFavorable(rawQtyVar);
+      const priceFav = isFavorable(rawPriceVar);
+      const totalFav = isFavorable(rawTotalVar);
+
+      const pctVar = stdTotal !== 0 ? ((actTotal - stdTotal) / Math.abs(stdTotal)) * 100 : 0;
+
+      latestCalc = {
+        id: Date.now(),
+        itemName,
+        periodLabel,
+        mode: currentMode,
+        stdQty,
+        actQty,
+        stdPrice,
+        actPrice,
+        stdTotal,
+        actTotal,
+        rawQtyVar,
+        rawPriceVar,
+        rawTotalVar,
+        qtyFav,
+        priceFav,
+        totalFav,
+        pctVar,
+        savedAt: new Date().toLocaleString('ar-DZ')
+      };
+
+      // Update KPIs
+      document.getElementById('kpiTotalVar').textContent = formatMoney(rawTotalVar);
+      const kpiTotalStatus = document.getElementById('kpiTotalStatus');
+      kpiTotalStatus.textContent = totalFav ? 'ملائم (Favorable)' : 'غير ملائم (Unfavorable)';
+      kpiTotalStatus.className = `kpi-tag ${totalFav ? 'tag-fav' : 'tag-unfav'}`;
+
+      document.getElementById('kpiQtyVar').textContent = formatMoney(rawQtyVar);
+      const kpiQtyStatus = document.getElementById('kpiQtyStatus');
+      kpiQtyStatus.textContent = qtyFav ? 'ملائم (F)' : 'غير ملائم (U)';
+      kpiQtyStatus.className = `kpi-tag ${qtyFav ? 'tag-fav' : 'tag-unfav'}`;
+
+      document.getElementById('kpiPriceVar').textContent = formatMoney(rawPriceVar);
+      const kpiPriceStatus = document.getElementById('kpiPriceStatus');
+      kpiPriceStatus.textContent = priceFav ? 'ملائم (F)' : 'غير ملائم (U)';
+      kpiPriceStatus.className = `kpi-tag ${priceFav ? 'tag-fav' : 'tag-unfav'}`;
+
+      const pctSign = pctVar > 0 ? '+' : '';
+      document.getElementById('kpiPctVar').textContent = `${pctSign}${pctVar.toFixed(1)}%`;
+      const kpiEff = document.getElementById('kpiEfficiency');
+      kpiEff.textContent = totalFav ? 'أداء إيجابي' : 'يحتاج متابعة';
+      kpiEff.className = `kpi-tag ${totalFav ? 'tag-fav' : 'tag-unfav'}`;
+
+      // Update Breakdown Boxes
+      document.getElementById('resQtyVar').textContent = formatMoney(rawQtyVar);
+      document.getElementById('resPriceVar').textContent = formatMoney(rawPriceVar);
+      document.getElementById('resTotalVar').textContent = formatMoney(rawTotalVar);
+
+      setBadge('badgeQty', qtyFav);
+      setBadge('badgePrice', priceFav);
+      setBadge('badgeTotal', totalFav);
+
+      const overallBadge = document.getElementById('overallBadge');
+      overallBadge.textContent = totalFav ? 'النتيجة العامة: ملائم (Favorable)' : 'النتيجة العامة: غير ملائم (Unfavorable)';
+      overallBadge.className = `status-pill ${totalFav ? 'status-fav' : 'status-unfav'}`;
+
+      // Insight text
+      const qtyText = qtyFav ? 'ملائم' : 'غير ملائم';
+      const priceText = priceFav ? 'ملائم' : 'غير ملائم';
+      const totalText = totalFav ? 'ملائم' : 'غير ملائم';
+      document.getElementById('insightText').textContent =
+        `بالنسبة لبند "${itemName}" (${periodLabel}): الفارق الكلي ${totalText} بقيمة ${formatMoney(rawTotalVar)} (${pctSign}${pctVar.toFixed(1)}%). يتكوّن من فارق كمي ${qtyText} (${formatMoney(rawQtyVar)}) وفارق سعري ${priceText} (${formatMoney(rawPriceVar)}).`;
+
+      renderReportTable();
+    }
+
+    function setBadge(id, fav) {
+      const el = document.getElementById(id);
+      el.textContent = fav ? 'ملائم (F)' : 'غير ملائم (U)';
+      el.className = `kpi-tag ${fav ? 'tag-fav' : 'tag-unfav'}`;
+    }
+
+    function renderReportTable() {
+      if (!latestCalc) return;
+      const c = latestCalc;
+      const tbody = document.getElementById('reportTableBody');
+      tbody.innerHTML = `
+        <tr>
+          <td><strong>${escapeHtml(c.itemName)}</strong><br><small style="color:var(--muted)">${escapeHtml(c.periodLabel)}</small></td>
+          <td>${formatMoney(c.stdTotal)}</td>
+          <td>${formatMoney(c.actTotal)}</td>
+          <td>${formatMoney(c.rawQtyVar)} <small>(${c.qtyFav ? 'F' : 'U'})</small></td>
+          <td>${formatMoney(c.rawPriceVar)} <small>(${c.priceFav ? 'F' : 'U'})</small></td>
+          <td><strong>${formatMoney(c.rawTotalVar)}</strong></td>
+          <td><span class="status-pill ${c.totalFav ? 'status-fav' : 'status-unfav'}">${c.totalFav ? 'ملائم' : 'غير ملائم'}</span></td>
+        </tr>
+      `;
+    }
+
+    function saveCurrentAnalysis() {
+      if (!latestCalc) return;
+      const list = getHistory();
+      list.unshift({ ...latestCalc, id: Date.now() });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list.slice(0, 50)));
+      renderHistory();
+      alert('تم حفظ التحليل بنجاح في سجل إيان!');
+    }
+
+    function getHistory() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function renderHistory() {
+      const container = document.getElementById('historyList');
+      const list = getHistory();
+      if (!list.length) {
+        container.innerHTML = '<p style="color:var(--muted); text-align:center; padding:18px;">لا توجد عمليات محفوظة بعد. احفظ أي محاكاة لتظهر هنا.</p>';
+        return;
+      }
+
+      container.innerHTML = list.map(item => `
+        <div class="history-item">
+          <div>
+            <strong>${escapeHtml(item.itemName)}</strong>
+            <div class="history-meta">${escapeHtml(item.periodLabel)} • ${escapeHtml(item.savedAt)}</div>
+            <div class="history-meta">الإجمالي: <strong>${formatMoney(item.rawTotalVar)}</strong></div>
+          </div>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <span class="status-pill ${item.totalFav ? 'status-fav' : 'status-unfav'}">${item.totalFav ? 'ملائم (F)' : 'غير ملائم (U)'}</span>
+            <button class="btn btn-outline" style="padding:6px 10px; font-size:0.8rem;" onclick="loadFromHistory(${item.id})">فتح</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function loadFromHistory(id) {
+      const item = getHistory().find(x => x.id === id);
+      if (!item) return;
+      setAnalysisMode(item.mode || 'cost');
+      document.getElementById('itemName').value = item.itemName;
+      document.getElementById('periodLabel').value = item.periodLabel;
+      document.getElementById('stdQty').value = item.stdQty;
+      document.getElementById('actQty').value = item.actQty;
+      document.getElementById('stdPrice').value = item.stdPrice;
+      document.getElementById('actPrice').value = item.actPrice;
+      calculateVariance();
+      switchView('analyzer');
+    }
+
+    function clearHistory() {
+      if (!confirm('هل تريدين حذف جميع العمليات المحفوظة؟')) return;
+      localStorage.removeItem(STORAGE_KEY);
+      renderHistory();
+    }
+
+    function loadSampleData() {
+      setAnalysisMode('cost');
+      document.getElementById('itemName').value = 'مواد أولية - خط الإنتاج الرئيسي';
+      document.getElementById('periodLabel').value = 'نوفمبر 2026';
+      document.getElementById('stdQty').value = 500;
+      document.getElementById('actQty').value = 480;
+      document.getElementById('stdPrice').value = 1200;
+      document.getElementById('actPrice').value = 1250;
+      calculateVariance();
+    }
+
+    function resetForm() {
+      document.getElementById('itemName').value = '';
+      document.getElementById('stdQty').value = 0;
+      document.getElementById('actQty').value = 0;
+      document.getElementById('stdPrice').value = 0;
+      document.getElementById('actPrice').value = 0;
+      calculateVariance();
+    }
+
+    function exportCSV() {
+      if (!latestCalc) return;
+      const c = latestCalc;
+      const rows = [
+        ['البند', 'الفترة', 'المعياري', 'الفعلي', 'فارق الكمية', 'فارق السعر', 'الفارق الكلي', 'الحالة'],
+        [c.itemName, c.periodLabel, c.stdTotal, c.actTotal, c.rawQtyVar, c.rawPriceVar, c.rawTotalVar, c.totalFav ? 'Favorable' : 'Unfavorable']
+      ];
+      const csvContent = '\uFEFF' + rows.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `ayan-variance-${Date.now()}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function switchView(viewName) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.getElementById(`view-${viewName}`).classList.add('active');
+
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(`nav-${viewName}`).classList.add('active');
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // Init
+    calculateVariance();
+    renderHistory();
+  </script>
+</body>
+</html>
