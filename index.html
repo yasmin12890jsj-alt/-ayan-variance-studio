@@ -47,17 +47,48 @@
     .screen { display: none; min-height: 100vh; }
     .screen.active { display: flex; }
 
+    /* First Screen: Fast & Clean Splash */
     #splashScreen {
-      background: linear-gradient(135deg, #5230C8, #7655E8, #9B7BFF);
-      color: #fff; flex-direction: column; align-items: center; justify-content: center;
-      text-align: center; padding: 24px;
+      background: linear-gradient(145deg, #4B28C4 0%, #7655E8 55%, #9D7EFF 100%);
+      color: #fff;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
     }
-    .splash-logo {
-      width: 90px; height: 90px; border-radius: 24px;
-      background: rgba(255,255,255,0.18); display: grid; place-items: center;
-      font-size: 2.4rem; margin-bottom: 12px;
+    .splash-badge {
+      width: 96px;
+      height: 96px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.18);
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      display: grid;
+      place-items: center;
+      font-size: 2.6rem;
+      margin-bottom: 14px;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.2);
+    }
+    .splash-title {
+      font-size: 2.1rem;
+      font-weight: 900;
+      letter-spacing: 0.4px;
+    }
+    .splash-sub {
+      margin-top: 6px;
+      font-size: 0.92rem;
+      opacity: 0.94;
+    }
+    .splash-pill {
+      margin-top: 14px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.16);
+      font-size: 0.76rem;
+      font-weight: 800;
     }
 
+    /* Second Screen: Biometric Lock */
     #lockScreen { align-items: center; justify-content: center; padding: 18px; }
     .lock-card {
       width: 100%; max-width: 390px; background: var(--card);
@@ -142,7 +173,6 @@
       border-radius: 14px; padding: 12px; line-height: 1.6; font-size: 0.84rem; margin-top: 8px;
     }
 
-    /* Single-row smooth horizontal 10-icon dock */
     .dock-10 {
       position: fixed; bottom: 0; left: 0; right: 0; z-index: 300;
       background: var(--card); border-top: 1px solid var(--border);
@@ -166,17 +196,15 @@
 </head>
 <body>
 
-  <!-- 1. Splash -->
-  <div id="splashScreen" class="screen active">
-    <div class="splash-logo">📐</div>
-    <h1 style="font-size:1.9rem; font-weight:900;">إيان | AYAN</h1>
-    <p id="spDesc" style="margin-top:6px; opacity:0.92;">استوديو تحليل الفروقات والموازنات والمنحنيات</p>
-    <div style="margin-top:14px;">
-      <button class="btn btn-sec" id="spBtn" onclick="goLock()">متابعة إلى البصمة</button>
-    </div>
+  <!-- 1. First Screen (Splash) -->
+  <div id="splashScreen" class="screen active" onclick="goLock()">
+    <div class="splash-badge">📐</div>
+    <div class="splash-title">إيان | AYAN</div>
+    <div id="spDesc" class="splash-sub">منصة تحليل الفروقات والموازنات والمنحنيات</div>
+    <div class="splash-pill" id="spHint">جاري الانتقال للبصمة...</div>
   </div>
 
-  <!-- 2. Lock -->
+  <!-- 2. Second Screen (Biometric Lock) -->
   <div id="lockScreen" class="screen">
     <div class="lock-card">
       <div style="font-size:1.6rem;">🔐</div>
@@ -348,7 +376,7 @@
       </div>
     </div>
 
-    <!-- 10 Bottom Icons (Single-row horizontal scroll + instant tap) -->
+    <!-- 10 Bottom Icons -->
     <nav class="dock-10" aria-label="10 navigation icons">
       <button type="button" class="dock-btn active" id="d-ai" onclick="fastDock('ai', 'ai')"><span class="ic">🤖</span><span id="dLblAi">المساعد</span></button>
       <button type="button" class="dock-btn" id="d-calc" onclick="fastDock('calc', 'tables')"><span class="ic">🧮</span><span id="dLblCalc">حاسبة</span></button>
@@ -367,7 +395,7 @@
     const LANGS = {
       ar: {
         dir: 'rtl',
-        spDesc: 'استوديو تحليل الفروقات والموازنات والمنحنيات', spBtn: 'متابعة إلى البصمة',
+        spDesc: 'منصة تحليل الفروقات والموازنات والمنحنيات', spHint: 'جاري الانتقال للبصمة...',
         lkTitle: 'قفل البصمة — إيان', lkDesc: 'التحقق بالبصمة أو بالرمز للدخول', pinBtn: 'دخول بالرمز',
         curBase: 'العملة الأساسية: الدينار الجزائري (DZD)',
         kLblAbs: 'الفرق المطلق', kLblRel: 'الفرق النسبي %', kLblBud: 'فرق الميزانية', kLblQty: 'فرق الكميات', kLblSt: 'التصنيف',
@@ -389,7 +417,7 @@
       },
       fr: {
         dir: 'ltr',
-        spDesc: 'Studio d’Analyse des Écarts, Budgets et Courbes', spBtn: 'Continuer vers Empreinte',
+        spDesc: 'Studio d’Analyse des Écarts, Budgets et Courbes', spHint: 'Passage vers empreinte...',
         lkTitle: 'Verrouillage Biométrique — AYAN', lkDesc: 'Empreinte ou code requis', pinBtn: 'Entrer par code',
         curBase: 'Devise principale : Dinar Algérien (DZD)',
         kLblAbs: 'Écart Absolu', kLblRel: 'Écart Relatif %', kLblBud: 'Écart Budget', kLblQty: 'Écart Qté', kLblSt: 'Statut',
@@ -411,7 +439,7 @@
       },
       en: {
         dir: 'ltr',
-        spDesc: 'Variance Analysis, Budget & Curves Studio', spBtn: 'Continue to Biometrics',
+        spDesc: 'Variance Analysis, Budget & Curves Studio', spHint: 'Opening biometric lock...',
         lkTitle: 'Biometric Lock — AYAN', lkDesc: 'Fingerprint or code required', pinBtn: 'Unlock Code',
         curBase: 'Base Currency: Algerian Dinar (DZD)',
         kLblAbs: 'Abs. Variance', kLblRel: 'Rel. Variance %', kLblBud: 'Budget Var.', kLblQty: 'Qty Var.', kLblSt: 'Status',
@@ -608,7 +636,6 @@
       if (cChart && bChart) initOrUpdateCharts();
     }
 
-    // Fast immediate switch without smooth-scroll delay
     function fastDock(dockId, panelId) {
       const dockBtns = document.querySelectorAll('.dock-btn');
       for (let i = 0; i < dockBtns.length; i++) dockBtns[i].classList.remove('active');
@@ -798,7 +825,7 @@
 
     setTimeout(() => {
       if (document.getElementById('splashScreen').classList.contains('active')) goLock();
-    }, 900);
+    }, 750);
     calcAll();
     askAI('auto');
   </script>
