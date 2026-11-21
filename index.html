@@ -47,7 +47,7 @@
     .screen { display: none; min-height: 100vh; }
     .screen.active { display: flex; }
 
-    /* First Screen: Animated Name Intro */
+    /* First Screen: Video-Style App Name Intro */
     #splashScreen {
       background: linear-gradient(145deg, #4B28C4 0%, #7655E8 55%, #9D7EFF 100%);
       color: #fff;
@@ -208,14 +208,17 @@
 </head>
 <body>
 
-  <!-- 1. First Screen (Animated Name Intro) -->
+  <!-- 1. First Screen (Video-Style App Name Intro) -->
   <div id="splashScreen" class="screen active" onclick="goLock()">
-    <div class="splash-badge">📐</div>
-    <div class="splash-title">إيان | AYAN</div>
-    <div style="font-size:0.95rem; font-weight:800; opacity:0.95; margin-top:4px; animation:ayanReveal 0.85s ease-out 0.35s both;">AYAN VARIANCE STUDIO</div>
-    <div id="spDesc" class="splash-sub">منصة تحليل الفروقات والموازنات والمنحنيات</div>
-    <div style="width:160px; height:4px; border-radius:999px; background:rgba(255,255,255,0.25); overflow:hidden; margin-top:16px;">
-      <div style="height:100%; width:100%; background:#FFE995; transform-origin:right; animation:ayanBar 2.3s linear forwards;"></div>
+    <div style="width:100%; max-width:350px; border-radius:24px; padding:26px 18px; background:rgba(15, 13, 26, 0.28); border:1.5px solid rgba(255,255,255,0.28); box-shadow:0 18px 40px rgba(0,0,0,0.28); position:relative; overflow:hidden;">
+      <div style="font-size:0.72rem; font-weight:800; letter-spacing:1.2px; opacity:0.85; margin-bottom:12px;">▶ INTRO PREVIEW</div>
+      <div class="splash-badge" style="margin:0 auto 12px;">📐</div>
+      <div class="splash-title" style="font-size:2rem; animation:ayanReveal 0.8s ease-out 0.15s both;">إيان | AYAN</div>
+      <div style="font-size:0.92rem; font-weight:800; color:#FFE995; margin-top:4px; animation:ayanReveal 0.8s ease-out 0.35s both;">AYAN VARIANCE STUDIO</div>
+      <div id="spDesc" class="splash-sub" style="animation:ayanReveal 0.8s ease-out 0.55s both;">منصة تحليل الفروقات والموازنات والمنحنيات</div>
+      <div style="width:100%; height:4px; border-radius:999px; background:rgba(255,255,255,0.2); overflow:hidden; margin-top:18px;">
+        <div style="height:100%; width:100%; background:#FFE995; transform-origin:right; animation:ayanBar 2.4s linear forwards;"></div>
+      </div>
     </div>
   </div>
 
@@ -840,7 +843,7 @@
 
     setTimeout(() => {
       if (document.getElementById('splashScreen').classList.contains('active')) goLock();
-    }, 2300);
+    }, 2400);
     calcAll();
     askAI('auto');
   </script>
